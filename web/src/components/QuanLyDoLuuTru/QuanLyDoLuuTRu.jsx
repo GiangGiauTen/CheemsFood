@@ -1,7 +1,7 @@
 import React from 'react';
 
-function QuanLyDoLuuTRu() {
-  return <div>QuanLyDoLuuTRu</div>;
+function QuanLyDoLuuTru() {
+  return <div>QuanLyDoLuuTru</div>;
 }
 
-export default QuanLyDoLuuTRu;
+export default QuanLyDoLuuTru;
