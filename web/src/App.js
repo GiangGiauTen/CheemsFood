@@ -7,7 +7,7 @@ import {
 import { Layout, Menu, theme } from 'antd';
 import Nhom from './components/Nhom/Nhom';
 import QuanLyCongThuc from './components/QuanLyCongThuc/QuanLyCongThuc';
-import QuanLyDoLuuTRu from './components/QuanLyDoLuuTru/QuanLyDoLuuTRu';
+import QuanLyDoLuuTru from './components/QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './components/QuanLyDoCanMua/QuanLyDoCanMua';
 
 import React, { useState } from 'react';
@@ -97,7 +97,7 @@ const App = () => {
 
           {menuKey === '3' && (
             <div>
-              <QuanLyDoLuuTRu />
+              <QuanLyDoLuuTru />
             </div>
           )}
           {menuKey === '4' && (
