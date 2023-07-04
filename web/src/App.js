@@ -3,12 +3,17 @@ import {
   HomeOutlined,
   BarChartOutlined,
   ContactsOutlined,
+  UserOutlined,
+  UserAddOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Button } from 'antd';
 import Nhom from './components/Nhom/Nhom';
 import QuanLyCongThuc from './components/QuanLyCongThuc/QuanLyCongThuc';
 import QuanLyDoLuuTru from './components/QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './components/QuanLyDoCanMua/QuanLyDoCanMua';
+import DangNhap from './components/DangNhap/DangNhap';
+import DangKy from './components/DangKy/DangKy';
 
 import React, { useState } from 'react';
 const { Header, Content, Sider } = Layout;
@@ -41,6 +46,10 @@ const items = [
     getItem('Thêm mới', '41'),
     getItem('Sửa', '42'),
   ]),
+
+  getItem('DangNhap', '5', <UserOutlined />),
+  getItem('DangKy', '6', <UserAddOutlined />),
+
 ];
 const App = () => {
   const [menuKey, setMenuKey] = useState('1');
@@ -105,9 +114,22 @@ const App = () => {
               <QuanLyDoCanMua />
             </div>
           )}
+          {menuKey === '5' && (
+            <div>
+              <DangNhap />
+            </div>
+          )}
+          {menuKey === '6' && (
+            <div>
+              <DangKy />
+            </div>
+          )}
+          
         </Content>
       </Layout>
+      <Button icon={<LogoutOutlined />}>Đăng xuất</Button>
     </Layout>
+    
   );
 };
 export default App;
