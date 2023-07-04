@@ -142,7 +142,15 @@ const AddMeeting = () => {
           ]}>
           <Input placeholder="Nhập mã nhóm" />
         </Form.Item>
-
+        <Form.Item
+          name="name"
+          label="Tên Nhóm"
+          rules={[
+            { required: true, message: 'Vui lòng nhập tên nhóm' },
+            { validator: checkMeetingCode },
+          ]}>
+          <Input placeholder="Nhập mã nhóm" />
+        </Form.Item>
         <Form.Item name="noiDung" label="Nội dung">
           <TextArea rows={4} placeholder="Nhập nội dung nhóm" />
         </Form.Item>
