@@ -9,7 +9,7 @@ import Nhom from './components/Nhom/Nhom';
 import QuanLyCongThuc from './components/QuanLyCongThuc/QuanLyCongThuc';
 import QuanLyDoLuuTRu from './components/QuanLyDoLuuTru/QuanLyDoLuuTRu';
 import QuanLyDoCanMua from './components/QuanLyDoCanMua/QuanLyDoCanMua';
-
+import AddTeam from './components/Nhom/AddTeam';
 import React, { useState } from 'react';
 const { Header, Content, Sider } = Layout;
 
@@ -88,7 +88,11 @@ const App = () => {
               <Nhom />
             </div>
           )}
-
+          {menuKey === '11' && (
+            <div>
+              <AddTeam />
+            </div>
+          )}
           {menuKey === '2' && (
             <div>
               <QuanLyCongThuc />
