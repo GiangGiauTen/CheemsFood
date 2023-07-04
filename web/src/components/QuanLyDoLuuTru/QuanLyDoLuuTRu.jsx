@@ -54,7 +54,7 @@ const QuanLyDoLuuTru = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
-    },    
+    },
     {
       title: 'Food Name',
       dataIndex: 'name',

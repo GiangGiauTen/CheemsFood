@@ -9,11 +9,11 @@ const Nhom = () => {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState(users);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [isAddParticipantFormVisible, setIsAddParticipantFormVisible] =
     useState(false);
-  const [users, setUsers] = useState([]);
-  const [data, setData] = useState([]);
+  // const [users, setUsers] = useState([]);
+  // const [data, setData] = useState([]);
 
   const [editMeeting, setEditMeeting] = useState({});
   // Hàm cập nhật giá trị sửa
@@ -31,32 +31,32 @@ const Nhom = () => {
       }
       return meeting;
     });
-    setData(updatedData);
+    // setData(updatedData);
     setIsModalVisible(false);
     setIsModalVisible2(false);
   };
   // Hàm xóa cuộc họp
   const handleDelete = async maCuocHop => {
-    try {
-      // Gọi API xóa cuộc họp với mã cuộc họp (meetingId)
-      const response = await axios.delete(
-        `http://localhost:4001/api/meeting/${maCuocHop}`,
-      );
-      if (response.status === 200) {
-        // Nếu API xóa thành công, cập nhật lại state của data (danh sách cuộc họp)
-        setData(prevData =>
-          prevData.filter(meeting => meeting.maCuocHop !== maCuocHop),
-        );
-        setIsModalVisible(false);
-        setIsModalVisible2(false);
-      } else {
-        console.error('Error deleting meeting', response.data.error);
-        // Xử lý hiển thị thông báo lỗi nếu cần thiết
-      }
-    } catch (error) {
-      console.error('Error deleting meeting', error);
-      // Xử lý hiển thị thông báo lỗi nếu cần thiết
-    }
+    // try {
+    //   // Gọi API xóa cuộc họp với mã cuộc họp (meetingId)
+    //   const response = await axios.delete(
+    //     `http://localhost:4001/api/meeting/${maCuocHop}`,
+    //   );
+    //   if (response.status === 200) {
+    //     // Nếu API xóa thành công, cập nhật lại state của data (danh sách cuộc họp)
+    //     setData(prevData =>
+    //       prevData.filter(meeting => meeting.maCuocHop !== maCuocHop),
+    //     );
+    //     setIsModalVisible(false);
+    //     setIsModalVisible2(false);
+    //   } else {
+    //     console.error('Error deleting meeting', response.data.error);
+    //     // Xử lý hiển thị thông báo lỗi nếu cần thiết
+    //   }
+    // } catch (error) {
+    //   console.error('Error deleting meeting', error);
+    //   // Xử lý hiển thị thông báo lỗi nếu cần thiết
+    // }
   };
 
   const handleSelectUser = user => {
@@ -65,9 +65,8 @@ const Nhom = () => {
       nguoiThamGia: [
         ...prevMeeting.nguoiThamGia,
         {
-          hoTen: user.hoTen,
-          birthdate: user.birthdate,
-          gioiTinh: user.gioiTinh,
+          name: user.name,
+          role: user.role,
         },
       ],
     }));
@@ -86,43 +85,222 @@ const Nhom = () => {
       nguoiThamGia: updatedParticipants,
     }));
   };
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:4001/api/resident/');
-        if (response.status === 200) {
-          const userData = response.data;
-          setUsers(userData);
-          setSelectedUsers(userData); // Cập nhật selectedUsers sau khi có dữ liệu người dùng
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:4001/api/resident/');
+  //       if (response.status === 200) {
+  //         const userData = response.data;
+  //         setUsers(userData);
+  //         setSelectedUsers(userData); // Cập nhật selectedUsers sau khi có dữ liệu người dùng
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:4001/api/meeting/');
-        if (response.status === 200) {
-          const resData = response.data;
-          setData(resData);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  //   fetchUsers();
+  // }, []);
+  const users = [
+    {
+      userId: '1',
+      username: 'Trước khi em tồn tại',
+      name: 'Ngot',
+      password: '123444',
+      role: 'admin',
+    },
+    {
+      userId: '2',
+      username: 'Sau khi em đi qua',
+      name: 'Bun',
+      password: 'abc123',
+      role: 'user',
+    },
+    {
+      userId: '3',
+      username: 'Anh chỉ là cơn gió',
+      name: 'Mi',
+      password: 'xyz789',
+      role: 'user',
+    },
+    {
+      userId: '4',
+      username: 'Nắng chưa từng tắt',
+      name: 'Xinh',
+      password: 'qwe456',
+      role: 'user',
+    },
+    {
+      userId: '5',
+      username: 'Để đời còn mơ',
+      name: 'Hoa',
+      password: '789def',
+      role: 'admin',
+    },
+  ];
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:4001/api/meeting/');
+  //       if (response.status === 200) {
+  //         const resData = response.data;
+  //         setData(resData);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+  const data = [
+    {
+      groupId: 'ABC123',
+      name: 'Ngot Band',
+      adminName: 'Giang',
+      nguoiThamGia: [
+        {
+          userId: '1',
+          username: 'Trước khi em tồn tại',
+          name: 'Ngot',
+          password: '123444',
+          role: 'admin',
+        },
+        {
+          userId: '2',
+          username: 'Sau khi em đi qua',
+          name: 'Bun',
+          password: 'abc123',
+          role: 'user',
+        },
+        {
+          userId: '3',
+          username: 'Anh chỉ là cơn gió',
+          name: 'Mi',
+          password: 'xyz789',
+          role: 'user',
+        },
+      ],
+    },
+    {
+      groupId: 'DEF456',
+      name: 'Bun Club',
+      adminName: 'Hoa',
+      nguoiThamGia: [
+        {
+          userId: '1',
+          username: 'Trước khi em tồn tại',
+          name: 'Ngot',
+          password: '123444',
+          role: 'admin',
+        },
+        {
+          userId: '2',
+          username: 'Sau khi em đi qua',
+          name: 'Bun',
+          password: 'abc123',
+          role: 'user',
+        },
+        {
+          userId: '3',
+          username: 'Anh chỉ là cơn gió',
+          name: 'Mi',
+          password: 'xyz789',
+          role: 'user',
+        },
+      ],
+    },
+    {
+      groupId: 'GHI789',
+      name: 'Mi Orchestra',
+      adminName: 'Anh',
+      nguoiThamGia: [
+        {
+          userId: '1',
+          username: 'Trước khi em tồn tại',
+          name: 'Ngot',
+          password: '123444',
+          role: 'admin',
+        },
+        {
+          userId: '2',
+          username: 'Sau khi em đi qua',
+          name: 'Bun',
+          password: 'abc123',
+          role: 'user',
+        },
+        {
+          userId: '3',
+          username: 'Anh chỉ là cơn gió',
+          name: 'Mi',
+          password: 'xyz789',
+          role: 'user',
+        },
+      ],
+    },
+    {
+      groupId: 'JKL012',
+      name: 'Xinh Ensemble',
+      adminName: 'Lan',
+      nguoiThamGia: [
+        {
+          userId: '1',
+          username: 'Trước khi em tồn tại',
+          name: 'Ngot',
+          password: '123444',
+          role: 'admin',
+        },
+        {
+          userId: '2',
+          username: 'Sau khi em đi qua',
+          name: 'Bun',
+          password: 'abc123',
+          role: 'user',
+        },
+        {
+          userId: '3',
+          username: 'Anh chỉ là cơn gió',
+          name: 'Mi',
+          password: 'xyz789',
+          role: 'user',
+        },
+      ],
+    },
+    {
+      groupId: 'MNO345',
+      name: 'Hoa Society',
+      adminName: 'Trang',
+      nguoiThamGia: [
+        {
+          userId: '1',
+          username: 'Trước khi em tồn tại',
+          name: 'Ngot',
+          password: '123444',
+          role: 'admin',
+        },
+        {
+          userId: '2',
+          username: 'Sau khi em đi qua',
+          name: 'Bun',
+          password: 'abc123',
+          role: 'user',
+        },
+        {
+          userId: '3',
+          username: 'Anh chỉ là cơn gió',
+          name: 'Mi',
+          password: 'xyz789',
+          role: 'user',
+        },
+      ],
+    },
+  ];
   const handleSearch = value => {
     setSearchText(value);
   };
   const handleSearchUsers = value => {
     const filteredUsers = users.filter(user =>
-      user.hoTen.toLowerCase().includes(value.toLowerCase()),
+      user.name.toLowerCase().includes(value.toLowerCase()),
     );
     setSelectedUsers(filteredUsers);
   };
@@ -143,25 +321,16 @@ const Nhom = () => {
 
   const columns = [
     {
-      title: 'Mã cuộc họp',
-      dataIndex: 'maCuocHop',
-      // sorter: (a, b) => a.meetingCode.localeCompare(b.meetingCode),
-      // sortDirections: ['ascend', 'descend'],
+      title: 'Mã Nhóm',
+      dataIndex: 'groupId',
+    },
+    {
+      title: 'Tên nhóm',
+      dataIndex: 'name',
     },
     {
       title: 'Người tạo',
-      dataIndex: 'hoTen',
-    },
-    {
-      title: 'Nội dung chính',
-      dataIndex: 'noiDung',
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'ngayTaoCuocHop',
-      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-      sortDirections: ['ascend', 'descend'],
-      render: date => new Date(date).toLocaleDateString('vi-VN'),
+      dataIndex: 'adminName',
     },
     {
       title: 'Thao tác',
@@ -208,27 +377,20 @@ const Nhom = () => {
         })}
       />
       <Modal
-        title="Thông tin cuộc họp"
+        title="Thông tin Nhóm"
         visible={isModalVisible2}
         onCancel={handleModalClose}
         footer={null}>
         {selectedRowData && (
           <div>
             <p>
-              <strong>Mã cuộc họp:</strong> {selectedRowData.maCuocHop}
+              <strong>Mã nhóm:</strong> {selectedRowData.groupId}
             </p>
             <p>
-              <strong>Người Tạo:</strong> {selectedRowData.hoTen}
+              <strong>Tên nhóm:</strong> {selectedRowData.name}
             </p>
             <p>
-              <strong>Nội Dung:</strong> {selectedRowData.noiDung}
-            </p>
-            <p>
-              <strong>Ngày diễn ra:</strong>{' '}
-              {moment(selectedRowData.ngayTaoCuocHop).format('YYYY-MM-DD ')}
-            </p>
-            <p>
-              <strong>Địa điểm:</strong> {selectedRowData.diaDiem}
+              <strong>Người Tạo:</strong> {selectedRowData.adminName}
             </p>
             <p>
               <strong>Người tham gia:</strong>
@@ -241,23 +403,16 @@ const Nhom = () => {
               columns={[
                 {
                   title: 'Tên',
-                  dataIndex: 'hoTen',
-                  key: 'hoTen',
-                  render: (_, record) => <p>{record.hoTen}</p>,
+                  dataIndex: 'name',
+                  key: 'name',
+                  render: (_, record) => <p>{record.name}</p>,
                 },
+
                 {
-                  title: 'Ngày sinh',
-                  dataIndex: 'birthdate',
-                  key: 'ngaySinh',
-                  render: (_, record) => (
-                    <p>{moment(record.namSinh).format('YYYY-MM-DD')}</p>
-                  ),
-                },
-                {
-                  title: 'Giới tính',
-                  dataIndex: 'gioiTinh',
-                  key: 'gioiTinh',
-                  render: (_, record) => <p>{record.gioiTinh}</p>,
+                  title: 'Vai Trò',
+                  dataIndex: 'role',
+                  key: 'role',
+                  render: (_, record) => <p>{record.role}</p>,
                 },
               ]}
             />
@@ -272,35 +427,15 @@ const Nhom = () => {
         {selectedRowData && (
           <div>
             <p>
-              <strong>Mã cuộc họp:</strong> {selectedRowData.maCuocHop}
+              <strong>Mã nhóm:</strong> {selectedRowData.groupId}
             </p>
             <p>
-              <strong>Người Tạo:</strong> {selectedRowData.hoTen}
+              <strong>Tên nhóm:</strong> {selectedRowData.name}
             </p>
-            <Form>
-              <Form.Item label="Nội Dung">
-                <Input
-                  value={selectedRowData.noiDung}
-                  onChange={e => updateEditValue('noiDung', e.target.value)}
-                />
-              </Form.Item>
-            </Form>
-            <Form.Item label="Ngày diễn ra">
-              <DatePicker
-                value={moment(selectedRowData.ngayTaoCuocHop)}
-                onChange={date =>
-                  updateEditValue('ngayTaoCuocHop', date.format())
-                }
-              />
-            </Form.Item>
-            <Form>
-              <Form.Item label="Địa điểm">
-                <Input
-                  value={selectedRowData.diaDiem}
-                  onChange={e => updateEditValue('diaDiem', e.target.value)}
-                />
-              </Form.Item>
-            </Form>
+            <p>
+              <strong>Người Tạo:</strong> {selectedRowData.adminName}
+            </p>
+
             <Form.Item>
               <p>
                 <strong>Người tham gia:</strong>
@@ -313,23 +448,16 @@ const Nhom = () => {
                 columns={[
                   {
                     title: 'Tên',
-                    dataIndex: 'hoTen',
-                    key: 'hoTen',
-                    render: (_, record) => <p>{record.hoTen}</p>,
+                    dataIndex: 'name',
+                    key: 'name',
+                    render: (_, record) => <p>{record.name}</p>,
                   },
+
                   {
-                    title: 'Ngày sinh',
-                    dataIndex: 'birthdate',
-                    key: 'birthdate',
-                    render: (_, record) => (
-                      <p>{moment(record.namSinh).format('YYYY-MM-DD')}</p>
-                    ),
-                  },
-                  {
-                    title: 'Giới tính',
-                    dataIndex: 'gioiTinh',
-                    key: 'gioiTinh',
-                    render: (_, record) => <p>{record.gioiTinh}</p>,
+                    title: 'Vai Trò',
+                    dataIndex: 'role',
+                    key: 'eole',
+                    render: (_, record) => <p>{record.role}</p>,
                   },
                   {
                     title: 'Hành động',
@@ -370,23 +498,16 @@ const Nhom = () => {
                   columns={[
                     {
                       title: 'Tên',
-                      dataIndex: 'hoTen',
-                      key: 'hoTen',
-                      render: (_, record) => <p>{record.hoTen}</p>,
+                      dataIndex: 'name',
+                      key: 'name',
+                      render: (_, record) => <p>{record.name}</p>,
                     },
+
                     {
-                      title: 'Ngày sinh',
-                      dataIndex: 'namSinh',
-                      key: 'namSinh',
-                      render: (_, record) => (
-                        <p>{moment(record.namSinh).format('YYYY-MM-DD')}</p>
-                      ),
-                    },
-                    {
-                      title: 'Giới tính',
-                      dataIndex: 'gioiTinh',
-                      key: 'gioiTinh',
-                      render: (_, record) => <p>{record.gioiTinh}</p>,
+                      title: 'Vai Trò',
+                      dataIndex: 'role',
+                      key: 'eole',
+                      render: (_, record) => <p>{record.role}</p>,
                     },
                     {
                       title: 'Hành động',
