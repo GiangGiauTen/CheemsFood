@@ -1,52 +1,9 @@
-import React from 'react';
-import { Table, Space } from 'antd';
-
+import React, { useState } from 'react';
+import { Table, Space, Modal, Button, Form, Input } from 'antd';
+import reservedFoodsData from './Reserved';
 const QuanLyDoLuuTru = () => {
   // Sample data for reserved foods
-  const reservedFoods = [
-    {
-      id: 1,
-      name: 'Pizza',
-      description: 'Delicious pizza with cheese and toppings',
-      storage_date: '2023-06-28',
-      outdate: '2023-07-05',
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: 'Burger',
-      description: 'Juicy burger with lettuce, tomato, and beef patty',
-      storage_date: '2023-06-30',
-      outdate: '2023-07-07',
-      quantity: 4,
-    },
-    {
-      id: 3,
-      name: 'Salad',
-      description: 'Fresh and healthy salad with mixed greens',
-      storage_date: '2023-07-01',
-      outdate: '2023-07-03',
-      quantity: 1,
-    },
-    // Add more food items here...
-    {
-      id: 4,
-      name: 'Pasta',
-      description: 'Homemade pasta with marinara sauce',
-      storage_date: '2023-07-01',
-      outdate: '2023-07-06',
-      quantity: 3,
-    },
-    // Add more food items here...
-    {
-      id: 5,
-      name: 'Sushi',
-      description: 'Fresh sushi rolls with assorted fillings',
-      storage_date: '2023-07-02',
-      outdate: '2023-07-04',
-      quantity: 2,
-    },
-  ];
+  const [reservedFoods, setReservedFoods] = useState(reservedFoodsData);
 
   // Define the columns for the table
   const columns = [
@@ -85,19 +42,127 @@ const QuanLyDoLuuTru = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a href="#">View</a>
-          <a href="#">Edit</a>
-          <a href="#">Delete</a>
+          <a onClick={() => handleView(record)}>View</a>
+          <a onClick={() => handleEdit(record)}>Edit</a>
+          <a onClick={() => handleDelete(record)}>Delete</a>
         </Space>
       ),
     },
   ];
 
+  // Modal state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+  const [editForm] = Form.useForm();
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [newIngredientForm] = Form.useForm();
+  // Handle view action
+  const handleView = (food) => {
+    setSelectedFood(food);
+    setModalVisible(true);
+  };
+
+  // Handle edit action
+  const handleEdit = (food) => {
+    setSelectedFood(food);
+    editForm.setFieldsValue({
+      description: food.description,
+      quantity: food.quantity,
+    });
+    setModalVisible(true);
+  };
+
+  // Handle delete action
+  const handleDelete = (food) => {
+    // Perform delete action here
+    setReservedFoods(reservedFoods.filter((item) => item.id !== food.id));
+  };
+
+  // Modal close handler
+  const handleModalClose = () => {
+    setSelectedFood(null);
+    setModalVisible(false);
+  };
+  const handleModalSubmit = () => {
+    editForm.validateFields().then((values) => {
+      const updatedFood = {
+        ...selectedFood,
+        description: values.description,
+        quantity: values.quantity,
+      };
+
+      const updatedFoods = reservedFoods.map((food) =>
+        food.id === updatedFood.id ? updatedFood : food
+      );
+
+      setReservedFoods(updatedFoods);
+      setModalVisible(false);
+    });
+  };
+  const handleAdd = () => {
+    setSelectedFood(null);
+    setModalVisible(true);
+  };
+  const showAddModal = () => {
+    setAddModalVisible(true);
+  };
+   const handleAddModalSubmit = () => {
+    newIngredientForm.validateFields().then((values) => {
+      const newIngredient = {
+        id: reservedFoods.length + 1, // Generate a unique ID for the new ingredient
+        name: values.name,
+        description: values.description,
+        storage_date: values.storage_date,
+        outdate: values.outdate,
+        quantity: parseInt(values.quantity),
+      };
+
+      setReservedFoods([...reservedFoods, newIngredient]);
+      setAddModalVisible(false);
+      newIngredientForm.resetFields();
+    });
+  };
   return (
     <div>
-      <h1>Reserved Food List</h1>
-      <Table columns={columns} dataSource={reservedFoods} />
-    </div>
+    <h1>Reserved Food List</h1>
+    <Button type="primary" onClick={handleAdd}>
+      Add
+    </Button>
+    <Table columns={columns} dataSource={reservedFoods} />
+
+    <Modal
+      title="Food Details"
+      visible={modalVisible}
+      onCancel={handleModalClose}
+      footer={[
+        <Button key="close" onClick={handleModalClose}>
+          Close
+        </Button>,
+        <Button key="save" type="primary" onClick={handleModalSubmit}>
+          Save
+        </Button>,
+      ]}
+    >
+      {selectedFood && (
+        <Form form={editForm} layout="vertical">
+          <Form.Item
+            name="description"
+            label="Description"
+            initialValue={selectedFood.description}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item
+            name="quantity"
+            label="Quantity"
+            initialValue={selectedFood.quantity}
+          >
+            <Input type="number" min={0} />
+          </Form.Item>
+        </Form>
+      )}
+    </Modal>
+  </div>
   );
 };
 
