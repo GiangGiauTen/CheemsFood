@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Space, Modal, Button, Form, Input } from 'antd';
 import reservedFoodsData from './Reserved';
+
 const QuanLyDoLuuTru = () => {
   // Sample data for reserved foods
   const [reservedFoods, setReservedFoods] = useState(reservedFoodsData);
@@ -42,24 +43,26 @@ const QuanLyDoLuuTru = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a onClick={() => handleView(record)}>View</a>
-          <a onClick={() => handleEdit(record)}>Edit</a>
-          <a onClick={() => handleDelete(record)}>Delete</a>
+          <a href="#1" onClick={() => handleView(record)}>View</a>
+          <a href="#2" onClick={() => handleEdit(record)}>Edit</a>
+          <a href="#3" onClick={() => handleDelete(record)}>Delete</a>
         </Space>
       ),
     },
   ];
 
-  // Modal state
-  const [modalVisible, setModalVisible] = useState(false);
+  // Modal states
+  const [viewModalVisible, setViewModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [editForm] = Form.useForm();
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [newIngredientForm] = Form.useForm();
+
   // Handle view action
   const handleView = (food) => {
     setSelectedFood(food);
-    setModalVisible(true);
+    setViewModalVisible(true);
   };
 
   // Handle edit action
@@ -69,7 +72,7 @@ const QuanLyDoLuuTru = () => {
       description: food.description,
       quantity: food.quantity,
     });
-    setModalVisible(true);
+    setEditModalVisible(true);
   };
 
   // Handle delete action
@@ -78,11 +81,18 @@ const QuanLyDoLuuTru = () => {
     setReservedFoods(reservedFoods.filter((item) => item.id !== food.id));
   };
 
-  // Modal close handler
-  const handleModalClose = () => {
+  // View modal close handler
+  const handleViewModalClose = () => {
     setSelectedFood(null);
-    setModalVisible(false);
+    setViewModalVisible(false);
   };
+
+  // Edit modal close handler
+  const handleEditModalClose = () => {
+    setSelectedFood(null);
+    setEditModalVisible(false);
+  };
+
   const handleModalSubmit = () => {
     editForm.validateFields().then((values) => {
       const updatedFood = {
@@ -96,17 +106,17 @@ const QuanLyDoLuuTru = () => {
       );
 
       setReservedFoods(updatedFoods);
-      setModalVisible(false);
+      setEditModalVisible(false);
     });
   };
+
+  // Handle add action
   const handleAdd = () => {
     setSelectedFood(null);
-    setModalVisible(true);
-  };
-  const showAddModal = () => {
     setAddModalVisible(true);
   };
-   const handleAddModalSubmit = () => {
+
+  const handleAddModalSubmit = () => {
     newIngredientForm.validateFields().then((values) => {
       const newIngredient = {
         id: reservedFoods.length + 1, // Generate a unique ID for the new ingredient
@@ -116,53 +126,172 @@ const QuanLyDoLuuTru = () => {
         outdate: values.outdate,
         quantity: parseInt(values.quantity),
       };
-
-      setReservedFoods([...reservedFoods, newIngredient]);
+  
+      const updatedFoods = [...reservedFoods, newIngredient];
+      setReservedFoods(updatedFoods);
       setAddModalVisible(false);
       newIngredientForm.resetFields();
+  
+      // Save the updated reserved foods to Reserved.js
+      saveReservedFoods(updatedFoods);
     });
   };
+  
+  // Function to save the updated reserved foods to Reserved.js
+  const saveReservedFoods = (foods) => {
+    // You can customize this implementation based on your requirements
+    // For example, you can use a backend API or local storage to persist the data
+    // In this example, we'll simply log the updated foods to the console
+    console.log('Updated Reserved Foods:', foods);
+  };
+
   return (
     <div>
-    <h1>Reserved Food List</h1>
-    <Button type="primary" onClick={handleAdd}>
-      Add
-    </Button>
-    <Table columns={columns} dataSource={reservedFoods} />
-
-    <Modal
-      title="Food Details"
-      visible={modalVisible}
-      onCancel={handleModalClose}
-      footer={[
-        <Button key="close" onClick={handleModalClose}>
-          Close
-        </Button>,
-        <Button key="save" type="primary" onClick={handleModalSubmit}>
-          Save
-        </Button>,
-      ]}
-    >
-      {selectedFood && (
-        <Form form={editForm} layout="vertical">
+      <h1>Reserved Food List</h1>
+      <Button type="primary" onClick={handleAdd}>
+        Add
+      </Button>
+      <Table columns={columns} dataSource={reservedFoods} />
+      <Modal
+        title="Food Details"
+        visible={viewModalVisible}
+        onCancel={handleViewModalClose}
+        footer={[
+          <Button key="close" onClick={handleViewModalClose}>
+            Close
+          </Button>,
+        ]}
+      >
+        {selectedFood && (
+          <Form layout="vertical">
+            <Form.Item label="Food Name">
+              <Input value={selectedFood.name} readOnly />
+            </Form.Item>
+            <Form.Item label="Description">
+              <Input.TextArea value={selectedFood.description} rows={4} readOnly />
+            </Form.Item>
+            <Form.Item label="Storage Date">
+              <Input value={selectedFood.storage_date} readOnly />
+            </Form.Item>
+            <Form.Item label="Outdate">
+              <Input value={selectedFood.outdate} readOnly />
+            </Form.Item>
+            <Form.Item label="Quantity">
+              <Input value={selectedFood.quantity} readOnly />
+            </Form.Item>
+          </Form>
+        )}
+      </Modal>
+      <Modal
+        title="Edit Food"
+        visible={editModalVisible}
+        onCancel={handleEditModalClose}
+        footer={[
+          <Button key="close" onClick={handleEditModalClose}>
+            Close
+          </Button>,
+          <Button key="save" type="primary" onClick={handleModalSubmit}>
+            Save
+          </Button>,
+        ]}
+      >
+        {selectedFood && (
+          <Form form={editForm} layout="vertical">
+            <Form.Item
+              name="description"
+              label="Description"
+              initialValue={selectedFood.description}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+            <Form.Item
+              name="quantity"
+              label="Quantity"
+              initialValue={selectedFood.quantity}
+            >
+              <Input type="number" min={0} />
+            </Form.Item>
+          </Form>
+        )}
+      </Modal>
+      <Modal
+        title="Add Food"
+        visible={addModalVisible}
+        onCancel={() => setAddModalVisible(false)}
+        onOk={handleAddModalSubmit}
+      >
+        <Form form={newIngredientForm} layout="vertical">
+          <Form.Item
+            name="name"
+            label="Food Name"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the food name',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             name="description"
             label="Description"
-            initialValue={selectedFood.description}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the description',
+              },
+            ]}
           >
             <Input.TextArea rows={4} />
           </Form.Item>
           <Form.Item
-            name="quantity"
-            label="Quantity"
-            initialValue={selectedFood.quantity}
+            name="storage_date"
+            label="Storage Date"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the storage date',
+              },
+            ]}
           >
-            <Input type="number" min={0} />
+            <Input />
           </Form.Item>
+          <Form.Item
+            name="outdate"
+            label="Outdate"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the outdate',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+  name="quantity"
+  label="Quantity"
+  rules={[
+    {
+      required: true,
+      message: 'Please enter the quantity',
+    },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || /^[0-9]+$/.test(value)) {
+          return Promise.resolve();
+        }
+        return Promise.reject('Please enter a valid integer for quantity');
+      },
+    }),
+  ]}
+>
+  <Input type="number" min={0} />
+</Form.Item>
         </Form>
-      )}
-    </Modal>
-  </div>
+      </Modal>
+    </div>
   );
 };
 
