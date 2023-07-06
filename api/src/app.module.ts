@@ -6,6 +6,7 @@ import { RecipeModule } from './recipe/recipe.module';
 import { FoodModule } from './food/food.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PrismaModule } from './prisma/prisma.module';
     GroupModule,
     StorageModule,
     PrismaModule,
+    SeedModule,
   ],
 })
 export class AppModule {}
