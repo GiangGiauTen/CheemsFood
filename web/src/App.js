@@ -10,6 +10,7 @@ import {
 import { Layout, Menu, theme, Button } from 'antd';
 import Nhom from './components/Nhom/Nhom';
 import QuanLyCongThuc from './components/QuanLyCongThuc/QuanLyCongThuc';
+import QuanLyCongThucYeuThich from './components/QuanLyCongThuc/QuanLyCongThucYeuThich';
 import QuanLyDoLuuTru from './components/QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './components/QuanLyDoCanMua/QuanLyDoCanMua';
 import AddTeam from './components/Nhom/AddTeam';
@@ -34,9 +35,7 @@ const items = [
   ]),
   getItem('Quản Lý Công Thức', '_2', <HomeOutlined />, [
     getItem('Danh sách', '2'),
-    getItem('Thêm mới', '21'),
-    getItem('Tách hộ khẩu', '22'),
-    getItem('Chuyển đi', '23'),
+    getItem('Quản Lý Công Thức Yêu Thích', '21'),
   ]),
   getItem('Quản Lý Đồ Lưu Trữ', '3', <BarChartOutlined />),
   getItem('Quản Lý Đồ Cần Mua', '_4', <ContactsOutlined />, [
@@ -104,7 +103,11 @@ const App = () => {
               <QuanLyCongThuc />
             </div>
           )}
-
+          {menuKey === '21' && (
+            <div>
+              <QuanLyCongThucYeuThich />
+            </div>
+          )}
           {menuKey === '3' && (
             <div>
               <QuanLyDoLuuTru />
