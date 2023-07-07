@@ -41,8 +41,6 @@ const items = [
   getItem('Quản Lý Đồ Lưu Trữ', '3', <BarChartOutlined />),
   getItem('Quản Lý Đồ Cần Mua', '_4', <ContactsOutlined />, [
     getItem('Danh sách', '4'),
-    getItem('Thêm mới', '41'),
-    getItem('Sửa', '42'),
   ]),
 
   getItem('DangNhap', '5', <UserOutlined />),

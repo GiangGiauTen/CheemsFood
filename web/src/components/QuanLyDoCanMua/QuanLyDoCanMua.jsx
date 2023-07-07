@@ -39,14 +39,14 @@ const QuanLyDoCanMua = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a href="#1" onClick={() => handleView(record)}>
+          {/* <a href="#1" onClick={() => handleView(record)}>
             View
           </a>
           <a href="#2" onClick={() => handleEdit(record)}>
             Edit
-          </a>
+          </a> */}
           <a href="#3" onClick={() => handleDelete(record)}>
-            Delete
+            Xác nhận đã mua
           </a>
         </Space>
       ),

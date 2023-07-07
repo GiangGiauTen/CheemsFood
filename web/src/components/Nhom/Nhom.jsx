@@ -828,7 +828,7 @@ const Nhom = () => {
                     key: 'action',
                     render: (_, record, index) => (
                       <Button type="link" onClick={() => removeFood(index)}>
-                        Xóa
+                        Xác nhận đã mua
                       </Button>
                     ),
                   },
@@ -900,7 +900,7 @@ const Nhom = () => {
           <Button
             onClick={() => handleDelete(selectedRowData.groupIdp)}
             style={{ marginTop: '10px' }}>
-            Xóa Cuộc Họp
+            Xóa Nhóm
           </Button>
         </div>
       </Modal>
