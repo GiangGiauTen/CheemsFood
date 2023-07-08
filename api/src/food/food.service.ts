@@ -18,7 +18,23 @@ export class FoodService {
   }
 
   async findAll() {
-    const foods = await this.prisma.food.findMany();
+    const foods = await this.prisma.food.findMany({
+      select: {
+        foodId: true,
+        name: true,
+        categories: {
+          select: {
+            category: true
+          }
+        }
+      }
+    });
+    foods.map((e) => {
+      e['category'] = e.categories[0];
+      e['category'] = e['category']['category'];
+      delete e.categories;
+      return e;
+    });
     return foods;
   }
 

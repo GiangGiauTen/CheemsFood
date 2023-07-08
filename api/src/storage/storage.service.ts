@@ -12,7 +12,14 @@ export class StorageService {
       },
       select: {
         storageId: true,
-        foods: true
+        foods: {
+          select: {
+            outdate: true,
+            storageDate: true,
+            quantity: true,
+            food: true
+          }
+        }
       }
     });
     return storage;
