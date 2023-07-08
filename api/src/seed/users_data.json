@@ -1,0 +1,50 @@
+[
+  {
+    "username": "admin1",
+    "name": "Admin1",
+    "password": "admin123456",
+    "role": "admin"
+  },
+  {
+    "username": "admin2",
+    "name": "Admin2",
+    "password": "admin123456",
+    "role": "admin"
+  },
+  {
+    "username": "nimi76d",
+    "name": "Đào Nhật Minh",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "zanggiauten",
+    "name": "Lê Trường Giang",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "kiene",
+    "name": "Phùng Trung Kiên",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "punny",
+    "name": "Đỗ Minh Khôi",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "tung",
+    "name": "Lê Thanh Tùng",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "tien",
+    "name": "Nguyễn Thành Tiến",
+    "password": "123456",
+    "role": "user"
+  }
+]

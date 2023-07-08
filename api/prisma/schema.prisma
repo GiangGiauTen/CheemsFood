@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -37,6 +34,8 @@ model Recipe {
 
 model Storage {
   storageId Int           @id @default(autoincrement())
+  user      User @relation(fields: [userId], references: [userId])
+  userId    Int @unique
   foods     StorageFood[]
 }
 
@@ -49,6 +48,7 @@ model User {
   favorites  FavoriteRecipe[]
   groups     GroupMember[]
   toBuyLists ToBuyList[]
+  storage    Storage?
 }
 
 model GGroup {
@@ -79,13 +79,13 @@ model FoodCategory {
 }
 
 model ToBuyList {
-  toBuyListId      Int               @id
+  toBuyListId      Int               @id  @default(autoincrement())
   date             DateTime
   toBuyListDetails ToBuyListDetail[]
-  owner            User              @relation(fields: [ownerId], references: [userId])
-  ownerId          Int
-  groupOwner       GGroup            @relation(fields: [groupOwnerId], references: [groupId])
-  groupOwnerId     Int
+  owner            User?             @relation(fields: [ownerId], references: [userId])
+  ownerId          Int?
+  groupOwner       GGroup?           @relation(fields: [groupOwnerId], references: [groupId])
+  groupOwnerId     Int?
 }
 
 model FavoriteRecipe {
@@ -110,7 +110,7 @@ model GroupMember {
 }
 
 model StorageFood {
-  storageFoodId Int      @id
+  storageFoodId Int      @id @default(autoincrement())
   storageDate   DateTime
   outdate       DateTime
   quantity      Int
@@ -125,6 +125,7 @@ model StorageFood {
 model ToBuyListDetail {
   toBuyListId Int
   foodId      Int
+  quantity    Int
   toBuyList   ToBuyList @relation(fields: [toBuyListId], references: [toBuyListId])
   food        Food      @relation(fields: [foodId], references: [foodId])
 

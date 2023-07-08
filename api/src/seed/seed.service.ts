@@ -1,18 +1,71 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = require('fs');
+import * as argon from 'argon2';
+
+const rawUserData = fs.readFileSync('./src/seed/users_data.json', 'utf8');
 
 @Injectable()
 export class SeedService {
   constructor(private prisma: PrismaService) {}
   async resetData() {
+    await this.prisma.toBuyListDetail.deleteMany();
+    await this.prisma.toBuyList.deleteMany();
+    await this.prisma.groupMember.deleteMany();
     await this.prisma.foodCategory.deleteMany();
+    await this.prisma.recipeFoodList.deleteMany();
+    await this.prisma.favoriteRecipe.deleteMany();
     await this.prisma.food.deleteMany();
     await this.prisma.category.deleteMany();
+    await this.prisma.gGroup.deleteMany();
+    await this.prisma.storage.deleteMany();
+    await this.prisma.user.deleteMany();
+
     console.log('Data reset completed successfully.');
   }
 
   async seed() {
     await this.resetData();
+    const dataArr = await JSON.parse(rawUserData);
+    const userArr = dataArr.filter((e) => e.role == 'user');
+    const adminArr = dataArr.filter((e) => e.role == 'admin');
+    const admins = adminArr.map(async (admin) => {
+      const hashpsw = await argon.hash(admin.password);
+      const new_user = await this.prisma.user.create({
+        data: {
+          username: admin.username,
+          password: hashpsw,
+          name: admin.name,
+          role: admin.role,
+          storage: { create: {} }
+        }
+      });
+      return new_user;
+    });
+    const users = userArr.map(async (user) => {
+      const hashpsw = await argon.hash(user.password);
+      const new_user = await this.prisma.user.create({
+        data: {
+          username: user.username,
+          password: hashpsw,
+          name: user.name,
+          role: user.role,
+          storage: { create: {} }
+        }
+      });
+      return new_user;
+    });
+    const adminUsers = await Promise.all(admins);
+    const regularUsers = await Promise.all(users);
+    const gr1 = await this.prisma.gGroup.create({ data: { name: 'a' } });
+    await this.prisma.groupMember.create({
+      data: {
+        groupId: gr1.groupId,
+        userId: regularUsers[0].userId,
+        isGroupAdmin: false
+      }
+    });
 
     const thitCategory = await this.prisma.category.create({
       data: {
@@ -332,7 +385,7 @@ export class SeedService {
       await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
-          categoryId: rauLaCategory.categoryId
+          categoryId: traiCayCategory.categoryId
         }
       });
     });
