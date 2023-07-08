@@ -68,25 +68,30 @@ export class GroupService {
         where: { groupId: id }
       });
       if (!group) {
-        throw new NotFoundException('Group not found');
+        throw new NotFoundException('Không tìm thấy nhóm');
       }
 
       const user = await this.prisma.user.findUnique({ where: { userId } });
       if (!user) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('Không tìm thấy người dùng');
       }
 
       const groupMember = await this.prisma.groupMember.create({
         data: {
-          groupId: group.groupId,
-          userId: user.userId,
+          groupId: id,
+          userId: userId,
           isGroupAdmin: false
         }
       });
 
-      return { message: 'User added to group successfully' };
+      return { message: 'Thêm người dùng vào nhóm thành công' };
     } catch (error) {
-      // Handle any errors
+      if (error.code == 'P2002') {
+        return {
+          statusCode: 400,
+          message: 'Người dùng đã có trong nhóm'
+        };
+      }
       throw new InternalServerErrorException('Failed to add user to group');
     }
   }
