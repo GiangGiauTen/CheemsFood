@@ -3,12 +3,19 @@ import {
   HomeOutlined,
   BarChartOutlined,
   ContactsOutlined,
+  UserOutlined,
+  UserAddOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Button } from 'antd';
 import Nhom from './components/Nhom/Nhom';
 import QuanLyCongThuc from './components/QuanLyCongThuc/QuanLyCongThuc';
-import QuanLyDoLuuTRu from './components/QuanLyDoLuuTru/QuanLyDoLuuTRu';
+import QuanLyCongThucYeuThich from './components/QuanLyCongThuc/QuanLyCongThucYeuThich';
+import QuanLyDoLuuTru from './components/QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './components/QuanLyDoCanMua/QuanLyDoCanMua';
+import AddTeam from './components/Nhom/AddTeam';
+import DangNhap from './components/DangNhap/DangNhap';
+import DangKy from './components/DangKy/DangKy';
 
 import React, { useState } from 'react';
 const { Header, Content, Sider } = Layout;
@@ -25,22 +32,18 @@ const items = [
   getItem('Nhóm', '_1', <TeamOutlined />, [
     getItem('Danh sách', '1'),
     getItem('Thêm mới', '11'),
-    getItem('Đăng ký tạm vắng', '12'),
-    getItem('Đăng ký tạm trú', '13'),
-    getItem('Khai tử', '14'),
   ]),
   getItem('Quản Lý Công Thức', '_2', <HomeOutlined />, [
     getItem('Danh sách', '2'),
-    getItem('Thêm mới', '21'),
-    getItem('Tách hộ khẩu', '22'),
-    getItem('Chuyển đi', '23'),
+    getItem('Quản Lý Công Thức Yêu Thích', '21'),
   ]),
   getItem('Quản Lý Đồ Lưu Trữ', '3', <BarChartOutlined />),
   getItem('Quản Lý Đồ Cần Mua', '_4', <ContactsOutlined />, [
     getItem('Danh sách', '4'),
-    getItem('Thêm mới', '41'),
-    getItem('Sửa', '42'),
   ]),
+
+  getItem('DangNhap', '5', <UserOutlined />),
+  getItem('DangKy', '6', <UserAddOutlined />),
 ];
 const App = () => {
   const [menuKey, setMenuKey] = useState('1');
@@ -88,16 +91,24 @@ const App = () => {
               <Nhom />
             </div>
           )}
-
+          {menuKey === '11' && (
+            <div>
+              <AddTeam />
+            </div>
+          )}
           {menuKey === '2' && (
             <div>
               <QuanLyCongThuc />
             </div>
           )}
-
+          {menuKey === '21' && (
+            <div>
+              <QuanLyCongThucYeuThich />
+            </div>
+          )}
           {menuKey === '3' && (
             <div>
-              <QuanLyDoLuuTRu />
+              <QuanLyDoLuuTru />
             </div>
           )}
           {menuKey === '4' && (
@@ -105,8 +116,19 @@ const App = () => {
               <QuanLyDoCanMua />
             </div>
           )}
+          {menuKey === '5' && (
+            <div>
+              <DangNhap />
+            </div>
+          )}
+          {menuKey === '6' && (
+            <div>
+              <DangKy />
+            </div>
+          )}
         </Content>
       </Layout>
+      <Button icon={<LogoutOutlined />}>Đăng xuất</Button>
     </Layout>
   );
 };

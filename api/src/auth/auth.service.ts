@@ -16,12 +16,16 @@ export class AuthService {
           username,
           password: hash,
           name,
-          role
+          role,
+          storage: {
+            create: {}
+          }
         },
         select: {
           userId: true,
           username: true,
-          name: true
+          name: true,
+          storage: true
         }
       });
       return user;
