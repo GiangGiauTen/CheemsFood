@@ -6,6 +6,11 @@ import * as argon from 'argon2';
 
 const rawUserData = fs.readFileSync('./src/seed/users_data.json', 'utf8');
 
+function getMultipleRandom(arr, num) {
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, num);
+}
+
 @Injectable()
 export class SeedService {
   constructor(private prisma: PrismaService) {}
@@ -16,6 +21,8 @@ export class SeedService {
     await this.prisma.foodCategory.deleteMany();
     await this.prisma.recipeFoodList.deleteMany();
     await this.prisma.favoriteRecipe.deleteMany();
+    await this.prisma.storageFood.deleteMany();
+    await this.prisma.storage.deleteMany();
     await this.prisma.food.deleteMany();
     await this.prisma.category.deleteMany();
     await this.prisma.gGroup.deleteMany();
@@ -58,15 +65,138 @@ export class SeedService {
     });
     const adminUsers = await Promise.all(admins);
     const regularUsers = await Promise.all(users);
-    const gr1 = await this.prisma.gGroup.create({ data: { name: 'a' } });
-    await this.prisma.groupMember.create({
-      data: {
-        groupId: gr1.groupId,
-        userId: regularUsers[0].userId,
-        isGroupAdmin: false
-      }
+
+    const gr1 = await this.prisma.gGroup.create({ data: { name: 'Cheems' } });
+    await this.prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[0].userId,
+          isGroupAdmin: true
+        },
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[1].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[2].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[3].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[4].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr1.groupId,
+          userId: regularUsers[5].userId,
+          isGroupAdmin: false
+        }
+      ]
     });
 
+    const gr2 = await this.prisma.gGroup.create({ data: { name: 'Monke' } });
+    await this.prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: gr2.groupId,
+          userId: regularUsers[0].userId,
+          isGroupAdmin: true
+        },
+        {
+          groupId: gr2.groupId,
+          userId: regularUsers[1].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr2.groupId,
+          userId: regularUsers[2].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr2.groupId,
+          userId: regularUsers[3].userId,
+          isGroupAdmin: false
+        }
+      ]
+    });
+
+    const gr3 = await this.prisma.gGroup.create({
+      data: { name: 'Cô bé bán Simp' }
+    });
+    await this.prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: gr3.groupId,
+          userId: regularUsers[0].userId,
+          isGroupAdmin: true
+        },
+        {
+          groupId: gr3.groupId,
+          userId: regularUsers[2].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr3.groupId,
+          userId: regularUsers[4].userId,
+          isGroupAdmin: false
+        }
+      ]
+    });
+
+    const gr4 = await this.prisma.gGroup.create({
+      data: { name: 'Wjbu, Vozer, fan MU' }
+    });
+    await this.prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: gr4.groupId,
+          userId: regularUsers[1].userId,
+          isGroupAdmin: true
+        },
+        {
+          groupId: gr4.groupId,
+          userId: regularUsers[3].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr4.groupId,
+          userId: regularUsers[5].userId,
+          isGroupAdmin: false
+        }
+      ]
+    });
+
+    const gr5 = await this.prisma.gGroup.create({
+      data: { name: 'Cá mặn một nắng' }
+    });
+    await this.prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: gr5.groupId,
+          userId: regularUsers[1].userId,
+          isGroupAdmin: true
+        },
+        {
+          groupId: gr5.groupId,
+          userId: regularUsers[2].userId,
+          isGroupAdmin: false
+        },
+        {
+          groupId: gr5.groupId,
+          userId: regularUsers[4].userId,
+          isGroupAdmin: false
+        }
+      ]
+    });
+    const groupArr = await Promise.all([gr1, gr2, gr3, gr4, gr5]);
     const thitCategory = await this.prisma.category.create({
       data: {
         categoryName: 'Thịt',
@@ -130,16 +260,16 @@ export class SeedService {
       }
     });
 
-    const suaHatCategory = await this.prisma.category.create({
+    const suaHopCategory = await this.prisma.category.create({
       data: {
-        categoryName: 'Sữa hạt',
+        categoryName: 'Sữa hộp',
         categoryType: 'Sữa'
       }
     });
 
-    const suaHopCategory = await this.prisma.category.create({
+    const suaBotCategory = await this.prisma.category.create({
       data: {
-        categoryName: 'Sữa hộp',
+        categoryName: 'Sữa bột',
         categoryType: 'Sữa'
       }
     });
@@ -179,7 +309,7 @@ export class SeedService {
       }
     });
 
-    const nguCoCategory = await this.prisma.category.create({
+    const nguCocCategory = await this.prisma.category.create({
       data: {
         categoryName: 'Ngũ cốc, Yến mạch',
         categoryType: 'Thực phẩm khô'
@@ -227,8 +357,9 @@ export class SeedService {
         categoryType: 'Khác'
       }
     });
-    [
-      'Ba chỉ bò ',
+
+    const thitFoodArr = [
+      'Ba chỉ bò',
       'Bắp giò cuộn',
       'Chân giò heo rút xương',
       'Cánh gà',
@@ -250,11 +381,13 @@ export class SeedService {
       'Đùi gà tháo khớp',
       'Đùi tỏi gà',
       'Ức gà'
-    ].forEach(async (food) => {
+    ];
+
+    const thitFoodPromises = thitFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: thitCategory.categoryId
@@ -262,7 +395,9 @@ export class SeedService {
       });
     });
 
-    [
+    const thitFood = await Promise.all(thitFoodPromises);
+
+    const haiSanFoodArr = [
       'Bao tử cá basa',
       'Bào ngư đông lạnh',
       'Cua đồng',
@@ -281,11 +416,13 @@ export class SeedService {
       'Tôm sú',
       'Đầu mực lá',
       'Ếch làm sạch'
-    ].forEach(async (food) => {
+    ];
+
+    const haiSanFoodPromises = haiSanFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: haiSanCategory.categoryId
@@ -293,7 +430,9 @@ export class SeedService {
       });
     });
 
-    [
+    const haiSanFood = await Promise.all(haiSanFoodPromises);
+
+    const rauLaFoodArr = [
       'Bí nụ',
       'Búp măng tươi',
       'Bắp cải',
@@ -329,11 +468,13 @@ export class SeedService {
       'Thì là',
       'Tía tô',
       'Xà lách'
-    ].forEach(async (food) => {
+    ];
+
+    const rauLaFoodPromises = rauLaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: rauLaCategory.categoryId
@@ -341,7 +482,9 @@ export class SeedService {
       });
     });
 
-    [
+    const rauLaFood = await Promise.all(rauLaFoodPromises);
+
+    const cuFoodArr = [
       'Bí xanh',
       'Bí xanh',
       'Bí xanh ',
@@ -378,11 +521,13 @@ export class SeedService {
       'Ớt chuông xanh',
       'Ớt chuông đỏ',
       'Ớt sừng'
-    ].forEach(async (food) => {
+    ];
+
+    const cuFoodPromises = cuFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: traiCayCategory.categoryId
@@ -390,7 +535,9 @@ export class SeedService {
       });
     });
 
-    [
+    const cuFood = await Promise.all(cuFoodPromises);
+
+    const quaFoodArr = [
       'Bơ sáp',
       'Bưởi 5 roi',
       'Bưởi hồng da xanh',
@@ -426,11 +573,13 @@ export class SeedService {
       'Vải thiều',
       'Xoài',
       'Đu đủ ruột đỏ'
-    ].forEach(async (food) => {
+    ];
+
+    const quaFoodPromises = quaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: cuCategory.categoryId
@@ -438,7 +587,9 @@ export class SeedService {
       });
     });
 
-    [
+    const quaFood = await Promise.all(quaFoodPromises);
+
+    const miFoodArr = [
       'Mì tôm Hảo hảo',
       'Mì tôm Omachi',
       'Mì tôm 3 miền',
@@ -448,15 +599,17 @@ export class SeedService {
       'Mì cay Samyang Hàn Quốc',
       'Mì tôm Miliket',
       'Mì Cung Đình',
-      'Mikochi - Ngon như mì tươi',
-      'Mì xào Tiểu Nhị - Sốt đậm mì dai',
+      'Mikochi',
+      'Mì xào Tiểu Nhị',
       'Mì ăn liền koreno',
       'Mì Spaghetti'
-    ].forEach(async (food) => {
+    ];
+
+    const miFoodPromises = miFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: miCategory.categoryId
@@ -464,18 +617,22 @@ export class SeedService {
       });
     });
 
-    [
+    const miFood = await Promise.all(miFoodPromises);
+
+    const chaoFoodArr = [
       'Cháo đậu xanh',
       'Cháo thịt bằm',
       'Cháo rau nấm',
       'Cháo gà',
       'Cháo bò',
       'Cháo cá hồi'
-    ].forEach(async (food) => {
+    ];
+
+    const chaoFoodPromises = chaoFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: chaoCategory.categoryId
@@ -483,18 +640,22 @@ export class SeedService {
       });
     });
 
-    [
+    const chaoFood = await Promise.all(chaoFoodPromises);
+
+    const phoBunMienFoodArr = [
       'Phở gà',
       'Phở bò',
       'Miến phú hương',
       'Bún bò',
       'Bún giò heo',
       'Bún riêu cua'
-    ].forEach(async (food) => {
+    ];
+
+    const phoBunMienFoodPromises = phoBunMienFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: phoBunMienCategory.categoryId
@@ -502,22 +663,29 @@ export class SeedService {
       });
     });
 
-    [
+    const phoBunMienFood = await Promise.all(phoBunMienFoodPromises);
+
+    const suaTuoiFoodArr = [
       'Sữa tươi Vinamilk',
       'Sữa tươi TH True Milk',
       'Sữa tươi Dutch Lady'
-    ].forEach(async (food) => {
+    ];
+
+    const suaTuoiFoodPromises = suaTuoiFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaTuoiCategory.categoryId
         }
       });
     });
-    [
+
+    const suaTuoiFood = await Promise.all(suaTuoiFoodPromises);
+
+    const suaHopFoodArr = [
       'Sữa đậu nành đậu đỏ Vinamilk',
       'Sữa đậu nành hạt óc chó Vinamilk',
       'Sữa đậu nành hạnh nhân Vinamilk',
@@ -525,62 +693,82 @@ export class SeedService {
       'Sữa lúa mạch Milo Nestle',
       'Sữa bắp non',
       'Sữa đậu nành canxi Fami'
-    ].forEach(async (food) => {
+    ];
+
+    const suaHopFoodPromises = suaHopFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
-        data: {
-          foodId: dataFood.foodId,
-          categoryId: suaHatCategory.categoryId
-        }
-      });
-    });
-    ['Sữa đậu nành canxi Fami', 'Sữa bột NutiFood'].forEach(async (food) => {
-      const dataFood = await this.prisma.food.create({
-        data: { name: food, description: food }
-      });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaHopCategory.categoryId
         }
       });
     });
-    [
+
+    const suaHopFood = await Promise.all(suaHopFoodPromises);
+
+    const suaBotFoodArr = ['Sữa đậu nành canxi Fami', 'Sữa bột NutiFood'];
+
+    const suaBotFoodPromises = suaBotFoodArr.map(async (food) => {
+      const dataFood = await this.prisma.food.create({
+        data: { name: food, description: food }
+      });
+      return await this.prisma.foodCategory.create({
+        data: {
+          foodId: dataFood.foodId,
+          categoryId: suaBotCategory.categoryId
+        }
+      });
+    });
+
+    const suaBotFood = await Promise.all(suaBotFoodPromises);
+
+    const suaDacFoodArr = [
       'Sữa đặc Ông Thọ',
       'Kem đặc có đường Vinamilk Ngôi Sao Phương Nam',
       'Sữa đặc Dutch Lady',
       'Creamer đặc sữa pha chế Nutimilk'
-    ].forEach(async (food) => {
+    ];
+
+    const suaDacFoodPromises = suaDacFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaDacCategory.categoryId
         }
       });
     });
-    [
+
+    const suaDacFood = await Promise.all(suaDacFoodPromises);
+
+    const suaChuaFoodArr = [
       'Sữa chua',
       'Sữa chua không đường',
       'Sữa chua ít đường',
       'Sữa uống lên men Yakult',
       'Váng sữa'
-    ].forEach(async (food) => {
+    ];
+
+    const suaChuaFoodPromises = suaChuaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaChuaCategory.categoryId
         }
       });
     });
-    [
+
+    const suaChuaFood = await Promise.all(suaChuaFoodPromises);
+
+    const boSuaPhoMaiFoodArr = [
       'Phô mai Con Bò Cười',
       'Bơ lạt',
       'Bơ mặn',
@@ -590,22 +778,29 @@ export class SeedService {
       'Phô mai hun khói',
       'Phô mai lát',
       'Phô mai vuông'
-    ].forEach(async (food) => {
+    ];
+
+    const boSuaPhoMaiFoodPromises = boSuaPhoMaiFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: boSuaPhoMaiCategory.categoryId
         }
       });
     });
-    ['Gạo nếp', 'Gạo tẻ', 'Gạo lứt'].forEach(async (food) => {
+
+    const boSuaPhoMaiFood = await Promise.all(boSuaPhoMaiFoodPromises);
+
+    const gaoFoodArr = ['Gạo nếp', 'Gạo tẻ', 'Gạo lứt'];
+
+    const gaoFoodPromises = gaoFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: gaoCategory.categoryId
@@ -613,26 +808,30 @@ export class SeedService {
       });
     });
 
-    ['Ngũ cốc ăn sáng', 'Ngũ cốc dinh dưỡng', 'Gạo lứt'].forEach(
-      async (food) => {
-        const dataFood = await this.prisma.food.create({
-          data: { name: food, description: food }
-        });
-        await this.prisma.foodCategory.create({
-          data: {
-            foodId: dataFood.foodId,
-            categoryId: nguCoCategory.categoryId
-          }
-        });
-      }
-    );
+    const gaoFood = await Promise.all(gaoFoodPromises);
 
-    [
+    const nguCocFoodArr = ['Ngũ cốc ăn sáng', 'Ngũ cốc dinh dưỡng', 'Gạo lứt'];
+
+    const nguCoFoodPromises = nguCocFoodArr.map(async (food) => {
+      const dataFood = await this.prisma.food.create({
+        data: { name: food, description: food }
+      });
+      return await this.prisma.foodCategory.create({
+        data: {
+          foodId: dataFood.foodId,
+          categoryId: nguCocCategory.categoryId
+        }
+      });
+    });
+
+    const nguCocFood = await Promise.all(nguCoFoodPromises);
+
+    const doHopFoodArr = [
       'Cá ngừ',
       'Bò hầm',
       'Bơ thực vật',
       'Bơ đậu phộng',
-      'Cà pháo lọ 410g',
+      'Cà pháo lọ',
       'Cá chỉ cháy tỏi',
       'Cá khô chỉ vàng khay',
       'Cá ngừ đại dương ngâm dầu',
@@ -651,18 +850,23 @@ export class SeedService {
       'Thịt xay',
       'Tôm khô hộp',
       'Tôm nõn hộp'
-    ].forEach(async (food) => {
+    ];
+
+    const doHopFoodPromises = doHopFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: doHopCategory.categoryId
         }
       });
     });
-    [
+
+    const doHopFood = await Promise.all(doHopFoodPromises);
+
+    const botFoodArr = [
       'Bột bánh rán',
       'Bột bắp Meizan',
       'Bột chiên giòn',
@@ -673,18 +877,23 @@ export class SeedService {
       'Bột mì đa dụng',
       'Bột tàu hủ',
       'Bột cà ri'
-    ].forEach(async (food) => {
+    ];
+
+    const botFoodPromises = botFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: botCategory.categoryId
         }
       });
     });
-    [
+
+    const botFood = await Promise.all(botFoodPromises);
+
+    const giaViFoodArr = [
       'Dầu ăn',
       'Dầu olive',
       'Nước mắm',
@@ -703,18 +912,23 @@ export class SeedService {
       'Giấm',
       'Hương thảo',
       'Sốt mè rang'
-    ].forEach(async (food) => {
+    ];
+
+    const giaViFoodPromises = giaViFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: giaViCategory.categoryId
         }
       });
     });
-    [
+
+    const giaViFood = await Promise.all(giaViFoodPromises);
+
+    const doUongFoodPromises = [
       'Nước lọc',
       'Coca cola',
       'Pessi',
@@ -734,35 +948,39 @@ export class SeedService {
       'Cà phê hòa tan',
       'Cà phê lon',
       'Cà phê xay'
-    ].forEach(async (food) => {
+    ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: doUongCategory.categoryId
         }
       });
     });
-    [
+
+    const doUongFood = await Promise.all(doUongFoodPromises);
+
+    const trungFoodArr = [
       'Trứng gà ta',
       'Trứng gà công nghiệp',
       'Trứng vịt',
       'Trứng ngỗng',
       'Trứng cút'
-    ].forEach(async (food) => {
+    ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: trungCategory.categoryId
         }
       });
     });
-    [
+    const trungFood = await Promise.all(trungFoodArr);
+    const chaGioFoodArr = [
       'Giò bò',
       'Giò lụa',
       'Giò thủ',
@@ -770,27 +988,151 @@ export class SeedService {
       'Chả bì',
       'Nem chua',
       'Nem lụi'
-    ].forEach(async (food) => {
+    ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
       });
-      await this.prisma.foodCategory.create({
+      return await this.prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: chaGioCategory.categoryId
         }
       });
     });
-    ['Đậu hũ', 'Rong biển lá', 'Rong biển vụn'].forEach(async (food) => {
-      const dataFood = await this.prisma.food.create({
-        data: { name: food, description: food }
-      });
-      await this.prisma.foodCategory.create({
-        data: {
-          foodId: dataFood.foodId,
-          categoryId: khacCategory.categoryId
-        }
-      });
+    const chaGioFood = await Promise.all(chaGioFoodArr);
+
+    const khacFoodArr = ['Đậu hũ', 'Rong biển lá', 'Rong biển vụn'].map(
+      async (food) => {
+        const dataFood = await this.prisma.food.create({
+          data: { name: food, description: food }
+        });
+        return await this.prisma.foodCategory.create({
+          data: {
+            foodId: dataFood.foodId,
+            categoryId: khacCategory.categoryId
+          }
+        });
+      }
+    );
+    const khacFood = await Promise.all(khacFoodArr);
+
+    const dateArray = [
+      '2023-07-06',
+      '2023-07-07',
+      '2023-07-08',
+      '2023-07-09',
+      '2023-07-10',
+      '2023-07-11',
+      '2023-07-12',
+      '2023-07-13'
+    ];
+    await this.prisma.toBuyList.createMany({
+      data: regularUsers.flatMap((user) => {
+        return dateArray.map((date) => {
+          return {
+            ownerId: user.userId,
+            date: new Date(date)
+          };
+        });
+      })
+    });
+    await this.prisma.toBuyList.createMany({
+      data: groupArr.flatMap((group) => {
+        return dateArray.map((date) => {
+          return {
+            groupOwnerId: group.groupId,
+            date: new Date(date)
+          };
+        });
+      })
+    });
+
+    const allFoods = [
+      thitFood,
+      haiSanFood,
+      rauLaFood,
+      cuFood,
+      quaFood,
+      miFood,
+      chaoFood,
+      phoBunMienFood,
+      suaTuoiFood,
+      suaHopFood,
+      suaBotFood,
+      suaDacFood,
+      suaChuaFood,
+      boSuaPhoMaiFood,
+      gaoFood,
+      nguCocFood,
+      doHopFood,
+      botFood,
+      giaViFood,
+      doUongFood,
+      trungFood,
+      chaGioFood,
+      khacFood
+    ].flat();
+
+    console.log(getMultipleRandom(allFoods, 5));
+
+    const allToBuyList = [await this.prisma.toBuyList.findMany({})][0].map(
+      (e) => e.toBuyListId
+    );
+
+    await this.prisma.toBuyListDetail.createMany({
+      data: allToBuyList.flatMap((listId) => {
+        return getMultipleRandom(
+          allFoods,
+          1 + Math.floor(Math.random() * 10)
+        ).map((foodId) => {
+          return {
+            toBuyListId: listId,
+            foodId: foodId.foodId,
+            quantity: 1 + Math.floor(Math.random() * 10)
+          };
+        });
+      })
+    });
+
+    const outDateArr = [
+      '2023-07-15',
+      '2023-07-20',
+      '2023-07-25',
+      '2023-07-30',
+      '2023-08-01',
+      '2023-08-07',
+      '2023-08-12',
+      '2023-08-20',
+      '2023-08-25',
+      '2023-09-15',
+      '2023-09-30',
+      '2023-10-15',
+      '2023-10-30',
+      '2023-11-15',
+      '2023-11-30',
+      '2023-12-15',
+      '2023-12-30'
+    ];
+
+    const allStorageId = [await this.prisma.storage.findMany({})][0].map(
+      (e) => e.storageId
+    );
+
+    await this.prisma.storageFood.createMany({
+      data: allStorageId.flatMap((storageId) => {
+        return dateArray.flatMap((storageDate) => {
+          return outDateArr.map((outdate) => {
+            return {
+              storageDate: new Date(storageDate),
+              outdate: new Date(outdate),
+              storageId: storageId,
+              foodId:
+                allFoods[Math.floor(Math.random() * allFoods.length)].foodId,
+              quantity: 1 + Math.floor(Math.random() * 5)
+            };
+          });
+        });
+      })
     });
   }
 }
