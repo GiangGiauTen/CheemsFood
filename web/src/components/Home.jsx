@@ -7,18 +7,11 @@ import {
   UserAddOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import {
-  Routes,
-  BrowserRouter as Router,
-  Route,
-  Link,
-  NavLink,
-} from 'react-router-dom';
 
 import { Layout, Menu, theme, Button } from 'antd';
 import Nhom from './Nhom/Nhom';
 import QuanLyCongThuc from './QuanLyCongThuc/QuanLyCongThuc';
-import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
+// import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
 import QuanLyDoLuuTru from './QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './QuanLyDoCanMua/QuanLyDoCanMua';
 import AddTeam from './Nhom/AddTeam';
@@ -111,11 +104,7 @@ function Home() {
                 <QuanLyCongThuc />
               </div>
             )}
-            {menuKey === '21' && (
-              <div>
-                <QuanLyCongThucYeuThich />
-              </div>
-            )}
+
             {menuKey === '3' && (
               <div>
                 <QuanLyDoLuuTru />
