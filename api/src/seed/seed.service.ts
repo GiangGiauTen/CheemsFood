@@ -28,8 +28,6 @@ export class SeedService {
     await this.prisma.gGroup.deleteMany();
     await this.prisma.storage.deleteMany();
     await this.prisma.user.deleteMany();
-
-    console.log('Data reset completed successfully.');
   }
 
   async seed() {
@@ -206,7 +204,7 @@ export class SeedService {
 
     const haiSanCategory = await this.prisma.category.create({
       data: {
-        categoryName: 'Hải sản',
+        categoryName: 'Thủy - hải sản',
         categoryType: 'Thực phẩm tươi'
       }
     });
@@ -380,7 +378,8 @@ export class SeedService {
       'Đùi gà rút xương',
       'Đùi gà tháo khớp',
       'Đùi tỏi gà',
-      'Ức gà'
+      'Ức gà',
+      'Xương ống heo'
     ];
 
     const thitFoodPromises = thitFoodArr.map(async (food) => {
@@ -406,6 +405,7 @@ export class SeedService {
       'Cá bạc má tươi',
       'Cá chim trắng biển tươi',
       'Cá chỉ',
+      'Cá chép',
       'Cá hồi nguyên con',
       'Hàu sữa',
       'Mực ống',
@@ -463,7 +463,7 @@ export class SeedService {
       'Rau muống',
       'Rau mầm cải xanh ',
       'Rau mầm củ cải',
-      'Răm ',
+      'Răm',
       'Súp lơ trắng',
       'Thì là',
       'Tía tô',
@@ -486,12 +486,9 @@ export class SeedService {
 
     const cuFoodArr = [
       'Bí xanh',
-      'Bí xanh',
-      'Bí xanh ',
       'Bí đỏ tròn',
       'Chanh có hạt',
       'Chanh không hạt',
-      'Cà rốt',
       'Cà rốt',
       'Cà tím tròn',
       'Củ Sả',
@@ -500,10 +497,7 @@ export class SeedService {
       'Củ đậu',
       'Diếp cá',
       'Dưa chuột',
-      'Dưa chuột',
       'Hành củ',
-      'Hành củ',
-      'Hành củ Hải Dương',
       'Hành tây',
       'Hạt sen',
       'Khoai lang',
@@ -516,6 +510,7 @@ export class SeedService {
       'Quất',
       'Su su',
       'Tiêu xanh',
+      'Tỏi',
       'Đậu cove',
       'Ớt cay',
       'Ớt chuông xanh',
@@ -545,13 +540,13 @@ export class SeedService {
       'Cam',
       'Cam Sành loại nhỏ',
       'Cam sành loại 1',
+      'Cà Chua',
       'Chanh leo',
       'Cherry đỏ',
       'Chuối',
       'Chôm chôm',
       'Dưa hấu',
       'Dưa hấu không hạt',
-      'Dưa lê',
       'Dưa lê',
       'Dưa lê trắng',
       'Dưa lưới',
@@ -572,7 +567,8 @@ export class SeedService {
       'Việt Quất',
       'Vải thiều',
       'Xoài',
-      'Đu đủ ruột đỏ'
+      'Đu đủ ruột đỏ',
+      'Me'
     ];
 
     const quaFoodPromises = quaFoodArr.map(async (food) => {
@@ -911,7 +907,9 @@ export class SeedService {
       'Wasabi',
       'Giấm',
       'Hương thảo',
-      'Sốt mè rang'
+      'Sốt mè rang',
+      'Muối',
+      'Nghệ'
     ];
 
     const giaViFoodPromises = giaViFoodArr.map(async (food) => {
@@ -1073,8 +1071,6 @@ export class SeedService {
       khacFood
     ].flat();
 
-    console.log(getMultipleRandom(allFoods, 5));
-
     const allToBuyList = [await this.prisma.toBuyList.findMany({})][0].map(
       (e) => e.toBuyListId
     );
@@ -1134,5 +1130,110 @@ export class SeedService {
         });
       })
     });
+
+    const thitBoXaoHanhTayRecipe = await this.prisma.recipe.create({
+      data: {
+        name: 'Thịt bò xào hành tây',
+        description: `Bước 1: Sơ chế nguyên liệu
+        Bạn mua thịt bò loại mềm để xào, rửa sạch, thái lát mỏng theo thớ vừa ăn.
+        Hành tây lột vỏ bên ngoài, rửa sơ qua nước lạnh, rồi cắt hai đầu, bổ làm đôi theo chiều dọc, rùi úp nửa củ hành xuống thái theo chiều ngang.
+        Gừng, tỏi bỏ vỏ, đập dập.
+        Hành lá nhặt bỏ lá úa, rửa sạch, cắt khúc để phần lá xanh và thân trắng riêng. Phần lá thái dài và phần thân thái nhỏ.
+        Bước 2: Ướp thịt bò
+        Thịt bò sau khi thái lát thì đem trộn với gia vị: ½ thìa nhỏ muối, chút ít hạt tiêu, 1 thìa nhỏ dầu ăn, trộn đều để trong 20-30 phút để thịt bò ngấm gia vị.
+        Bước 3: Chế biến
+        Đầu tiên, đặt chảo lên bếp, phi thơm tỏi, gừng, phần thân trắng của hành lá và hành tây trên chảo dầu nóng, đảo đều trong chừng 1 phút. Bạn lưu ý là chỉ cần khoảng 2 thìa dầu ăn và xào hành thì phải nhanh, liên tục, không để hành tây chín nhừ vì như vậy hành tây sẽ mất ngọt.
+        Trút thịt bò vào xào, thêm chút rượu trắng, nêm nếm lại với ½ thìa nước mắm, 1 thìa hạt nêm rồi đảo đều. Bạn nhớ xào nhanh tay và để lửa lớn để thịt bò mềm nhé.
+        Sau khi thịt và hành cùng chín tới thì hành lá cắt khúc thả vào, đảo sơ qua một lần nữa, rắc chút hạt tiêu rồi bắc ra.
+        `
+      }
+    });
+    await this.prisma.recipeFoodList.createMany({
+      data: [
+        thitFood[12], // Thịt bò
+        rauLaFood[13], // Hành lá
+        giaViFood[18], // Muối
+        giaViFood[2], // Nước mắm
+        cuFood[25], // Tỏi
+        giaViFood[5], // Hạt nêm
+        giaViFood[7], // Tiêu
+        giaViFood[0], // Dầu ăn
+        doUongFood[11], // Rượu trắng
+        cuFood[13] // Hành tây
+      ].map((food) => {
+        return {
+          recipeId: thitBoXaoHanhTayRecipe.recipeId,
+          foodId: food.foodId
+        };
+      })
+    });
+
+    const khoaiTayXaoCaChua = await this.prisma.recipe.create({
+      data: {
+        name: 'Khoai tây xào cà chua',
+        description: `Bước 1: Sơ chế nguyên liệu
+        Gọt vỏ khoai tây, rửa sạch rồi chuẩn bị một chậu nước, thái khoai thành miếng, cho vào chậu ngay để khoai không bị thâm. Ngâm khoai tây khoảng 10 phút, vớt ra, để ráo.
+        Cà chua, hành lá cũng rửa sạch. Sau đó thái miếng cà chua còn hành lá thì thái nhỏ.
+        Bóc vỏ 2 tép tỏi, thái thành từng lát mỏng.
+        Bước 2: Cách xào khoai tây với cà chua
+        Bắc chảo lên bếp, phi tỏi với dầu thật vàng thơm rồi cho khoai tây vào chảo đảo đều 2 phút. Thêm cà chua vào xào cùng, nêm nếm gia vị cho vừa với khẩu vị của bạn.
+        Đợi khoai chín, thêm một chút hành lá và rau thơm để món ăn thêm thơm ngon, tắt bếp, múc ra đĩa và thưởng thức.
+        `
+      }
+    });
+    await this.prisma.recipeFoodList.createMany({
+      data: [
+        cuFood[18], //Khoai tây
+        quaFood[7], // cà chua
+        cuFood[25], // tỏi
+        rauLaFood[13], //hành lá
+        giaViFood[7], // Tiêu
+        giaViFood[18], // Muối
+        giaViFood[5] // Hạt nêm
+      ].map((food) => {
+        return {
+          recipeId: khoaiTayXaoCaChua.recipeId,
+          foodId: food.foodId
+        };
+      })
+    });
+
+    const lauCaChep = await this.prisma.recipe.create({
+      data: {
+        name: 'Lẩu cá chép giòn',
+        description: `Xương heo rửa sạch, luộc sơ qua với nước sôi rồi cho vào nồi để lọc sạch bẩn trong xương heo. Đổ nước vào nồi, đun sôi xương ống heo tiếp tục cho ngọt nước. Sau đó, vớt bỏ bọt cho nước dùng xương trong đẹp.
+        Cá chép giòn rửa sạch, sau đó cạo sạch vảy, cắt khoanh vừa ăn, đem ướp cùng với gừng.
+        Ớt hành, rau răm thái nhỏ.
+        Thịt bò thái mỏng ướp vài lát gừng thái chỉ.
+        Lòng non, dạ dày làm sạch thái miếng vừa ăn.
+        Nghêu rửa sạch bày lên đĩa.
+        Rau các loại rửa sạch để ráo, đậu hũ thái miếng, cà chua bổ múi cau.
+        Đặt một chiếc chảo lên bếp, đun dầu nóng già, phi thơm hành với cà chua. Sau đó, cho cà chua vào nồi nước dùng xương vừa nấu là xong.
+        Để có nồi nước dùng ngọt nước và có vị chua cay hợp với món lẩu cá, bạn nên hầm xương heo với xương cá, sau đó cho thêm me chua cùng vài cái nấm hương, cà chua xào sơ với gia vị cho vừa miệng. Khi nồi nước dùng chín, đổ vài nồi lẩu, bày lên mâm cũng các món nhúng kèm là bạn đã có ngay món lẩu các chép giòn thơm ngon rồi.
+        `
+      }
+    });
+    await this.prisma.recipeFoodList.createMany({
+      data: [
+        haiSanFood[8], //Cá chép
+        thitFood[22], // Xương ống heo
+        thitFood[0], // Thịt bò
+        quaFood[7], // cà chua
+        quaFood[35], // Me
+        giaViFood[19], // Nghệ
+        khacFood[0], // Đậu phụ
+        rauLaFood[13], //hành lá
+        giaViFood[7], // Tiêu
+        giaViFood[18], // Muối
+        giaViFood[5], // Hạt nêm
+        giaViFood[11] // Mì chính
+      ].map((food) => {
+        return {
+          recipeId: lauCaChep.recipeId,
+          foodId: food.foodId
+        };
+      })
+    });
+    console.log('Data reset completed successfully.');
   }
 }
