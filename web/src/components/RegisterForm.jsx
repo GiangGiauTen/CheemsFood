@@ -1,14 +1,38 @@
+import { useState } from 'react';
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-    //API
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('API_REGISTER_ENDPOINT', {
+        username,
+        password,
+        email,
+      });
+
+      console.log('Đăng ký thành công:', response.data);
+      // Xử lý sau khi đăng ký thành công (ví dụ: chuyển hướng, hiển thị thông báo, v.v.)
+      navigate('/login'); // Chuyển hướng người dùng về trang đăng nhập
+    } catch (error) {
+      console.error('Đăng ký thất bại:', error);
+      // Xử lý khi xảy ra lỗi đăng ký (ví dụ: hiển thị thông báo lỗi, xử lý lỗi khác, v.v.)
+    }
   };
 
+  const onFinish = () => {
+    handleRegister();
+  };
+  
   return (
     <Form name="register" onFinish={onFinish}>
       <Form.Item
