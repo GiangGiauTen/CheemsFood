@@ -12,8 +12,51 @@ const layout = {
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
-
-const AddForm: React.FC = () => {
+let DataDanhMuc = [
+  {
+    categoryId: 1,
+    foodId: 1,
+    foodName: "Hambager",
+    categogy_name: 'FastFood',
+    categogy_type: 'Food',
+  },
+  {
+      category_id: 2,
+      foodId: 2,
+      foodName: "Volka",
+      categogy_name: 'Sake',
+      categogy_type: 'Drink',
+  },
+  {
+      category_id: 3,
+      foodId: 3,
+      foodName: "Miso",
+      categogy_name: 'TinhBot',
+      categogy_type: 'Food',
+  },
+  // Add more food items here...
+  {
+      category_id: 4,
+      foodId: 4,
+      foodName: "Salad",
+      categogy_name: 'Vegetable',
+      categogy_type: 'Food',
+  },
+  // Add more food items here...
+  {
+      category_id: 5,
+      foodId: 5,
+      foodName: "PizzaItaly",
+      categogy_name: 'Pizza',
+      categogy_type: 'Food',
+  },
+];
+interface MyComponentProps {
+  index: number;
+  destroy: () => void;
+}
+const AddForm: React.FC<MyComponentProps> = (props) => {
+  
   const [form] = Form.useForm();
 
   
@@ -36,12 +79,13 @@ const AddForm: React.FC = () => {
       onFinish={onFinish}
       style={{ maxWidth: 600 }}
     >
-      <Form.Item name="categogy_name" label="Name" rules={[{ required: true }]}>
-        <Input />
+      <Form.Item name="foodName" label="Food Name" rules={[{ required: true }]}>
+        <Input value={(props.index == null || props.index == -1 )?(""):(DataDanhMuc[props.index].foodName)} placeholder={(props.index == null || props.index == -1 )?(""):(DataDanhMuc[props.index].foodName)}/>
       </Form.Item>
       <Form.Item name="category_type" label="Type" rules={[{ required: true }]}>
         <Select
-          placeholder="Select Category type"
+          value={(props.index == null ||props.index == -1)?"":DataDanhMuc[props.index].categogy_type}
+          placeholder= {(props.index == null ||props.index == -1)?"":DataDanhMuc[props.index].categogy_type }
          
           allowClear
         >
@@ -60,9 +104,13 @@ const AddForm: React.FC = () => {
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
-        <Button htmlType="button" onClick={onReset}>
-          Reset
+        {props.destroy != null && ( 
+        <Button htmlType="button" onClick={props.destroy}>
+          Hủy
         </Button>
+        )}
+       
+       
        
       </Form.Item>
     </Form>
