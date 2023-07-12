@@ -17,6 +17,9 @@ import QuanLyDoCanMua from './QuanLyDoCanMua/QuanLyDoCanMua';
 import AddTeam from './Nhom/AddTeam';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -43,6 +46,19 @@ const items = [
 
 ];
 function Home() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Gửi yêu cầu POST để xóa dữ liệu
+      await axios.post('http://localhost:4001/seed');
+      
+      // Chuyển hướng người dùng về trang đăng nhập
+      navigate('/');
+    } catch (error) {
+      console.error('Đăng xuất thất bại:', error);
+    }
+  };
   const [menuKey, setMenuKey] = useState('1');
   const {
     token: { colorBgContainer },
@@ -115,6 +131,9 @@ function Home() {
             
           </Content>
         </Layout>
+        <Button type="primary" onClick={handleLogout}>
+        Đăng xuất
+      </Button>
       </Layout>
     </div>
   );

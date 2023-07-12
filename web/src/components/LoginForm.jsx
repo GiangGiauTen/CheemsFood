@@ -35,7 +35,12 @@ const LoginForm = () => {
   };
 
   return (
-    <Form name="login" initialValues={{ remember: true }} onFinish={onFinish}>
+    <Form
+      name="login"
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      style={{ maxWidth: '300px', margin: '0 auto' }}
+    >
       <Form.Item
         name="username"
         rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
