@@ -1,59 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, Space } from 'antd';
 
 const QuanLyTaiKhoan = () => {
   // Sample data for reserved foods
-  const taiKhoan = [
+  
+  let taiKhoan = [
     {
-      uid: 1,
-      username: 'Nguyễn Thanh Dương',
-     
+      userId: 1,
+      name: 'Nguyễn Thanh Dương',
+      username: 'katanashi',
     },
     {
-      uid: 2,
-      username: 'Trần Công Minh',
-     
+      userId: 2,
+      name: 'Trần Công Minh',
+      username: 'CongMei'
     },
     {
-      uid: 3,
-      username: 'Phạm Chính Thống',
-      
-    },
-    // Add more food items here...
-    {
-      uid: 4,
-      username: 'Nguyễn Nhật Minh',
-      
+      userId: 3,
+      name: 'Phạm Chính Thống',
+      username: 'ChingThong'
     },
     // Add more food items here...
     {
-      uid: 5,
-      username: 'Phạm Minh Chính',
-      
+      userId: 4,
+      name: 'Nguyễn Nhật Minh',
+      username: 'Nminh'
+    },
+    // Add more food items here...
+    {
+      userId: 5,
+      name: 'Phạm Minh Chính',
+      username: 'MeiChin'
     },
   ];
-
+  let [data, setData] = useState(taiKhoan);
+  taiKhoan = data;
+  let Delete = (i) => {
+    let newTaiKhoan = [...taiKhoan];
+    newTaiKhoan.splice(i,1);
+    setData(newTaiKhoan);
+  }
   // Define the columns for the table
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'uid',
-      key: 'uid',
+      render: (text, record, index) => (index + 1),
     },    
     {
-      title: 'Food Name',
+      title: 'User Name',
       dataIndex: 'username',
       key: 'username',
     },
-  
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record, index) => (
         <Space size="middle">
-          <a href="#">View</a>
-          <a href="#">Edit</a>
-          <a href="#">Delete</a>
+          
+          
+          <a onClick={() => Delete(index)}>Delete</a>
         </Space>
       ),
     },
