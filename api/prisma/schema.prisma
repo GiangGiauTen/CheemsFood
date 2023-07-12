@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Food {
+  foodId      Int               @id @default(autoincrement())
+  name        String
+  description String?
+  categories  FoodCategory[]
+  recipes     RecipeFoodList[]
+  storage     StorageFood[]
+  toBuyLists  ToBuyListDetail[]
+}
+
+model Category {
+  categoryId   Int            @id @default(autoincrement())
+  categoryName String
+  categoryType String
+  foods        FoodCategory[]
+}
+
+model Recipe {
+  recipeId    Int              @id @default(autoincrement())
+  name        String
+  description String
+  foods       RecipeFoodList[]
+  users       FavoriteRecipe[]
+}
+
+model Storage {
+  storageId Int           @id @default(autoincrement())
+  user      User @relation(fields: [userId], references: [userId])
+  userId    Int @unique
+  foods     StorageFood[]
+}
+
+model User {
+  userId     Int              @id @default(autoincrement())
+  username   String           @unique
+  name       String
+  password   String
+  role       String
+  favorites  FavoriteRecipe[]
+  groups     GroupMember[]
+  toBuyLists ToBuyList[]
+  storage    Storage?
+}
+
+model GGroup {
+  groupId    Int           @id @default(autoincrement())
+  name       String
+  users      GroupMember[]
+  toBuyLists ToBuyList[]
+}
+
+model RecipeFoodList {
+  recipeId Int
+  foodId   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  food     Food   @relation(fields: [foodId], references: [foodId])
+
+  @@id([recipeId, foodId])
+  @@map("RecipeFoodList")
+}
+
+model FoodCategory {
+  foodId     Int
+  categoryId Int
+  food       Food     @relation(fields: [foodId], references: [foodId])
+  category   Category @relation(fields: [categoryId], references: [categoryId])
+
+  @@id([foodId, categoryId])
+  @@map("FoodCategory")
+}
+
+model ToBuyList {
+  toBuyListId      Int               @id  @default(autoincrement())
+  date             DateTime
+  toBuyListDetails ToBuyListDetail[]
+  owner            User?             @relation(fields: [ownerId], references: [userId])
+  ownerId          Int?
+  groupOwner       GGroup?           @relation(fields: [groupOwnerId], references: [groupId])
+  groupOwnerId     Int?
+}
+
+model FavoriteRecipe {
+  userId   Int
+  recipeId Int
+  user     User   @relation(fields: [userId], references: [userId])
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+
+  @@id([userId, recipeId])
+  @@map("FavoriteRecipe")
+}
+
+model GroupMember {
+  groupId      Int 
+  userId       Int
+  isGroupAdmin Boolean
+  group        GGroup  @relation(fields: [groupId], references: [groupId])
+  user         User    @relation(fields: [userId], references: [userId])
+
+  @@id([groupId, userId])
+  @@map("GroupMember")
+}
+
+model StorageFood {
+  storageFoodId Int      @id @default(autoincrement())
+  storageDate   DateTime
+  outdate       DateTime
+  quantity      Int
+  foodId        Int
+  storageId     Int
+  food          Food     @relation(fields: [foodId], references: [foodId])
+  storage       Storage  @relation(fields: [storageId], references: [storageId])
+
+  @@map("StorageFood")
+}
+
+model ToBuyListDetail {
+  toBuyListId Int
+  foodId      Int
+  quantity    Int
+  toBuyList   ToBuyList @relation(fields: [toBuyListId], references: [toBuyListId])
+  food        Food      @relation(fields: [foodId], references: [foodId])
+
+  @@id([toBuyListId, foodId])
+  @@map("ToBuyListDetail")
+}
