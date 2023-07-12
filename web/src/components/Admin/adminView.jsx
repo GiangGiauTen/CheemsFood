@@ -86,7 +86,7 @@ import {
             )}
             {menuKey === '3' && (
               <div>
-               <AddForm></AddForm>
+               <AddForm index = {-1}></AddForm>
               </div>
             )}
           </Content>
