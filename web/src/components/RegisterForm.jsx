@@ -32,37 +32,41 @@ const RegisterForm = () => {
   };
 
   return (
-    <Form name="register" onFinish={onFinish}>
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
+      <Form
+        name="register"
+        onFinish={onFinish}
+        style={{ maxWidth: '300px', margin: '0 auto' }}
       >
-        <Input prefix={<UserOutlined />} placeholder="Tên đăng nhập" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
-      >
-        <Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" />
-      </Form.Item>
-      <Form.Item
-        name="name"
-        rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
-      >
-        <Input placeholder="Họ và tên" />
-      </Form.Item>
-      <Form.Item
-        name="role"
-        rules={[{ required: true, message: 'Vui lòng nhập vai trò!' }]}
-      >
-        <Input placeholder="Vai trò" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-          Đăng ký
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item
+          name="username"
+          rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Tên đăng nhập" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+        >
+          <Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" />
+        </Form.Item>
+        <Form.Item
+          name="name"
+          rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+        >
+          <Input placeholder="Họ và tên" />
+        </Form.Item>
+        <Form.Item
+          name="role"
+          rules={[{ required: true, message: 'Vui lòng nhập vai trò!' }]}
+        >
+          <Input placeholder="Vai trò" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            Đăng ký
+          </Button>
+        </Form.Item>
+      </Form>
   );
 };
 
