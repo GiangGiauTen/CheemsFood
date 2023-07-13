@@ -1234,7 +1234,6 @@ export class SeedService {
         };
       })
     });
-
     const lauRieuCuaBapBoSuonSun = await this.prisma.recipe.create({
       data: {
         name: 'Lẩu riêu cua bắp bò sườn sụn',
@@ -2217,7 +2216,6 @@ export class SeedService {
         };
       })
     });
-    
     console.log('Data reset completed successfully.');
   }
 }
