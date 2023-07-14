@@ -463,7 +463,7 @@ export class SeedService {
       'Rau muống',
       'Rau mầm cải xanh ',
       'Rau mầm củ cải',
-      'Răm',
+      'Răm ',
       'Súp lơ trắng',
       'Thì là',
       'Tía tô',
