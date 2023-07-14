@@ -525,50 +525,8 @@ const Nhom = () => {
               />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" onClick={addParticipant}>
-                Thêm thành viên
-              </Button>
+              <Button type="primary">Thêm thành viên</Button>
             </Form.Item>
-            {isAddParticipantFormVisible && (
-              <Form.Item>
-                <p>
-                  <strong>Thêm người người tham gia:</strong>
-                </p>
-                <Search
-                  placeholder="Tìm kiếm người dùng"
-                  onSearch={handleSearchUsers}
-                  style={{ marginBottom: 10 }}
-                />
-                <Table
-                  size="small"
-                  bordered
-                  dataSource={selectedUsers}
-                  pagination={{ pageSize: 5 }}
-                  columns={[
-                    {
-                      title: 'Tên',
-                      dataIndex: 'name',
-                      key: 'name',
-                      render: (_, record) => <p>{record.name}</p>,
-                    },
-
-                    {
-                      title: 'Hành động',
-                      dataIndex: 'action',
-                      key: 'action',
-                      render: (_, record) => (
-                        <Button
-                          type="link"
-                          onClick={() => handleSelectUser(record)}>
-                          Chọn
-                        </Button>
-                      ),
-                    },
-                  ]}
-                />
-                {/* ... */}
-              </Form.Item>
-            )}
           </Form>
         )}
       </Modal>
