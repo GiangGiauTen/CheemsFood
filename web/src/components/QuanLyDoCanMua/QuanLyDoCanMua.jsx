@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState }, { useState } from 'react';
 import { Table, Space, Modal, Button, Form, Input } from 'antd';
 import reservedFoodsData from './Reserved';
 
@@ -242,40 +242,77 @@ const QuanLyDoCanMua = () => {
             ]}>
             <Input.TextArea rows={4} />
           </Form.Item>
+import { Table, Modal, Button } from 'antd';
+import toBuyListData from './toBuyListData';
+import FoodDetail from './foodDetail';
 
-          <Form.Item
-            name="outdate"
-            label="Outdate"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the outdate',
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="quantity"
-            label="Quantity"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the quantity',
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || /^[0-9]+$/.test(value)) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    'Please enter a valid integer for quantity',
-                  );
-                },
-              }),
-            ]}>
-            <Input type="number" min={0} />
-          </Form.Item>
-        </Form>
+const QuanLyDoCanMua = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+
+  const handleRowClick = record => {
+    setSelectedRowData(record);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const columns = [
+    {
+      title: 'Mã Danh Sách',
+      dataIndex: 'toBuyListId',
+    },
+    {
+      title: 'Ngày',
+      dataIndex: 'date',
+    },
+    {
+      title: 'Thuộc về',
+      dataIndex: 'groupOwnerId',
+      render: (groupOwnerId, record) => {
+        if (groupOwnerId === null) {
+          return 'Cá Nhân';
+        } else if (record.ownerId === null) {
+          return 'Nhóm ' + groupOwnerId;
+        } else {
+          // Trường hợp khác nếu cần
+          return '';
+        }
+      },
+    },
+    {
+      title: 'Thao tác',
+      key: 'action',
+      render: (text, record) => (
+        <Button type="link" onClick={() => handleRowClick(record)}>
+          Xem
+        </Button>
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <Table
+        columns={columns}
+        dataSource={toBuyListData}
+        pagination={false}
+        rowKey="toBuyListId"
+      />
+
+      <Modal
+        title="Thông tin Đơn Hàng"
+        visible={isModalVisible}
+        onCancel={handleModalClose}
+        footer={null}>
+        {selectedRowData && (
+          <FoodDetail
+            selectedRowData={selectedRowData}
+            key={selectedRowData.toBuyListId}
+          />
+        )}
       </Modal>
     </div>
   );
