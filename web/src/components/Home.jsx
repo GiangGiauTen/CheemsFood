@@ -11,7 +11,7 @@ import {
 import { Layout, Menu, theme, Button } from 'antd';
 import Nhom from './Nhom/Nhom';
 import QuanLyCongThuc from './QuanLyCongThuc/QuanLyCongThuc';
-// import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
+import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
 import QuanLyDoLuuTru from './QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './QuanLyDoCanMua/QuanLyDoCanMua';
 import AddTeam from './Nhom/AddTeam';
@@ -102,6 +102,11 @@ function Home() {
             {menuKey === '2' && (
               <div>
                 <QuanLyCongThuc />
+              </div>
+            )}
+            {menuKey === '21' && (
+              <div>
+                <QuanLyCongThucYeuThich />
               </div>
             )}
 
