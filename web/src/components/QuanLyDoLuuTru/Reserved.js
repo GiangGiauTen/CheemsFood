@@ -1,0 +1,86 @@
+const reservedFoodsData = [
+    {
+        id: 1,
+        name: 'Cheese',
+        description: 'Type of cheese used in various dishes',
+        storage_date: '2023-06-28',
+        outdate: '2023-07-05',
+        quantity: 5,
+      },
+      {
+        id: 2,
+        name: 'Tomato Sauce',
+        description: 'Sauce made from tomatoes, used in pasta and pizza',
+        storage_date: '2023-06-30',
+        outdate: '2023-07-07',
+        quantity: 3,
+      },
+      {
+        id: 3,
+        name: 'Pepperoni',
+        description: 'Spicy Italian sausage used as a pizza topping',
+        storage_date: '2023-07-01',
+        outdate: '2023-07-03',
+        quantity: 2,
+      },
+      // Add more ingredients here...
+      {
+        id: 4,
+        name: 'Mushrooms',
+        description: 'Edible fungi used in various dishes',
+        storage_date: '2023-07-01',
+        outdate: '2023-07-06',
+        quantity: 4,
+      },
+      // Add more ingredients here...
+      {
+        id: 5,
+        name: 'Onions',
+        description: 'Commonly used vegetable in cooking',
+        storage_date: '2023-07-02',
+        outdate: '2023-07-04',
+        quantity: 3,
+      },
+      {
+        id: 6,
+        name: 'Chicken',
+        description: 'Poultry meat used in various recipes',
+        storage_date: '2023-07-03',
+        outdate: '2023-07-09',
+        quantity: 6,
+      },
+      {
+        id: 7,
+        name: 'Garlic',
+        description: 'Aromatic bulb used as a flavor enhancer',
+        storage_date: '2023-07-04',
+        outdate: '2023-07-10',
+        quantity: 8,
+      },
+      {
+        id: 8,
+        name: 'Olive Oil',
+        description: 'Healthy oil extracted from olives',
+        storage_date: '2023-07-05',
+        outdate: '2023-07-12',
+        quantity: 2,
+      },
+      {
+        id: 9,
+        name: 'Salt',
+        description: 'Common seasoning used in cooking',
+        storage_date: '2023-07-06',
+        outdate: '2023-07-08',
+        quantity: 10,
+      },
+      {
+        id: 10,
+        name: 'Cumin',
+        description: 'Spice with a warm, earthy flavor',
+        storage_date: '2023-07-07',
+        outdate: '2023-07-13',
+        quantity: 3,
+      },
+  ];
+  
+  export default reservedFoodsData;
