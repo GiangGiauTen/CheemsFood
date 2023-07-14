@@ -18,6 +18,11 @@ import AddTeam from './Nhom/AddTeam';
 import DangNhap from './DangNhap/DangNhap';
 import DangKy from './DangKy/DangKy';
 import React, { useState } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -42,10 +47,21 @@ const items = [
     getItem('Danh sách', '4'),
   ]),
 
-  getItem('DangNhap', '5', <UserOutlined />),
-  getItem('DangKy', '6', <UserAddOutlined />),
 ];
 function Home() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Gửi yêu cầu POST để xóa dữ liệu
+      await axios.post('http://localhost:4001/seed');
+      
+      // Chuyển hướng người dùng về trang đăng nhập
+      navigate('/');
+    } catch (error) {
+      console.error('Đăng xuất thất bại:', error);
+    }
+  };
   const [menuKey, setMenuKey] = useState('1');
   const {
     token: { colorBgContainer },
@@ -120,19 +136,11 @@ function Home() {
                 <QuanLyDoCanMua />
               </div>
             )}
-            {menuKey === '5' && (
-              <div>
-                <DangNhap />
-              </div>
-            )}
-            {menuKey === '6' && (
-              <div>
-                <DangKy />
-              </div>
-            )}
           </Content>
         </Layout>
-        <Button icon={<LogoutOutlined />}>Đăng xuất</Button>
+        <Button type="primary" onClick={handleLogout}>
+        Đăng xuất
+      </Button>
       </Layout>
     </div>
   );
