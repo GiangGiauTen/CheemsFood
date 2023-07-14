@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Table, Input, Modal, Form, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-
+import moment from 'moment';
+import users from './User';
 const { Search } = Input;
 
 const Nhom = () => {
   const [searchText, setSearchText] = useState(null);
   const [selectedRowData, setSelectedRowData] = useState([]);
+  const [isAddParticipantFormVisible, setIsAddParticipantFormVisible] =
+    useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState(users);
   const dataNhom = [
     {
       groupId: 'ABC123',
@@ -290,7 +294,16 @@ const Nhom = () => {
     setSelectedRowData(record);
     setIsModalVisible2(true);
   };
-
+  const handleSearchUsers = value => {
+    const filteredUsers = users.filter(user =>
+      user.name.toLowerCase().includes(value.toLowerCase()),
+    );
+    setSelectedUsers(filteredUsers);
+  };
+  // Hàm thêm người tham gia
+  const addParticipant = () => {
+    setIsAddParticipantFormVisible(!isAddParticipantFormVisible);
+  };
   const handleEdit = record => {
     setSelectedRowData(record);
     setIsModalVisible(true);
@@ -317,6 +330,29 @@ const Nhom = () => {
       ...prevMeeting,
       nguoiThamGia: updatedParticipants,
     }));
+  };
+  const handleSelectUser = user => {
+    const updatedSelectedRowData = {
+      ...selectedRowData,
+      nguoiThamGia: [
+        ...selectedRowData.nguoiThamGia,
+        {
+          name: user.name,
+          role: user.role,
+        },
+      ],
+    };
+
+    setSelectedRowData(updatedSelectedRowData);
+
+    const updatedData = data.map(record => {
+      if (record.groupId === selectedRowData.groupId) {
+        return updatedSelectedRowData;
+      }
+      return record;
+    });
+
+    setData(updatedData);
   };
   const handleFormSubmit = values => {
     // Thực hiện cập nhật dữ liệu trong state `data` với giá trị mới từ `values`
@@ -489,8 +525,50 @@ const Nhom = () => {
               />
             </Form.Item>
             <Form.Item>
-              <Button type="primary">Thêm thành viên</Button>
+              <Button type="primary" onClick={addParticipant}>
+                Thêm thành viên
+              </Button>
             </Form.Item>
+            {isAddParticipantFormVisible && (
+              <Form.Item>
+                <p>
+                  <strong>Thêm người người tham gia:</strong>
+                </p>
+                <Search
+                  placeholder="Tìm kiếm người dùng"
+                  onSearch={handleSearchUsers}
+                  style={{ marginBottom: 10 }}
+                />
+                <Table
+                  size="small"
+                  bordered
+                  dataSource={selectedUsers}
+                  pagination={{ pageSize: 5 }}
+                  columns={[
+                    {
+                      title: 'Tên',
+                      dataIndex: 'name',
+                      key: 'name',
+                      render: (_, record) => <p>{record.name}</p>,
+                    },
+
+                    {
+                      title: 'Hành động',
+                      dataIndex: 'action',
+                      key: 'action',
+                      render: (_, record) => (
+                        <Button
+                          type="link"
+                          onClick={() => handleSelectUser(record)}>
+                          Chọn
+                        </Button>
+                      ),
+                    },
+                  ]}
+                />
+                {/* ... */}
+              </Form.Item>
+            )}
           </Form>
         )}
       </Modal>
