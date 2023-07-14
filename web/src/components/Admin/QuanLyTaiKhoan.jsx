@@ -33,17 +33,6 @@ const QuanLyTaiKhoan = () => {
       username: 'MeiChin'
     },
   ];
-  let ft = async() => {
-    const response = await fetch('http://localhost:4001/food');
-    let js = await response.json();
-    if(response.ok){
-      console.log(js);
-    }
-  }
-  useEffect(() => {
-    ft();
-  },[]
-  )
   
   
   let [data, setData] = useState(taiKhoan);

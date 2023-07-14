@@ -9,6 +9,7 @@ import {
   
   import QuanLyTaiKhoan from './QuanLyTaiKhoan';
   import QuanLyDanhMuc from './QuanLyDanhMuc';
+  import QuanLyCategoryFood from './QuanLyCategoryFood';
   import AddForm from './AddForm.tsx';
   import React, { useState } from 'react';
   const { Header, Content, Sider } = Layout;
@@ -24,12 +25,13 @@ import {
   const items = [
     
     getItem('Quản Lý Tài Khoản', '1', <BarChartOutlined />),
-    getItem('Quản Lý Danh Mục', '2', <ContactsOutlined />, [
+    getItem('Quản Lý Đồ Ăn', '2', <ContactsOutlined />, [
       getItem('Danh sách', '2'),
       getItem('Thêm mới', '3'),
      
     ]),
-    getItem('Tài Khoản', '4', <TeamOutlined />)
+    getItem('Quan Ly Danh Muc', '4',<BarChartOutlined></BarChartOutlined>),
+    getItem('Tài Khoản', '5', <TeamOutlined />)
   ];
   const AdminView = () => {
     const [menuKey, setMenuKey] = useState('1');
@@ -81,12 +83,17 @@ import {
             )}
             {menuKey === '2' && (
               <div>
-               <QuanLyDanhMuc></QuanLyDanhMuc>
+              <QuanLyCategoryFood></QuanLyCategoryFood>
               </div>
             )}
             {menuKey === '3' && (
               <div>
                <AddForm index = {-1}></AddForm>
+              </div>
+            )}
+             {menuKey === '4' && (
+              <div>
+               <QuanLyDanhMuc></QuanLyDanhMuc>
               </div>
             )}
           </Content>
