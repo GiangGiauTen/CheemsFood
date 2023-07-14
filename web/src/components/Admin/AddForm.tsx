@@ -99,3 +99,5 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 		</Form>
 	)
 }
+
+export default AddForm
