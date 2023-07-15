@@ -22,7 +22,7 @@ const LoginForm = () => {
 							localStorage.setItem('userId', response.data.userId)
 							localStorage.setItem('role', response.data.role)
 							localStorage.setItem('name', response.data.name)
-							localStorage.setItem('username', response.data.name)
+							localStorage.setItem('username', response.data.username)
 							console.log(response)
 							navigate('/')
 						})
