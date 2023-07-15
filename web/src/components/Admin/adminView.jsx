@@ -1,6 +1,6 @@
 import { TeamOutlined, HomeOutlined, BarChartOutlined, ContactsOutlined } from '@ant-design/icons'
-import { Layout, Menu, theme } from 'antd'
-
+import { Layout, Menu, theme, Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import QuanLyTaiKhoan from './QuanLyTaiKhoan'
 import QuanLyDanhMuc from './QuanLyDanhMuc'
 import AddForm from './AddForm.tsx'
@@ -15,12 +15,28 @@ function getItem(label, key, icon, children) {
 		label,
 	}
 }
-const items = [
-	getItem('Quản Lý Tài Khoản', '1', <BarChartOutlined />),
-	getItem('Quản Lý Danh Mục', '2', <ContactsOutlined />, [getItem('Danh sách', '2'), getItem('Thêm mới', '3')]),
-	getItem('Tài Khoản', '4', <TeamOutlined />),
-]
+
 const AdminView = () => {
+	const navigate = useNavigate()
+	const items = [
+		getItem('Quản Lý Tài Khoản', '1', <BarChartOutlined />),
+		getItem('Quản Lý Danh Mục', '2', <ContactsOutlined />, [getItem('Danh sách', '2'), getItem('Thêm mới', '3')]),
+		getItem('Tài Khoản', '4', <TeamOutlined />),
+		getItem(
+			<Button
+				type='primary'
+				onClick={() => {
+					localStorage.removeItem('userId')
+					localStorage.removeItem('name')
+					localStorage.removeItem('username')
+					localStorage.removeItem('role')
+					navigate('/')
+				}}>
+				Đăng xuất
+			</Button>,
+			'5',
+		),
+	]
 	const [menuKey, setMenuKey] = useState('1')
 	const {
 		token: { colorBgContainer },

@@ -36,7 +36,12 @@ export class GroupService {
         group: true
       }
     });
-    return groups.map((groupMember) => groupMember.group);
+    groups.map((e) => {
+      e['name'] = e.group.name;
+      delete e.group;
+      return e;
+    });
+    return groups;
   }
 
   async teamDetail(groupId: number) {
@@ -46,14 +51,14 @@ export class GroupService {
         users: {
           select: {
             userId: true,
-            user: { select: { username: true, role: true, name: true } }
+            isGroupAdmin: true,
+            user: { select: { username: true, name: true } }
           }
         }
       }
     });
     group.users.map((user) => {
       user['username'] = user.user.username;
-      user['role'] = user.user.role;
       user['name'] = user.user.name;
       delete user.user;
       return user;
