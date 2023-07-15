@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal, Button, message } from 'antd';
-// import toBuyListData from './toBuyListData'
+// import toBuyListData from './toBuyListData';
 import FoodDetail from './foodDetail';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
-const QuanLyDoCanMua = () => {
+const QuanLyDoMuaNhom = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [toBuyList, setToBuyList] = useState([]);
-
   const handleRowClick = record => {
     setSelectedRowData(record);
     setIsModalVisible(true);
@@ -17,23 +16,23 @@ const QuanLyDoCanMua = () => {
   const handleModalClose = () => {
     setIsModalVisible(false);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await axios
-          .post(`${API_URL}/to-buy-list/list`, {
-            ownerId: localStorage.getItem('userId'),
-          })
-          .then(res => {
-            if (res.status == 201) setToBuyList(res.data);
-            else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
-          });
-      } catch (error) {
-        message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await axios
+  //         .post(`${API_URL}/to-buy-list/listGroup`, {
+  //           ownerId: localStorage.getItem('groupOwnerId'),
+  //         })
+  //         .then(res => {
+  //           if (res.status == 201) setToBuyList(res.data);
+  //           else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+  //         });
+  //     } catch (error) {
+  //       message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
   const columns = [
     {
       title: 'Mã Danh Sách',
@@ -93,4 +92,4 @@ const QuanLyDoCanMua = () => {
   );
 };
 
-export default QuanLyDoCanMua;
+export default QuanLyDoMuaNhom;

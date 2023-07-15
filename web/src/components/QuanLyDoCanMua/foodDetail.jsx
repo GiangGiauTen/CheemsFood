@@ -1,25 +1,65 @@
-import React, { useState } from 'react';
-import { Table, Input, Form, Button } from 'antd';
-import Detail from './Detail';
-import foodList from './foodList';
+import React, { useState, useEffect } from 'react';
+import { Table, Input, Form, Button, message } from 'antd';
+
+import axios from 'axios';
+// import foodList from './foodList';
+import { API_URL } from '../../utils/apiUrl';
 const { Search } = Input;
 const FoodDetail = ({ selectedRowData }) => {
-  const [detailData, setDetailData] = useState(
-    Detail.find(data => data.toBuyListId === selectedRowData.toBuyListId),
-  );
+  const [detailData, setDetailData] = useState(null);
+  const [selectedfoodList, setSelectedfoodList] = useState(null);
+  const [filteredfoodList, setFilteredfoodList] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  //Lấy chi tiết đồ ăn
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios
+          .get(`${API_URL}/to-buy-list/${selectedRowData.toBuyListId}`)
+          .then(res => {
+            if (res.status == 200) setDetailData(res.data);
+            else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+          });
+      } catch (error) {
+        message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+      }
+    };
+    fetchData();
+  }, [selectedRowData.toBuyListId]);
+  //Lấy danh sách đồ ăn có thể thêm
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios.get(`${API_URL}/food`).then(res => {
+          if (res.status == 200) {
+            const data = res.data;
+
+            setSelectedfoodList(data);
+            setFilteredfoodList(data);
+          } else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+        });
+      } catch (error) {
+        message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
+      }
+    };
+    fetchData();
+  }, []);
+
   const [isAddParticipantFormVisible, setIsAddParticipantFormVisible] =
     useState(false);
-  const [selectedfoodList, setSelectedfoodList] = useState(foodList);
+
   // Hàm thêm food
   const addParticipant = () => {
     setIsAddParticipantFormVisible(!isAddParticipantFormVisible);
   };
   // Hàm tìm food
   const handleSearchfoodList = value => {
-    const filteredfoodList = foodList.filter(user =>
+    setSearchValue(value);
+
+    const filteredList = selectedfoodList.filter(user =>
       user.name.toLowerCase().includes(value.toLowerCase()),
     );
-    setSelectedfoodList(filteredfoodList);
+    setFilteredfoodList(filteredList);
   };
 
   //Hàm chọn số lượng food cần mua
@@ -110,12 +150,14 @@ const FoodDetail = ({ selectedRowData }) => {
           <Search
             placeholder="Tìm kiếm đồ ăn"
             onSearch={handleSearchfoodList}
+            onChange={e => handleSearchfoodList(e.target.value)}
+            value={searchValue}
             style={{ marginBottom: 10 }}
           />
           <Table
             size="small"
             bordered
-            dataSource={selectedfoodList}
+            dataSource={filteredfoodList}
             pagination={{ pageSize: 5 }}
             columns={[
               {
