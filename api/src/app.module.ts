@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SeedModule } from './seed/seed.module';
 import { ToBuyListModule } from './to-buy-list/to-buy-list.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ToBuyListModule } from './to-buy-list/to-buy-list.module';
     PrismaModule,
     SeedModule,
     ToBuyListModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
