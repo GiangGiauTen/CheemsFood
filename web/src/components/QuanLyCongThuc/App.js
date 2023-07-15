@@ -8,7 +8,11 @@ const App = () => {
     <Router>
       <Switch>
         <Route path="/" exact component={QuanLyCongThuc} />
-        <Route path="/QuanLyCongThucYeuThich" exact component={QuanLyCongThucYeuThich} />
+        <Route
+          path="/QuanLyCongThucYeuThich"
+          exact
+          component={QuanLyCongThucYeuThich}
+        />
       </Switch>
     </Router>
   );
