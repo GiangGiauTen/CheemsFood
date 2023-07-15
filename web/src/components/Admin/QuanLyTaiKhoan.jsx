@@ -79,10 +79,12 @@ const QuanLyTaiKhoan = () => {
 		},
 	]
 
-  return (
-    <div>
-      <h1>Account List</h1>
-      <Table columns={columns} dataSource={taiKhoan} />
-    </div>
-  );
-};
+	return (
+		<div>
+			<h1>Account List</h1>
+			<Table columns={columns} dataSource={taiKhoan} />
+		</div>
+	)
+}
+
+export default QuanLyTaiKhoan
