@@ -6,11 +6,12 @@ import {
   } from '@ant-design/icons';
   import { Layout, Menu, theme } from 'antd';
   
-  
+  import AddCategory from './AddCategory.tsx';
   import QuanLyTaiKhoan from './QuanLyTaiKhoan';
   import QuanLyDanhMuc from './QuanLyDanhMuc';
   import QuanLyCategoryFood from './QuanLyCategoryFood';
   import AddForm from './AddForm.tsx';
+ 
   import React, { useState } from 'react';
   const { Header, Content, Sider } = Layout;
   
@@ -25,12 +26,12 @@ import {
   const items = [
     
     getItem('Quản Lý Tài Khoản', '1', <BarChartOutlined />),
-    getItem('Quản Lý Đồ Ăn', '2', <ContactsOutlined />, [
+    getItem('Quản Lý Danh Mục', '2', <ContactsOutlined />, [
       getItem('Danh sách', '2'),
       getItem('Thêm mới', '3'),
      
     ]),
-    getItem('Quan Ly Danh Muc', '4',<BarChartOutlined></BarChartOutlined>),
+    getItem('Quản Lý Đồ Ăn', '4',<BarChartOutlined></BarChartOutlined>),
     getItem('Tài Khoản', '5', <TeamOutlined />)
   ];
   const AdminView = () => {
@@ -83,17 +84,19 @@ import {
             )}
             {menuKey === '2' && (
               <div>
-              <QuanLyCategoryFood></QuanLyCategoryFood>
+               <QuanLyDanhMuc></QuanLyDanhMuc>
               </div>
             )}
             {menuKey === '3' && (
               <div>
-               <AddForm index = {-1}></AddForm>
+                <AddCategory index = {-1}></AddCategory>
+              
               </div>
             )}
              {menuKey === '4' && (
               <div>
-               <QuanLyDanhMuc></QuanLyDanhMuc>
+                <QuanLyCategoryFood></QuanLyCategoryFood>
+              
               </div>
             )}
           </Content>

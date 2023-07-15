@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Table, Space } from 'antd'
 import { LikeTwoTone } from '@ant-design/icons'
 import AddForm from './AddForm.tsx'
+import AddCategory from './AddCategory.tsx'
 const QuanLyDanhMuc = () => {
 	let [editMode, setEditMode] = useState(-1)
 	let [data, setData] = useState(null)
 
 	let ft = async () => {
-		const response = await fetch('http://localhost:4001/food')
+		const response = await fetch('http://localhost:4001/category')
 		let js = await response.json()
 		if (response.ok) {
 			console.log(js)
@@ -79,21 +80,16 @@ const QuanLyDanhMuc = () => {
 			render: (text, record, index) => index + 1,
 		},
 		{
-			title: 'FoodName',
-			dataIndex: 'name',
-			key: 'name',
-		},
-		{
 			title: 'Categogy Name',
-			dataIndex: 'category',
-			key: 'category',
-			render: (category) => category.categoryName,
+			dataIndex: 'categoryName',
+			key: 'categoryName',
+			
 		},
 		{
 			title: 'Categogy_type',
-			dataIndex: 'category',
-			key: 'category',
-			render: (category) => category.categoryType,
+			dataIndex: 'categoryType',
+			key: 'categoryType',
+			
 		},
 
 		{
@@ -110,7 +106,7 @@ const QuanLyDanhMuc = () => {
 
 	return (
 		<div>
-			{editMode != -1 && <AddForm index={editMode} destroy={Huy}></AddForm>}
+			{editMode != -1 && <AddCategory index={editMode} destroy={Huy}></AddCategory>}
 			{editMode == -1 && (
 				<div>
 					<h1>Category List</h1>

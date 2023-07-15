@@ -88,13 +88,13 @@ const QuanLyCategoryFood = () => {
       title: 'Categogy Name',
       dataIndex: 'category',
       key: 'category',
-      render: (category) => category.categoryName,
+      render: (category) => (category !== null)? category.categoryName:"" ,
     },
     {
       title: 'Categogy_type',
       dataIndex: 'category',
       key: 'category',
-      render: (category) => category.categoryType,
+      render: (category) => (category !== null)? category.categoryType:"",
     },
     
     {

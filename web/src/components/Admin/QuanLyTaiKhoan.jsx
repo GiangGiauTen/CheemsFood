@@ -3,49 +3,51 @@ import { Table, Space } from 'antd'
 
 const QuanLyTaiKhoan = () => {
 	// Sample data for reserved foods
-
-	let taiKhoan = [
-		{
-			userId: 1,
-			name: 'Nguyễn Thanh Dương',
-			username: 'katanashi',
-		},
-		{
-			userId: 2,
-			name: 'Trần Công Minh',
-			username: 'CongMei',
-		},
-		{
-			userId: 3,
-			name: 'Phạm Chính Thống',
-			username: 'ChingThong',
-		},
-		// Add more food items here...
-		{
-			userId: 4,
-			name: 'Nguyễn Nhật Minh',
-			username: 'Nminh',
-		},
-		// Add more food items here...
-		{
-			userId: 5,
-			name: 'Phạm Minh Chính',
-			username: 'MeiChin',
-		},
-	]
+	
+	// let taiKhoan = [
+	// 	{
+	// 		userId: 1,
+	// 		name: 'Nguyễn Thanh Dương',
+	// 		username: 'katanashi',
+	// 	},
+	// 	{
+	// 		userId: 2,
+	// 		name: 'Trần Công Minh',
+	// 		username: 'CongMei',
+	// 	},
+	// 	{
+	// 		userId: 3,
+	// 		name: 'Phạm Chính Thống',
+	// 		username: 'ChingThong',
+	// 	},
+	// 	// Add more food items here...
+	// 	{
+	// 		userId: 4,
+	// 		name: 'Nguyễn Nhật Minh',
+	// 		username: 'Nminh',
+	// 	},
+	// 	// Add more food items here...
+	// 	{
+	// 		userId: 5,
+	// 		name: 'Phạm Minh Chính',
+	// 		username: 'MeiChin',
+	// 	},
+	// ]
+	let [data, setData] = useState(null);
 	let ft = async () => {
-		const response = await fetch('http://localhost:4001/food')
+		const response = await fetch('http://localhost:4001/user')
 		let js = await response.json()
 		if (response.ok) {
-			console.log(js)
+			console.log(js);
+			setData(js);
 		}
 	}
 	useEffect(() => {
 		ft()
 	}, [])
 
-	let [data, setData] = useState(taiKhoan)
-	taiKhoan = data
+	
+	let taiKhoan = data;
 	let Delete = (i) => {
 		let newTaiKhoan = [...taiKhoan]
 		newTaiKhoan.splice(i, 1)

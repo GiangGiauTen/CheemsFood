@@ -1,5 +1,6 @@
 import { Button, Form, Input, Select } from 'antd'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useState, useEffect } from 'react'
 
 const { Option } = Select
 
@@ -50,52 +51,70 @@ let DataDanhMuc = [
 		categogy_type: 'Food',
 	},
 ]
-
-
-
 interface MyComponentProps {
 	index: number
 	destroy: () => void
 }
-const AddForm: React.FC<MyComponentProps> = (props) => {
-	const [form] = Form.useForm()
-	let [data,setData] = useState(null);
+const AddCategory: React.FC<MyComponentProps> = (props) => {
+	const [form] = Form.useForm();
+	let [data,setData] = useState<any>(null);
+	console.log(props.index);
 	let ft = async() => {
 		if(props.index != -1){
-			const response = await fetch('http://localhost:4001/food');
+			const response = await fetch('http://localhost:4001/category');
 			let js = await response.json();
+			//console.log(js[props.index]);
 			if(response.ok){
-				setData(js[props.index]); 
+				setData(js[props.index]);
 			}
 		}
 		
 	  }
-	  
+	  console.log(data);
 	useEffect(() => {
 		ft();
 	  },[]
 	  )
-	  console.log(data);
 	const onFinish = (values: any) => {
-		console.log(values)
+		console.log(values);
+		Update(values);
+		
 	}
 
 	const onReset = () => {
 		form.resetFields()
 	}
-
+	const Update = async (values) => {
+		console.log(values);
+		if(props.index != -1){
+			const response = await fetch('http://localhost:4001/category/'+categogy_id,{
+				method: 'PATCH',
+				body: JSON.stringify({
+					name: values.CategoryName,
+					type: values.CategoryType,
+				})
+			});
+			const response2 = await fetch('http://localhost:4001/category');
+			
+			let js = response2.json();
+			console.log(js);
+			console.log(categogy_id);
+			console.log(js[props.index]);
+			console.log(response.status);
+		}
+	}
+	const categogy_name = (data == null)? "": data.categoryName ; 
+	const categogy_type = (data == null)? "": data.categoryType;
+	const categogy_id =  (data == null)? -1: data.categoryId;
 	return (
 		<Form {...layout} form={form} name='control-hooks' onFinish={onFinish} style={{ maxWidth: 600 }}>
-			<Form.Item name='foodName' label='Food Name' rules={[{ required: true }]}>
-				<Input
-					value={data == null ||props.index == null || props.index == -1 ? '' : "!"}
-					placeholder={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].foodName}
+			<Form.Item name='CategoryName' label='Category Name' rules={[{ required: false }]}>
+				<Input type='text' placeholder={categogy_name} 				
 				/>
 			</Form.Item>
-			<Form.Item name='category_type' label='Type' rules={[{ required: true }]}>
-				<Select
-					value={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].categogy_type}
-					placeholder={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].categogy_type}
+			<Form.Item name='CategoryType' label='Type' rules={[{ required: true }]}>
+			<Select
+				
 					allowClear>
 					<Option value='Thực phẩm tươi'>Thực phẩm tươi</Option>
 					<Option value='Rau-Củ-Quả'>Rau-Củ-Quả</Option>
@@ -128,4 +147,4 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 	)
 }
 
-export default AddForm
+export default AddCategory
