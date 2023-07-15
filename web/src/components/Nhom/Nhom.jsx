@@ -1,61 +1,62 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Input, Modal, Form, Button, Space, message } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
-import moment from 'moment'
-import users from './User'
+import { Table, Input, Modal, Form, Button, Space, message, Divider } from 'antd'
 import axios from 'axios'
 import { API_URL } from '../../utils/apiUrl'
+import AddGroup from './AddGroup'
 
 const { Search } = Input
 
 const Nhom = () => {
+	const [form] = Form.useForm()
 	const [searchText, setSearchText] = useState(null)
 	const [selectedRowData, setSelectedRowData] = useState([])
 	const [isAddParticipantFormVisible, setIsAddParticipantFormVisible] = useState(false)
+	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
 	const [isModalVisible, setIsModalVisible] = useState(false)
 	const [isModalVisible2, setIsModalVisible2] = useState(false)
-	const [selectedUsers, setSelectedUsers] = useState(users)
 	const [data, setData] = useState([])
+	const [tmpUserId, setTmpUserId] = useState(null)
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				await axios.get(`${API_URL}/group/${localStorage.getItem('userId')}`).then((res) => {
-					if (res.status == 200) setData(res.data)
-					else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
-				})
-			} catch (error) {
-				message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
-			}
+	const fetchData = async () => {
+		try {
+			await axios.get(`${API_URL}/group/${localStorage.getItem('userId')}`).then((res) => {
+				if (res.status == 200) setData(res.data)
+				else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
+			})
+		} catch (error) {
+			message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
 		}
-		fetchData()
-	}, [])
-
-	const handleSearch = (value) => {
-		setSearchText(value)
 	}
 
-	const handleRowClick = async (record) => {
+	const fetchGroupData = async (groupId) => {
 		try {
-			await axios.get(`${API_URL}/group/${record.groupId}/detail`).then((res) => {
+			await axios.get(`${API_URL}/group/${groupId}/detail`).then((res) => {
 				if (res.status == 200) setSelectedRowData(res.data)
 				else message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
 			})
 		} catch (error) {
 			message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau')
 		}
+	}
+	useEffect(() => {
+		fetchData()
+	}, [])
+
+	useEffect(() => {
+		fetchData()
+	}, [isCreateModalOpen])
+
+	const handleSearch = (value) => {
+		setSearchText(value)
+	}
+
+	const handleRowClick = async (record) => {
+		await fetchGroupData(record.groupId)
 		setIsModalVisible2(true)
 	}
-	const handleSearchUsers = (value) => {
-		const filteredUsers = users.filter((user) => user.name.toLowerCase().includes(value.toLowerCase()))
-		setSelectedUsers(filteredUsers)
-	}
-	// Hàm thêm người tham gia
-	const addParticipant = () => {
-		setIsAddParticipantFormVisible(!isAddParticipantFormVisible)
-	}
-	const handleEdit = (record) => {
-		setSelectedRowData(record)
+
+	const handleEdit = async (record) => {
+		await fetchGroupData(record.groupId)
 		setIsModalVisible(true)
 	}
 
@@ -63,62 +64,19 @@ const Nhom = () => {
 		setIsModalVisible(false)
 		setIsModalVisible2(false)
 	}
-	const handleDelete = (index) => {
-		const updatedParticipants = [...selectedRowData.nguoiThamGia]
-		updatedParticipants.splice(index, 1)
-		const updatedData = data.map((item) => {
-			if (item.groupId === selectedRowData.groupId) {
-				return {
-					...item,
-					nguoiThamGia: updatedParticipants,
+	const handleFormSubmit = async () => {
+		await axios
+			.patch(`${API_URL}/group/${selectedRowData.groupId}`, { name: form.getFieldValue('name') })
+			.then((res) => {
+				if (res.status == 200) {
+					message.success('Cập nhật thông tin nhóm thành công', [2], () => {
+						fetchData()
+						setIsModalVisible(false)
+					})
+				} else {
+					message.error('Có lỗi xảy ra, vui lòng thử lại sau', [2])
 				}
-			}
-			return item
-		})
-		setData(updatedData)
-		setSelectedRowData((prevMeeting) => ({
-			...prevMeeting,
-			nguoiThamGia: updatedParticipants,
-		}))
-	}
-	const handleSelectUser = (user) => {
-		const updatedSelectedRowData = {
-			...selectedRowData,
-			nguoiThamGia: [
-				...selectedRowData.nguoiThamGia,
-				{
-					name: user.name,
-					role: user.role,
-				},
-			],
-		}
-
-		setSelectedRowData(updatedSelectedRowData)
-
-		const updatedData = data.map((record) => {
-			if (record.groupId === selectedRowData.groupId) {
-				return updatedSelectedRowData
-			}
-			return record
-		})
-
-		setData(updatedData)
-	}
-	const handleFormSubmit = (values) => {
-		// Thực hiện cập nhật dữ liệu trong state `data` với giá trị mới từ `values`
-		const updatedData = data.map((record) => {
-			if (record.groupId === selectedRowData.groupId) {
-				return {
-					...record,
-					name: values.name,
-					adminName: values.adminName,
-					nguoiThamGia: values.nguoiThamGia,
-				}
-			}
-			return record
-		})
-		setData(updatedData)
-		setIsModalVisible(false)
+			})
 	}
 	const columns = [
 		{
@@ -168,6 +126,21 @@ const Nhom = () => {
 				onChange={(e) => handleSearch(e.target.value)}
 				style={{ width: 200, marginBottom: 16 }}
 			/>
+			<Button
+				onClick={() => {
+					setIsCreateModalOpen(true)
+				}}>
+				Tạo nhóm
+			</Button>
+			<Modal
+				title='Tạo nhóm'
+				open={isCreateModalOpen}
+				footer={null}
+				onCancel={() => {
+					setIsCreateModalOpen(false)
+				}}>
+				<AddGroup setIsCreateModalOpen={setIsCreateModalOpen} />
+			</Modal>
 			<Table columns={columns} dataSource={filteredData} />
 
 			<Modal title='Thông tin Nhóm' visible={isModalVisible2} onCancel={handleModalClose} footer={null}>
@@ -183,7 +156,7 @@ const Nhom = () => {
 							<strong>Người Tạo:</strong> {selectedRowData.users?.find((e) => e.isGroupAdmin).name}
 						</p>
 						<p>
-							<strong>Người tham gia:</strong>
+							<strong>Thành viên:</strong>
 						</p>
 						<Table
 							size='small'
@@ -208,55 +181,96 @@ const Nhom = () => {
 				)}
 			</Modal>
 
-			<Modal title='Thông tin nhóm' visible={isModalVisible} onCancel={handleModalClose} footer={null}>
+			<Modal title='Thông tin nhóm' open={isModalVisible} onOk={handleFormSubmit} onCancel={handleModalClose}>
 				{selectedRowData && (
-					<Form onFinish={handleFormSubmit} initialValues={selectedRowData}>
+					<Form form={form}>
 						<Form.Item label='Mã nhóm'>
 							<span>{selectedRowData.groupId}</span>
 						</Form.Item>
-						<Form.Item label='Tên nhóm' name='name' rules={[{ required: true, message: 'Vui lòng nhập tên nhóm!' }]}>
+						<Form.Item
+							label='Tên nhóm'
+							name='name'
+							initialValue={selectedRowData.name}
+							rules={[{ required: true, message: 'Vui lòng nhập tên nhóm!' }]}>
 							<Input />
 						</Form.Item>
 						<Form.Item
-							label='Người tạo'
-							name='adminName'
-							rules={[{ required: true, message: 'Vui lòng nhập tên người tạo!' }]}>
-							<Input />
-						</Form.Item>
-						<Form.Item
-							label='Người tham gia'
+							label='Thành viên'
 							name='nguoiThamGia'
-							rules={[{ required: true, message: 'Vui lòng nhập người tham gia!' }]}>
-							<Table
-								size='small'
-								bordered
-								dataSource={selectedRowData.nguoiThamGia}
-								pagination={false}
-								columns={[
-									{
-										title: 'Tên',
-										dataIndex: 'name',
-										key: 'name',
-									},
-									{
-										title: 'Vai Trò',
-										dataIndex: 'role',
-										key: 'role',
-									},
-									{
-										title: 'Thao tác',
-										key: 'action',
-										render: (_, record, index) => (
-											<a href='#4' onClick={() => handleDelete(index)}>
-												Xóa
-											</a>
-										),
-									},
-								]}
-							/>
-						</Form.Item>
+							rules={[{ required: true, message: 'Vui lòng nhập người tham gia!' }]}></Form.Item>
+						<Table
+							size='small'
+							bordered
+							dataSource={selectedRowData.users}
+							pagination={false}
+							columns={[
+								{
+									title: 'UID',
+									dataIndex: 'userId',
+									key: 'UserId',
+								},
+								{
+									title: 'Tên',
+									dataIndex: 'name',
+									key: 'name',
+								},
+								{
+									title: 'Vai Trò',
+									dataIndex: 'isGroupAdmin',
+									key: 'isGroupAdmin',
+									render: (e) => (e ? 'Nhóm trưởng' : 'Thành viên'),
+								},
+								{
+									title: 'Thao tác',
+									value: 'userId',
+									key: 'action',
+									render: (_, record, index) => (
+										<a
+											href='#4'
+											onClick={async () => {
+												await axios
+													.post(`${API_URL}/group/${selectedRowData.groupId}/removeUser`, {
+														userId: parseInt(record.userId),
+													})
+													.then((res) => {
+														if (res.status == 201) {
+															message.success('Xóa người dùng khỏi nhóm thành công!', [1])
+															setSelectedRowData({
+																...selectedRowData,
+																users: selectedRowData.users.filter((user) => user.userId != record.userId),
+															})
+														}
+													})
+											}}>
+											Xóa
+										</a>
+									),
+								},
+							]}
+						/>
 						<Form.Item>
-							<Button type='primary'>Thêm thành viên</Button>
+							<Input
+								placeholder='Nhập UID của người dùng muốn thêm'
+								onChange={(e) => {
+									setTmpUserId(e.target.value)
+								}}
+							/>
+							<Button
+								type='primary'
+								onClick={async () => {
+									await axios
+										.post(`${API_URL}/group/${selectedRowData.groupId}/addUser`, {
+											userId: parseInt(tmpUserId),
+										})
+										.then((res) => {
+											if (res.status == 201) {
+												message.success('Thêm người dùng vào nhóm thành công', [1])
+												fetchGroupData(selectedRowData.groupId)
+											}
+										})
+								}}>
+								Thêm thành viên
+							</Button>
 						</Form.Item>
 					</Form>
 				)}
