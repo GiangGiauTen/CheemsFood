@@ -67,10 +67,11 @@ const QuanLyDanhMuc = () => {
 	}
 	let Edit = (i) => {
 		setEditMode(i)
-		setData(data)
 	}
 	let Huy = () => {
-		setEditMode(-1)
+		ft();
+		console.log(data);
+		setEditMode(-1);
 		console.log('oke')
 	}
 	// Define the columns for the table
@@ -97,7 +98,7 @@ const QuanLyDanhMuc = () => {
 			key: 'action',
 			render: (text, record, index) => (
 				<Space size='middle'>
-					<a onClick={() => Edit(index)}>Edit</a>
+					<a onClick={() => Edit(record.categoryId)}>Edit</a>
 					<a onClick={() => Delete(index)}>Delete</a>
 				</Space>
 			),
