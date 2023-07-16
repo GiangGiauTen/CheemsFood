@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Space, Modal, Button, Form, Input } from 'antd';
+import { Table, Space, Modal, Button, Form, Input,message  } from 'antd';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 
@@ -15,10 +15,11 @@ const QuanLyDoLuuTru = () => {
 
   const fetchReservedFoods = async () => {
     try {
-      const response = await axios.get(`${API_URL}/storage/user/${userId}`);
-      setReservedFoods(response.data.foods); // Update to response.data.foods since the API response contains the foods array
+      const response = await axios.get(`${API_URL}/storage/user/${userId}`);console.log(response.message);
+      
+      //setReservedFoods(response.data.foods); // Update to response.data.foods since the API response contains the foods array
     } catch (error) {
-      console.error('Error fetching reserved foods:', error);
+      message.error('Lấy dữ liệu Storage thất bại, vui lòng thử lại sau');
     }
   };
 
