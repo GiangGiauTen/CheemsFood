@@ -4,8 +4,8 @@ import {
     BarChartOutlined,
     ContactsOutlined,
   } from '@ant-design/icons';
-  import { Layout, Menu, theme } from 'antd';
-  
+  import { Layout, Menu, theme, Button } from 'antd';
+  import { useNavigate } from 'react-router-dom';
   import AddCategory from './AddCategory.tsx';
   import QuanLyTaiKhoan from './QuanLyTaiKhoan';
   import QuanLyDanhMuc from './QuanLyDanhMuc';
@@ -23,6 +23,15 @@ import {
       label,
     };
   }
+  
+  const AdminView = () => {
+    
+    const [menuKey, setMenuKey] = useState('1');
+    const {
+      token: { colorBgContainer },
+    } = theme.useToken();
+
+    const navigate = useNavigate();
   const items = [
     
     getItem('Quản Lý Tài Khoản', '1', <BarChartOutlined />),
@@ -32,13 +41,22 @@ import {
      
     ]),
     getItem('Quản Lý Đồ Ăn', '4',<BarChartOutlined></BarChartOutlined>),
-    getItem('Tài Khoản', '5', <TeamOutlined />)
+    getItem(
+      <Button
+        type="primary"
+        onClick={() => {
+          localStorage.removeItem('userId');
+          localStorage.removeItem('name');
+          localStorage.removeItem('username');
+          localStorage.removeItem('role');
+          navigate('/');
+        }}>
+        Đăng xuất
+      </Button>,
+      '5',
+    ),
   ];
-  const AdminView = () => {
-    const [menuKey, setMenuKey] = useState('1');
-    const {
-      token: { colorBgContainer },
-    } = theme.useToken();
+
     return (
       <Layout hasSider theme="light">
         <Sider
