@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Table, message, DatePicker } from 'antd';
+import { Form, Input, Button, Table, message, DatePicker, Select } from 'antd';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 const { Search } = Input;
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 
-const AddToBuyList = ({ setIsCreateModalOpen }) => {
+const AddToNhom = ({ setIsCreateModalOpen, selectedGroup }) => {
   const [form] = Form.useForm();
   const [foodList, setFoodList] = useState([]);
   const [isAddParticipantFormVisible, setIsAddParticipantFormVisible] =
     useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [selectedfoodList, setSelectedfoodList] = useState(null);
-  const [filteredfoodList, setFilteredfoodList] = useState([]);
+  const [selectedFoodList, setSelectedFoodList] = useState(null);
+  const [filteredFoodList, setFilteredFoodList] = useState([]);
   const [detailData, setDetailData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedGroupOption, setSelectedGroupOption] = useState(null);
 
   // Hàm thêm food
   const addParticipant = () => {
     setIsAddParticipantFormVisible(!isAddParticipantFormVisible);
   };
 
-  //Hàm chọn số lượng food cần mua
+  // Hàm chọn số lượng food cần mua
   const handleQuantityChange = (record, value) => {
     record.quantity = value;
   };
@@ -42,13 +44,13 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
   };
 
   // Hàm tìm food
-  const handleSearchfoodList = value => {
+  const handleSearchFoodList = value => {
     setSearchValue(value);
 
-    const filteredList = selectedfoodList.filter(user =>
+    const filteredList = selectedFoodList.filter(user =>
       user.name.toLowerCase().includes(value.toLowerCase()),
     );
-    setFilteredfoodList(filteredList);
+    setFilteredFoodList(filteredList);
   };
 
   // Lấy danh sách đồ ăn có thể thêm
@@ -58,8 +60,8 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
         const response = await axios.get(`${API_URL}/food`);
         if (response.status === 200) {
           const data = response.data;
-          setSelectedfoodList(data);
-          setFilteredfoodList(data);
+          setSelectedFoodList(data);
+          setFilteredFoodList(data);
         } else {
           message.error('Lấy dữ liệu thất bại, vui lòng thử lại sau');
         }
@@ -79,8 +81,8 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
       }));
 
       const response = await axios.post(`${API_URL}/to-buy-list`, {
-        ownerId: parseInt(localStorage.getItem('userId')),
-        date: selectedDate, // Truyền giá trị ngày vào request
+        groupOwnerId: selectedGroupOption,
+        date: selectedDate,
         toBuyListDetail: toBuyListDetails,
       });
 
@@ -114,6 +116,22 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
       <h1>Thêm Nhóm</h1>
       <Form form={form} onFinish={handleSubmit}>
         <Form.Item
+          label="Nhóm"
+          name="group"
+          rules={[{ required: true, message: 'Vui lòng chọn nhóm' }]}>
+          <Select
+            style={{ width: '100%' }}
+            onChange={value => setSelectedGroupOption(value)}
+            placeholder="Chọn nhóm">
+            {selectedGroup &&
+              selectedGroup.map(group => (
+                <Option key={group.groupId} value={group.groupId}>
+                  {group.name}
+                </Option>
+              ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
           label="Ngày"
           name="date"
           rules={[{ required: true, message: 'Vui lòng chọn ngày' }]}>
@@ -140,15 +158,15 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
           <Form.Item>
             <Search
               placeholder="Tìm kiếm đồ ăn"
-              onSearch={handleSearchfoodList}
-              onChange={e => handleSearchfoodList(e.target.value)}
+              onSearch={handleSearchFoodList}
+              onChange={e => handleSearchFoodList(e.target.value)}
               value={searchValue}
               style={{ marginBottom: 10 }}
             />
             <Table
               size="small"
               bordered
-              dataSource={filteredfoodList}
+              dataSource={filteredFoodList}
               pagination={{ pageSize: 5 }}
               columns={[
                 {
@@ -198,4 +216,4 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
   );
 };
 
-export default AddToBuyList;
+export default AddToNhom;
