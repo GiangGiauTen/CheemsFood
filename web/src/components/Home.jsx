@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminView from './Admin/adminView';
 import QuanLyDoMuaNhom from './QuanLyDoCanMua/QuanLyDoMuaNhom';
+import ThemDanhSachDoCanMua from './QuanLyDoCanMua/ThemDanhSachDoCanMua';
 
 const { Header, Content, Sider } = Layout;
 
@@ -58,6 +59,7 @@ function Home() {
     getItem('Quản Lý Đồ Cần Mua', '_4', <ContactsOutlined />, [
       getItem('Cá Nhân', '4'),
       getItem('Nhóm', '41'),
+      getItem('Thêm', '42'),
     ]),
     getItem(
       <Button
@@ -149,6 +151,11 @@ function Home() {
               {menuKey === '41' && (
                 <div>
                   <QuanLyDoMuaNhom />
+                </div>
+              )}
+              {menuKey === '42' && (
+                <div>
+                  <ThemDanhSachDoCanMua />
                 </div>
               )}
             </Content>

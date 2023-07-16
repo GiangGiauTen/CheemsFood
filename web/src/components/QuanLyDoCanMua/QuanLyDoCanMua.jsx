@@ -3,12 +3,15 @@ import { Table, Modal, Button, message } from 'antd';
 // import toBuyListData from './toBuyListData'
 import FoodDetail from './foodDetail';
 import axios from 'axios';
+import moment from 'moment';
+import ThemDanhSachDoCanMua from './ThemDanhSachDoCanMua';
 import { API_URL } from '../../utils/apiUrl';
 const QuanLyDoCanMua = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [toBuyList, setToBuyList] = useState([]);
-
+  //State tạo Mới
+  const [isCreateFormVisible, setIsCreateFormVisible] = useState(false);
   const handleRowClick = record => {
     setSelectedRowData(record);
     setIsModalVisible(true);
@@ -34,6 +37,7 @@ const QuanLyDoCanMua = () => {
     };
     fetchData();
   }, []);
+
   const columns = [
     {
       title: 'Mã Danh Sách',
@@ -42,6 +46,7 @@ const QuanLyDoCanMua = () => {
     {
       title: 'Ngày',
       dataIndex: 'date',
+      render: date => moment(date).format('DD-MM-YYYY'),
     },
     {
       title: 'Thuộc về',
@@ -76,7 +81,7 @@ const QuanLyDoCanMua = () => {
         pagination={false}
         rowKey="toBuyListId"
       />
-
+      <ThemDanhSachDoCanMua setToBuyList={setToBuyList} />
       <Modal
         title="Thông tin Đơn Hàng"
         visible={isModalVisible}
