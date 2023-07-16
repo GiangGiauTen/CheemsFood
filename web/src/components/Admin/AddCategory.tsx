@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select } from 'antd'
+import { Button, Form, Input, Select, message } from 'antd'
 import React from 'react'
 import { useState, useEffect } from 'react'
 
@@ -108,6 +108,22 @@ const AddCategory: React.FC<MyComponentProps> = (props) => {
 			}).then(Response => { props.destroy();}
 				
 			)
+		}
+		else{
+			const response = await fetch('http://localhost:4001/category/'
+				,{
+				method: 'POST',
+				body: JSON.stringify({
+					name: values.CategoryName,
+					type: values.CategoryType,
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				  }
+			}) 
+				
+			
+			message.success('Thêm Category thành công!', () => onReset())
 		}
 	}
 	const categogy_name = (data == null)? "": data.categoryName ; 
