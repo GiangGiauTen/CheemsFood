@@ -1,287 +1,181 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Space, Modal, Button, Form, Input } from 'antd';
-// import reservedFoodsData from './CongThuc';
-import QuanLyCongThucYeuThich from './QuanLyCongThucYeuThich'; // Import QuanLyCongThucYeuThich
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Table, Space, Modal, Button, Form, Input, Tooltip } from 'antd'
+import { InfoCircleTwoTone, HeartTwoTone } from '@ant-design/icons'
+import axios from 'axios'
+import { API_URL } from '../../utils/apiUrl'
+
 const QuanLyCongThuc = () => {
-  // Sample data for reserved foods
-  const [reservedFoods, setReservedFoods] = useState([]);
+	const [reservedFoods, setReservedFoods] = useState([])
+	const [viewModalVisible, setViewModalVisible] = useState(false)
+	const [selectedFood, setSelectedFood] = useState(null)
+	const [favoriteRecipes, setFavoriteRecipes] = useState([])
+	const [searchValue, setSearchValue] = useState('')
+	const [filterFavorites, setFilterFavorites] = useState(false)
 
-  // Define the columns for the table
-  const columns = [
-    {
-      title: 'Recipe Id',
-      dataIndex: 'recipeId',
-      key: 'recipeId',
-    },
-    {
-      title: 'Recipe Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
+	const columns = [
+		{
+			title: 'ID',
+			dataIndex: 'recipeId',
+			key: 'recipeId',
+		},
+		{
+			title: 'Tên món ăn',
+			dataIndex: 'name',
+			key: 'name',
+		},
+		{
+			title: 'Cách làm',
+			dataIndex: 'description',
+			key: 'description',
+			render: (text) => {
+				return String(text).split(' ').slice(0, 50).join(' ') + ' ...'
+			},
+		},
+		{
+			title: '',
+			key: 'action',
+			render: (text, record) => (
+				<Space size='middle'>
+					<Tooltip title='Detail'>
+						<a onClick={() => handleViewModal(record)}>
+							<InfoCircleTwoTone />
+						</a>
+					</Tooltip>
+					<Tooltip title={favoriteRecipes.includes(record.recipeId) ? 'Remove from favorite' : 'Add to favorite'}>
+						<a onClick={() => handleFavorite(record)}>
+							{favoriteRecipes.includes(record.recipeId) ? <HeartTwoTone twoToneColor='#eb2f96' /> : <HeartTwoTone />}
+						</a>
+					</Tooltip>
+				</Space>
+			),
+		},
+	]
 
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="mrecipeIddle">
-          <a href="#1" onClick={() => handleView(record)}>
-            View
-          </a>
-          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
-          <a href="#2" onClick={() => handleEdit(record)}>
-            Edit
-          </a>
-          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
-          <a href="#3" onClick={() => handleDelete(record)}>
-            Delete
-          </a>
-          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
-          <a href="#4" onClick={() => handleFavorite(record)}>
-            Favorite
-          </a>
-        </Space>
-      ),
-    },
-  ];
+	const fetchReservedFoods = async () => {
+		try {
+			const response = await axios.get(`${API_URL}/recipe`)
+			if (response.status === 200) {
+				setReservedFoods(response.data)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
 
-  // Modal states
-  const [viewModalVisible, setViewModalVisible] = useState(false);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [selectedFood, setSelectedFood] = useState(null);
-  const [editForm] = Form.useForm();
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [newIngredientForm] = Form.useForm();
-  const [editedDescription, setEditedDescription] = useState('');
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]); // Thêm khai báo cho biến setFavoriteRecipes
+	const fetchFavoriteRecipe = async () => {
+		try {
+			const response = await axios.get(`${API_URL}/recipe/favorite/${localStorage.getItem('userId')}`)
+			if (response.status === 200) {
+				console.log(response.data)
+				setFavoriteRecipes(response.data)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
 
-  const fetchReservedFoods = async () => {
-    try {
-      const response = await axios.get('http://localhost:4001/recipe'); // Thay đổi URL tương ứng với API của bạn
-      if (response.status === 200) {
-        setReservedFoods(response.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchReservedFoods();
-  }, []);
-  // Handle view action
-  const handleView = async food => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4001/recipe/${food.recipeId}`,
-      );
-      if (response.status === 200) {
-        setSelectedFood(response.data);
-        setViewModalVisible(true);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+	useEffect(() => {
+		fetchReservedFoods()
+		fetchFavoriteRecipe()
+	}, [])
 
-  // Handle edit action
-  const handleEdit = food => {
-    setSelectedFood(food);
-    setEditedDescription(food.description); //amdkmasmdksamdlksam
-    editForm.setFieldsValue({
-      description: food.description,
-    });
-    setEditModalVisible(true);
-  };
+	useEffect(() => {
+		if (JSON.parse(localStorage.getItem('listFavor'))) {
+			setFavoriteRecipes(JSON.parse(localStorage.getItem('listFavor')))
+		}
+	}, [])
 
-  // Handle delete action
-  const handleDelete = food => {
-    // Perform delete action here
-    setReservedFoods(
-      reservedFoods.filter(item => item.recipeId !== food.recipeId),
-    );
-  };
+	// Handle favor action
+	const handleFavorite = async (record) => {
+		await axios.post(`${API_URL}/recipe/favorite`, {
+			userId: parseInt(localStorage.getItem('userId')),
+			recipeId: record.recipeId,
+		})
+		if (favoriteRecipes.includes(record.recipeId))
+			setFavoriteRecipes(favoriteRecipes.filter((e) => e !== record.recipeId))
+		else setFavoriteRecipes((prevFavoriteRecipes) => [...prevFavoriteRecipes, record.recipeId])
+	}
 
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem('listFavor'))) {
-      setFavoriteRecipes(JSON.parse(localStorage.getItem('listFavor')));
-    }
-  }, []);
-  useEffect(() => {
-    if (favoriteRecipes.length > 0) {
-      localStorage.setItem('listFavor', JSON.stringify(favoriteRecipes));
-    }
-  }, [favoriteRecipes]);
+	// View modal close handler
+	const handleViewModalClose = () => {
+		setSelectedFood(null)
+		setViewModalVisible(false)
+	}
 
-  // Handle favor action
-  const handleFavorite = record => {
-    // Add the recipe to favoriteRecipes
-    setFavoriteRecipes(prevFavoriteRecipes => [...prevFavoriteRecipes, record]);
-  };
+	// View modal open handler
+	const handleViewModal = async (record) => {
+		await axios.get(`${API_URL}/recipe/${record.recipeId}`).then((response) => {
+			console.log(response)
+			setSelectedFood(response.data)
+			setViewModalVisible(true)
+		})
+	}
 
-  // View modal close handler
-  const handleViewModalClose = () => {
-    setSelectedFood(null);
-    setViewModalVisible(false);
-  };
+	// Search input change handler
+	const handleSearchChange = (e) => {
+		setSearchValue(e.target.value)
+	}
 
-  // Edit modal close handler
-  const handleEditModalClose = () => {
-    setSelectedFood(null);
-    setEditModalVisible(false);
-  };
+	// Filter favorites checkbox change handler
+	const handleFilterFavoritesChange = (e) => {
+		setFilterFavorites(e.target.checked)
+	}
 
-  const handleModalSubmit = () => {
-    editForm.valrecipeIdateFields().then(values => {
-      const updatedFood = {
-        ...selectedFood,
-        description: values.description,
-      };
+	// Apply search and filter
+	const filteredFoods = reservedFoods.filter((food) => {
+		const nameMatch = food.name.toLowerCase().includes(searchValue.toLowerCase())
+		const isFavorite = favoriteRecipes.includes(food.recipeId)
+		return (!filterFavorites || isFavorite) && nameMatch
+	})
 
-      const updatedFoods = reservedFoods.map(food =>
-        food.recipeId === updatedFood.recipeId ? updatedFood : food,
-      );
-      console.log(updatedFood);
-      // setReservedFoods(updatedFoods);
-      setEditModalVisible(false);
-    });
-  };
+	return (
+		<div>
+			<h1>Danh sách công thức nấu ăn</h1>
 
-  // Handle add action
-  const handleAdd = () => {
-    setSelectedFood(null);
-    setAddModalVisible(true);
-  };
+			<div style={{ marginBottom: '16px' }}>
+				<Input
+					placeholder='Tìm món ăn'
+					value={searchValue}
+					onChange={handleSearchChange}
+					style={{ width: '200px', marginRight: '16px' }}
+				/>
+				<label>
+					<input type='checkbox' checked={filterFavorites} onChange={handleFilterFavoritesChange} /> Chọn những món ăn
+					yêu thích
+				</label>
+			</div>
 
-  const handleAddModalSubmit = () => {
-    newIngredientForm.valrecipeIdateFields().then(values => {
-      const newIngredient = {
-        recipeId: reservedFoods.length + 1, // Generate a unique recipeId for the new ingredient
-        name: values.name,
-        description: values.description,
-      };
+			<Table columns={columns} dataSource={filteredFoods} />
 
-      const updatedFoods = [...reservedFoods, newIngredient];
-      setReservedFoods(updatedFoods);
-      setAddModalVisible(false);
-      newIngredientForm.resetFields();
+			<Modal
+				title='Food Details'
+				visible={viewModalVisible}
+				onCancel={handleViewModalClose}
+				footer={[
+					<Button key='close' onClick={handleViewModalClose}>
+						Đóng
+					</Button>,
+				]}>
+				{selectedFood && (
+					<Form layout='vertical'>
+						<Form.Item label='Tên món ăn'>
+							<Input value={selectedFood.name} readOnly />
+						</Form.Item>
+						<Form.Item label='Cách làm'>
+							<Input.TextArea value={selectedFood.description} rows={4} readOnly />
+						</Form.Item>
+						<Form.Item label='Nguyên liệu'>
+							<ul>
+								{selectedFood.foods.map((food) => (
+									<li key={food.foodId}>{food.foodNames}</li>
+								))}
+							</ul>
+						</Form.Item>
+					</Form>
+				)}
+			</Modal>
+		</div>
+	)
+}
 
-      // Save the updated reserved foods to Reserved.js
-      saveReservedFoods(updatedFoods);
-    });
-  };
-
-  // Function to save the updated reserved foods to Reserved.js
-  const saveReservedFoods = foods => {
-    // You can customize this implementation based on your requirements
-    // For example, you can use a backend API or local storage to persist the data
-    // In this example, we'll simply log the updated foods to the console
-    console.log('Updated Reserved Foods:', foods);
-  };
-
-  return (
-    <div>
-      <h1>Reserved Food List</h1>
-      <Button type="primary" onClick={handleAdd}>
-        Add
-      </Button>
-
-      <Table columns={columns} dataSource={reservedFoods} />
-
-      <Modal
-        title="Food Details"
-        visible={viewModalVisible}
-        onCancel={handleViewModalClose}
-        footer={[
-          <Button key="close" onClick={handleViewModalClose}>
-            Close
-          </Button>,
-        ]}>
-        {selectedFood && (
-          <Form layout="vertical">
-            <Form.Item label="Recipe Name">
-              <Input value={selectedFood.name} readOnly />
-            </Form.Item>
-            <Form.Item label="Description">
-              <Input.TextArea
-                value={selectedFood.description}
-                rows={4}
-                readOnly
-              />
-            </Form.Item>
-            <Form.Item label="Foods">
-              <ul>
-                {selectedFood.foods.map(food => (
-                  <li key={food.foodId}>{food.foodNames}</li>
-                ))}
-              </ul>
-            </Form.Item>
-          </Form>
-        )}
-      </Modal>
-      <Modal
-        title="Edit Food"
-        visible={editModalVisible}
-        onCancel={handleEditModalClose}
-        footer={[
-          <Button key="close" onClick={handleEditModalClose}>
-            Close
-          </Button>,
-          <Button key="save" type="primary" onClick={handleModalSubmit}>
-            Save
-          </Button>,
-        ]}>
-        {selectedFood && (
-          <Form form={editForm} layout="vertical">
-            <Form.Item
-              name="description"
-              label="Description"
-              initialValue={selectedFood.description}>
-              <Input.TextArea rows={4} />
-            </Form.Item>
-          </Form>
-        )}
-      </Modal>
-      <Modal
-        title="Add Food"
-        visible={addModalVisible}
-        onCancel={() => setAddModalVisible(false)}
-        onOk={handleAddModalSubmit}>
-        <Form form={newIngredientForm} layout="vertical">
-          <Form.Item
-            name="name"
-            label="Recipe Name"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the Recipe Name',
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            initialValue={editedDescription}
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the description',
-              },
-            ]}>
-            <Input.TextArea
-              rows={4}
-              onChange={e => setEditedDescription(e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
-  );
-};
-
-export default QuanLyCongThuc;
+export default QuanLyCongThuc

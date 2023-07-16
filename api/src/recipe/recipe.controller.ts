@@ -10,6 +10,7 @@ import {
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { AddToFavoriteDto } from './dto/add-to-favorite.dto';
 
 @Controller('recipe')
 export class RecipeController {
@@ -35,6 +36,15 @@ export class RecipeController {
     return this.recipeService.update(+id, updateRecipeDto);
   }
 
+  @Get('/favorite/:uid')
+  getAllFavoriteRecipe(@Param('uid') uid: string) {
+    return this.recipeService.getAllFavoriteRecipe(+uid);
+  }
+
+  @Post('/favorite')
+  addOrRemoveFavoriteRecipe(@Body() addToFavoriteDto: AddToFavoriteDto) {
+    return this.recipeService.addOrRemoveFavoriteRecipe(addToFavoriteDto);
+  }
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.recipeService.remove(+id);

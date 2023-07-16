@@ -22,6 +22,7 @@ export class SeedService {
     await this.prisma.recipeFoodList.deleteMany();
     await this.prisma.favoriteRecipe.deleteMany();
     await this.prisma.storageFood.deleteMany();
+    await this.prisma.recipe.deleteMany();
     await this.prisma.storage.deleteMany();
     await this.prisma.food.deleteMany();
     await this.prisma.category.deleteMany();
@@ -379,7 +380,16 @@ export class SeedService {
       'Đùi gà tháo khớp',
       'Đùi tỏi gà',
       'Ức gà',
-      'Xương ống heo'
+      'Xương ống heo',
+      'Sườn sụn',
+      'Bắp bò',
+      'Thịt ba chỉ',
+      'Thịt gà',
+      'Nạm bò',
+      'Gân bò',
+      'Thịt bò thăn',
+      'Thịt bò ngon',
+      'Chim cút'
     ];
 
     const thitFoodPromises = thitFoodArr.map(async (food) => {
@@ -415,7 +425,10 @@ export class SeedService {
       'Râu bạch tuộc',
       'Tôm sú',
       'Đầu mực lá',
-      'Ếch làm sạch'
+      'Ếch làm sạch',
+      'Ghẹ',
+      'Cá diêu hồng',
+      'Tôm hùm'
     ];
 
     const haiSanFoodPromises = haiSanFoodArr.map(async (food) => {
@@ -467,7 +480,17 @@ export class SeedService {
       'Súp lơ trắng',
       'Thì là',
       'Tía tô',
-      'Xà lách'
+      'Xà lách',
+      'Kinh giới',
+      'Lá chanh',
+      'Rau thơm',
+      'Rau răm',
+      'Hành tăm',
+      'Cây ngò rí',
+      'Rau húng Láng',
+      'Nấm mèo',
+      'Hoa đậu biếc khô',
+      'Nấm rơm'
     ];
 
     const rauLaFoodPromises = rauLaFoodArr.map(async (food) => {
@@ -515,7 +538,17 @@ export class SeedService {
       'Ớt cay',
       'Ớt chuông xanh',
       'Ớt chuông đỏ',
-      'Ớt sừng'
+      'Ớt sừng',
+      'Hành tím',
+      'Củ riềng',
+      'Củ gừng',
+      'Bắp chuối',
+      'Trái ớt hiểm',
+      'Củ nghệ',
+      'Tỏi tây',
+      'Khoai mì',
+      'Khoai môn cau',
+      'Ngô hạt'
     ];
 
     const cuFoodPromises = cuFoodArr.map(async (food) => {
@@ -568,7 +601,11 @@ export class SeedService {
       'Vải thiều',
       'Xoài',
       'Đu đủ ruột đỏ',
-      'Me'
+      'Me',
+      'Trái thơm',
+      'Dừa nạo',
+      'Dừa sợi',
+      'Dừa non'
     ];
 
     const quaFoodPromises = quaFoodArr.map(async (food) => {
@@ -644,7 +681,9 @@ export class SeedService {
       'Miến phú hương',
       'Bún bò',
       'Bún giò heo',
-      'Bún riêu cua'
+      'Bún riêu cua',
+      'Bún tươi',
+      'Bánh phở'
     ];
 
     const phoBunMienFoodPromises = phoBunMienFoodArr.map(async (food) => {
@@ -664,7 +703,8 @@ export class SeedService {
     const suaTuoiFoodArr = [
       'Sữa tươi Vinamilk',
       'Sữa tươi TH True Milk',
-      'Sữa tươi Dutch Lady'
+      'Sữa tươi Dutch Lady',
+      'Sữa tươi'
     ];
 
     const suaTuoiFoodPromises = suaTuoiFoodArr.map(async (food) => {
@@ -790,7 +830,7 @@ export class SeedService {
 
     const boSuaPhoMaiFood = await Promise.all(boSuaPhoMaiFoodPromises);
 
-    const gaoFoodArr = ['Gạo nếp', 'Gạo tẻ', 'Gạo lứt'];
+    const gaoFoodArr = ['Gạo nếp', 'Gạo tẻ', 'Gạo lứt', 'Gạo'];
 
     const gaoFoodPromises = gaoFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
@@ -806,7 +846,15 @@ export class SeedService {
 
     const gaoFood = await Promise.all(gaoFoodPromises);
 
-    const nguCocFoodArr = ['Ngũ cốc ăn sáng', 'Ngũ cốc dinh dưỡng', 'Gạo lứt'];
+    const nguCocFoodArr = [
+      'Ngũ cốc ăn sáng',
+      'Ngũ cốc dinh dưỡng',
+      'Gạo lứt',
+      'Đậu xanh',
+      'Đậu phộng',
+      'Cốm xanh',
+      'Hạt sen'
+    ];
 
     const nguCoFoodPromises = nguCocFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
@@ -845,7 +893,13 @@ export class SeedService {
       'Thịt hộp',
       'Thịt xay',
       'Tôm khô hộp',
-      'Tôm nõn hộp'
+      'Tôm nõn hộp',
+      'Mắm ruốc Huế',
+      'Nước cốt dừa',
+      'Kim chi Hàn Quốc',
+      'Thạch rau câu dừa',
+      'Thạch rau câu giòn',
+      'Bò khô'
     ];
 
     const doHopFoodPromises = doHopFoodArr.map(async (food) => {
@@ -872,7 +926,12 @@ export class SeedService {
       'Bột mì chuyên bánh bông lan',
       'Bột mì đa dụng',
       'Bột tàu hủ',
-      'Bột cà ri'
+      'Bột cà ri',
+      'Bột năng',
+      'Bột gạo',
+      'Bột rau câu dẻo',
+      'Bột báng',
+      'Bột khoai'
     ];
 
     const botFoodPromises = botFoodArr.map(async (food) => {
@@ -909,7 +968,19 @@ export class SeedService {
       'Hương thảo',
       'Sốt mè rang',
       'Muối',
-      'Nghệ'
+      'Nghệ',
+      'Mắm tôm',
+      'Sa tế',
+      'Dầu hào',
+      'Muối i-ốt',
+      'Bột ngọt',
+      'Dấm trắng',
+      'Đường phèn',
+      'Dầu màu điều',
+      'Đường cát trắng',
+      'Vani',
+      'Dầu vừng',
+      'Ngũ vị hương'
     ];
 
     const giaViFoodPromises = giaViFoodArr.map(async (food) => {
@@ -926,7 +997,7 @@ export class SeedService {
 
     const giaViFood = await Promise.all(giaViFoodPromises);
 
-    const doUongFoodPromises = [
+    const doUongFoodArr = [
       'Nước lọc',
       'Coca cola',
       'Pessi',
@@ -958,7 +1029,7 @@ export class SeedService {
       });
     });
 
-    const doUongFood = await Promise.all(doUongFoodPromises);
+    const doUongFood = await Promise.all(doUongFoodArr);
 
     const trungFoodArr = [
       'Trứng gà ta',
@@ -985,7 +1056,8 @@ export class SeedService {
       'Chả chiên',
       'Chả bì',
       'Nem chua',
-      'Nem lụi'
+      'Nem lụi',
+      'Chả Huế'
     ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
         data: { name: food, description: food }
@@ -999,19 +1071,28 @@ export class SeedService {
     });
     const chaGioFood = await Promise.all(chaGioFoodArr);
 
-    const khacFoodArr = ['Đậu hũ', 'Rong biển lá', 'Rong biển vụn'].map(
-      async (food) => {
-        const dataFood = await this.prisma.food.create({
-          data: { name: food, description: food }
-        });
-        return await this.prisma.foodCategory.create({
-          data: {
-            foodId: dataFood.foodId,
-            categoryId: khacCategory.categoryId
-          }
-        });
-      }
-    );
+    const khacFoodArr = [
+      'Đậu hũ',
+      'Rong biển lá',
+      'Rong biển vụn',
+      'Mẻ',
+      'Hành khô',
+      'Huyết heo',
+      'Vỏ bưởi',
+      'Phèn chua',
+      'Mè trắng',
+      'Đậu phụ non'
+    ].map(async (food) => {
+      const dataFood = await this.prisma.food.create({
+        data: { name: food, description: food }
+      });
+      return await this.prisma.foodCategory.create({
+        data: {
+          foodId: dataFood.foodId,
+          categoryId: khacCategory.categoryId
+        }
+      });
+    });
     const khacFood = await Promise.all(khacFoodArr);
 
     const dateArray = [
@@ -1257,17 +1338,30 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Cua đồng: 1 kg
-        // Sườn sụn: 600 gr
-        // Bắp bò: 800 gr
-        // Bún tươi: 1 kg
-        // Đậu hũ: 10 miếng
-        // Cà chua: 5 – 7 quả
-        // 1 chút mẻ (ngoài ra bạn có thể thay thế bằng sấu, me hay quả dọc), gừng
-        // 1 ít mắm tôm
-        // Hành khô: 2 củ
-        // Hành lá, rau mùi
-        // Rau sống: rau muống chẻ, hoa chuối, thân chuối non, xà lách, mùi tàu, hành lá, tía tô, kinh giới, giá đỗ, chanh, ớt.
+        haiSanFood[2], // Cua đồng: 1 kg
+        thitFood[23], // Sườn sụn: 600 gr
+        thitFood[24], // Bắp bò: 800 gr
+        phoBunMienFood[6], // Bún tươi: 1 kg
+        khacFood[0], // Đậu hũ: 10 miếng
+        quaFood[7], // Cà chua: 5 – 7 quả
+        khacFood[3], // 1 chút mẻ (ngoài ra bạn có thể thay thế bằng sấu, me hay quả dọc), gừng
+        giaViFood[20], // 1 ít mắm tôm
+        khacFood[4], // Hành khô: 2 củ
+        rauLaFood[13], // Hành lá, rau mùi
+        rauLaFood[29],
+        rauLaFood[34], // Rau sống: rau muống chẻ, xà lách, mùi tàu, hành lá, tía tô, kinh giới, giá đỗ, chanh, ớt.
+        rauLaFood[19],
+        rauLaFood[33],
+        rauLaFood[35],
+        rauLaFood[12],
+        cuFood[2],
+        cuFood[27],
+        giaViFood[0],
+        giaViFood[15],
+        giaViFood[2],
+        giaViFood[6],
+        giaViFood[5],
+        giaViFood[21]
         // Gia vị: Dầu ăn, giấm, nước mắm, bột canh, hạt nêm, sa tế."
       ].map((food) => {
         return {
@@ -1297,11 +1391,16 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 500g thịt ba chỉ
-        // 3 cây sả
-        // 1 củ hành tím
-        // 1 quả ớt tươi
-        // 50g hành lá
+        thitFood[25], // 500g thịt ba chỉ
+        cuFood[6], // 3 cây sả
+        cuFood[31], // 1 củ hành tím
+        cuFood[27], // 1 quả ớt tươi
+        rauLaFood[13], // 50g hành lá
+        giaViFood[2],
+        giaViFood[3],
+        giaViFood[11],
+        giaViFood[18],
+        giaViFood[9]
         // Gia vị: 2 thìa canh nước mắm ngon, 1 thìa canh đường, 1 thài cà phê bột ngọt, 1 thìa canh nước hàng, muối, tiêu..
       ].map((food) => {
         return {
@@ -1332,13 +1431,19 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 1 con cá chép
-        // 100g thịt ba chỉ
-        // Củ riềng tươi
-        // Sả, gừng
-        // Hành khô, ớt
-        // Nước mắm, nước tương, hạt nêm, dầu hào, đường
-        // Nấm hương khô
+        haiSanFood[8], // 1 con cá chép
+        thitFood[25], // 100g thịt ba chỉ
+        cuFood[32], // Củ riềng tươi
+        cuFood[6],
+        cuFood[33], // Sả, gừng
+        khacFood[4],
+        cuFood[27], // Hành khô, ớt
+        giaViFood[2],
+        giaViFood[4],
+        giaViFood[5],
+        giaViFood[22],
+        giaViFood[3], // Nước mắm, nước tương, hạt nêm, dầu hào, đường
+        rauLaFood[23] // Nấm hương khô
       ].map((food) => {
         return {
           recipeId: caChepKhoRiengMienBac.recipeId,
@@ -1368,20 +1473,19 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Trứng vịt hoặc trứng gà công nghiệp: 3 – 4 quả
-        // Hàu sữa tươi: 1kg
-        // Hành lá: 50gr
-        // Hành củ: 3 – 4 củ
-        // Sữa tươi: 2 thìa cà phê (không bắt buộc)
-        // Hành tây: 1 củ vừa
-        // Dầu ăn: 5 thìa cà phê
-        // Nước mắm: 3 thìa cà phê
-        // Hạt nêm: 1 thìa cà phê
-        // Muối i-ốt: 1/2 thìa cà phê
-        // Bột canh: 1/2 thìa cà phê
-        // Đường trắng: 1 thìa cà phê
-        // Tiêu xay: 1 thìa cà phê
-        // Bột ngọt: 1 thìa cà phê
+        trungFood[2], // Trứng vịt hoặc trứng gà công nghiệp: 3 – 4 quả
+        haiSanFood[10], // Hàu sữa tươi: 1kg
+        rauLaFood[13], // Hành lá: 50gr
+        cuFood[12], // Hành củ: 3 – 4 củ
+        suaTuoiFood[3], // Sữa tươi: 2 thìa cà phê (không bắt buộc)
+        cuFood[13], // Hành tây: 1 củ vừa
+        giaViFood[0], // Dầu ăn: 5 thìa cà phê
+        giaViFood[3], // Nước mắm: 3 thìa cà phê
+        giaViFood[5], // Hạt nêm: 1 thìa cà phê
+        giaViFood[23], // Muối i-ốt: 1/2 thìa cà phê
+        giaViFood[6], // Bột canh: 1/2 thìa cà phê
+        giaViFood[7], // Tiêu xay: 1 thìa cà phê
+        giaViFood[24] // Bột ngọt: 1 thìa cà phê
       ].map((food) => {
         return {
           recipeId: hauChienTrung.recipeId,
@@ -1411,22 +1515,22 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Thịt gà: 500g
-        // Bột năng: 100g
-        // Nếp: 80g
-        // Đậu xanh cà vỏ: 40g
-        // Muối hạt: 30g
-        // Tiêu hạt: 10g
-        // Tiêu xay: ½ muỗng cafe
-        // Hạt nêm: 1 muỗng cafe
-        // Bột ngọt: ½ muỗng cafe
-        // Nước mắm: 2 muỗng cafe
-        // Lòng đỏ trứng gà: 1 cái
-        // Sả: 5 cây
-        // Lá chanh: 10 lá
-        // Gừng: 1 củ
-        // Tỏi: 1 củ
-        // Dầu ăn: 150ml
+        thitFood[26], // Thịt gà: 500g
+        khacFood[5], // Bột năng: 100g
+        botFood[10], // Nếp: 80g
+        nguCocFood[3], // Đậu xanh cà vỏ: 40g
+        giaViFood[18], // Muối hạt: 30g
+        cuFood[24], // Tiêu hạt: 10g
+        giaViFood[7], // Tiêu xay: ½ muỗng cafe
+        giaViFood[5], // Hạt nêm: 1 muỗng cafe
+        giaViFood[24], // Bột ngọt: ½ muỗng cafe
+        giaViFood[2], // Nước mắm: 2 muỗng cafe
+        trungFood[0], // Lòng đỏ trứng gà: 1 cái
+        cuFood[6], // Sả: 5 cây
+        rauLaFood[36], // Lá chanh: 10 lá
+        cuFood[33], // Gừng: 1 củ
+        cuFood[25], // Tỏi: 1 củ
+        giaViFood[0] // Dầu ăn: 150ml
       ].map((food) => {
         return {
           recipeId: gaRangMuoi.recipeId,
@@ -1459,20 +1563,34 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Bắp bò: 600 gr
-        // Nạm bò: 600 gr
-        // Gân bò: 400 gr
-        // Giò heo (chọn giò trước): 1 cái khoảng 800 gr
-        // Xương ông: 1 kg
-        // Mắm ruốc Huế: khoảng 3 muỗng canh
-        // Sả: 6 cây
-        // Gừng: 50 gr
-        // Hành tím, tỏi
-        // Bún tươi cọng to
+        thitFood[24], // Bắp bò: 600 gr
+        thitFood[27], // Nạm bò: 600 gr
+        thitFood[28], // Gân bò: 400 gr
+        thitFood[2], // Giò heo (chọn giò trước): 1 cái khoảng 800 gr
+        thitFood[22], // Xương ông: 1 kg
+        doHopFood[23], // Mắm ruốc Huế: khoảng 3 muỗng canh
+        cuFood[6], // Sả: 6 cây
+        cuFood[33], // Gừng: 50 gr
+        cuFood[31], // Hành tím, tỏi
+        cuFood[25], // Bún tươi cọng to
+        cuFood[34],
+        rauLaFood[12],
+        rauLaFood[37],
+        rauLaFood[38],
+        rauLaFood[13],
+        cuFood[13],
+        cuFood[30],
         // Rau sống (bắp chuối, giá sống, rau thơm, rau răm, hành lá, củ hành tây)
-        // Chả Huế (tùy thích)
+        chaGioFood[7], // Chả Huế (tùy thích)
+        giaViFood[21],
+        giaViFood[7],
+        giaViFood[18],
+        giaViFood[2],
+        giaViFood[0],
+        giaViFood[25],
         // Ớt, sa tế, tiêu, muối, nước mắm, dầu ăn, dấm trắng
         // Huyết heo (nếu không thích ăn huyết bạn có thể bỏ qua)
+        khacFood[5]
       ].map((food) => {
         return {
           recipeId: bunBoHue.recipeId,
@@ -1515,20 +1633,28 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 1kg cá ngừ
-        // ½ trái thơm
-        // 5 trái cà chua
-        // 40g hành tím
-        // 30g tỏi
-        // 3 trái ớt hiểm
-        // 40g củ nén (hành tăm)
-        // 5g củ nghệ
-        // 2 cây sả
-        // 4 đầu hành
-        // 4 cây ngò rí có luôn phần gốc
-        // 1 muỗng cà phê nước cốt chanh
-        // Bún tươi
-        // Rau ăn kèm: xà lách, bắp cải
+        doHopFood[0], // 1kg cá ngừ
+        quaFood[36], // ½ trái thơm
+        quaFood[7], // 5 trái cà chua
+        cuFood[31], // 40g hành tím
+        cuFood[25], // 30g tỏi
+        cuFood[35], // 3 trái ớt hiểm
+        rauLaFood[39], // 40g củ nén (hành tăm)
+        cuFood[36], // 5g củ nghệ
+        cuFood[6], // 2 cây sả
+        rauLaFood[13], // 4 đầu hành
+        rauLaFood[40], // 4 cây ngò rí có luôn phần gốc
+        cuFood[2], // 1 muỗng cà phê nước cốt chanh
+        phoBunMienFood[6], // Bún tươi
+        rauLaFood[34], // Rau ăn kèm: xà lách, bắp cải
+        giaViFood[17],
+        giaViFood[26],
+        giaViFood[3],
+        giaViFood[5],
+        giaViFood[2],
+        giaViFood[24],
+        giaViFood[27],
+        giaViFood[7]
         // Gia vị: muối, đường phèn, đường cát, hạt nêm, nước mắm, bột ngọt, dầu màu điều, tiêu
       ].map((food) => {
         return {
@@ -1550,11 +1676,11 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Vỏ của 2 quả bưởi
-        // Đường cát trắng: 140gr
-        // Muối
-        // Phèn chua
-        // Vani
+        khacFood[6], // Vỏ của 2 quả bưởi
+        giaViFood[28], // Đường cát trắng: 140gr
+        giaViFood[18], // Muối
+        khacFood[7], // Phèn chua
+        giaViFood[29] // Vani
       ].map((food) => {
         return {
           recipeId: mutVoBuoi.recipeId,
@@ -1577,9 +1703,9 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Chuối chín: 1 kg (cách chọn chuối như trên)
-        // Đường cát trắng: 500 gr
-        // Chanh tươi: 1 quả
+        quaFood[10], // Chuối chín: 1 kg (cách chọn chuối như trên)
+        giaViFood[28], // Đường cát trắng: 500 gr
+        cuFood[2] // Chanh tươi: 1 quả
       ].map((food) => {
         return {
           recipeId: mutChuoiSayKho.recipeId,
@@ -1600,11 +1726,17 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 500g bánh phở (chưa cắt sợi)
-        // 200g thịt bò thăn
-        // 1 củ tỏi, rau xà lách
-        // Rau húng Láng (có thể thay thế bằng rau quế, rau thơm)
-        // Rau mùi ta (ngò rí)
+        phoBunMienFood[7], // 500g bánh phở (chưa cắt sợi)
+        thitFood[29], // 200g thịt bò thăn
+        cuFood[25],
+        rauLaFood[34], // 1 củ tỏi, rau xà lách
+        rauLaFood[41], // Rau húng Láng (có thể thay thế bằng rau quế, rau thơm)
+        rauLaFood[40], // Rau mùi ta (ngò rí)
+        giaViFood[2],
+        giaViFood[5],
+        giaViFood[24],
+        giaViFood[7]
+
         // Gia vị: nước mắm, hạt nêm, bột ngọt, tiêu.
       ].map((food) => {
         return {
@@ -1640,16 +1772,20 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 250g bột gạo
-        // 40g bột năng
-        // 1/2 muỗng cà phê muối
-        // 300ml nước cốt dừa
-        // 400ml nước
-        // 150g thịt xay nhuyễn
-        // 100g tôm khô
-        // 50g nấm mèo
-        // 1 củ hành tím
-        // 1 củ tỏi
+        botFood[11], // 250g bột gạo
+        botFood[10], // 40g bột năng
+        giaViFood[18], // 1/2 muỗng cà phê muối
+        doHopFood[24], // 300ml nước cốt dừa
+        doUongFood[0], // 400ml nước
+        doHopFood[20], // 150g thịt xay nhuyễn
+        doHopFood[21], // 100g tôm khô
+        rauLaFood[42], // 50g nấm mèo
+        cuFood[31], // 1 củ hành tím
+        cuFood[25], // 1 củ tỏi
+        giaViFood[5],
+        giaViFood[3],
+        cuFood[2],
+        cuFood[27]
         // Đường, hạt nêm, nước mắm, chanh
         // 1 trái ớt
       ].map((food) => {
@@ -1680,12 +1816,13 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 10 hoa đậu biếc khô
-        // 400g gạo nếp
-        // Dừa nạo
-        // Đường, muối
-        // Đậu phộng
-        // Mè trắng
+        rauLaFood[43], // 10 hoa đậu biếc khô
+        gaoFood[0], // 400g gạo nếp
+        quaFood[37], // Dừa nạo
+        giaViFood[3],
+        giaViFood[18], // Đường, muối
+        nguCocFood[4], // Đậu phộng
+        khacFood[8] // Mè trắng
       ].map((food) => {
         return {
           recipeId: xoiHoaDauBiec.recipeId,
@@ -1719,13 +1856,13 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 500g cốm xanh
-        // 180g đậu xanh không vỏ
-        // 150g hạt sen
-        // 120g dừa sợi
-        // Mè trắng rang
-        // 100g đường trắng
-        // 100ml dầu vừng
+        nguCocFood[5], // 500g cốm xanh
+        nguCocFood[3], // 180g đậu xanh không vỏ
+        nguCocFood[6], // 150g hạt sen
+        quaFood[38], // 120g dừa sợi
+        khacFood[8], // Mè trắng rang
+        giaViFood[28], // 100g đường trắng
+        giaViFood[30] // 100ml dầu vừng
       ].map((food) => {
         return {
           recipeId: xoiComDua.recipeId,
@@ -1759,11 +1896,15 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Kim chi Hàn Quốc: 200gr
-        // Nấm kim châm: 200gr
-        // Tỏi tây (Hành boaro)
-        // Thịt bò ngon: 200gr
-        // Đậu phụ non: 2 miếng
+        doHopFood[25], // Kim chi Hàn Quốc: 200gr
+        rauLaFood[25], // Nấm kim châm: 200gr
+        cuFood[37], // Tỏi tây (Hành boaro)
+        thitFood[30], // Thịt bò ngon: 200gr
+        khacFood[9], // Đậu phụ non: 2 miếng
+        giaViFood[2],
+        giaViFood[5],
+        giaViFood[24],
+        giaViFood[7]
         // Gia vị: Muối, hạt nêm, dầu ăn, bột ngọt, tiêu xay
       ].map((food) => {
         return {
@@ -1788,9 +1929,13 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 1 mớ rau muống
-        // 3 con ghẹ hoặc số lượng tùy thích
-        // 1 củ hành khô
+        rauLaFood[27], // 1 mớ rau muống
+        haiSanFood[19], // 3 con ghẹ hoặc số lượng tùy thích
+        khacFood[4], // 1 củ hành khô
+        giaViFood[2],
+        giaViFood[5],
+        giaViFood[24],
+        giaViFood[7]
         // Gia vị gồm hạt nêm, bột canh
       ].map((food) => {
         return {
@@ -1816,11 +1961,14 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 50gr hàu sữa
-        // 20gr hạt sen
-        // 30gr nấm rơm
-        // 30g gạo
-        // 10gr dầu ăn
+        haiSanFood[10], // 50gr hàu sữa
+        nguCocFood[6], // 20gr hạt sen
+        rauLaFood[44], // 30gr nấm rơm
+        gaoFood[3], // 30g gạo
+        giaViFood[0], // 10gr dầu ăn
+        giaViFood[2],
+        giaViFood[28],
+        giaViFood[3]
         // Gia vị: muối, đường, nước mắm
       ].map((food) => {
         return {
@@ -1845,10 +1993,10 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 30gr gạo tẻ
-        // 1 miếng ức gà
-        // 1/2 củ khoai lang
-        // 1/3 củ củ cải
+        gaoFood[1], // 30gr gạo tẻ
+        thitFood[21], // 1 miếng ức gà
+        cuFood[15], // 1/2 củ khoai lang
+        cuFood[7] // 1/3 củ củ cải
       ].map((food) => {
         return {
           recipeId: chaoKhoaiLangThitGa.recipeId,
@@ -1868,9 +2016,12 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Nước mắm (loại ngon): 2 muỗng canh
+        giaViFood[2], // Nước mắm (loại ngon): 2 muỗng canh
+        cuFood[33],
+        cuFood[25],
+        cuFood[29],
         // Gừng, tỏi băm, chanh (1 trái), ớt tươi
-        // Đường cát trắng
+        giaViFood[28] // Đường cát trắng
       ].map((food) => {
         return {
           recipeId: nuocChamAnVoiVitLuoc.recipeId,
@@ -1895,11 +2046,20 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 4 con chim cút
-        // Ngũ vị hương
-        // Mật ong
+        thitFood[31], // 4 con chim cút
+        giaViFood[31], // Ngũ vị hương
+        giaViFood[10], // Mật ong
+        giaViFood[22],
+        giaViFood[4],
+        giaViFood[24],
+        giaViFood[3],
+        giaViFood[5],
         // Dầu hào, nước tương, bột ngọt, đường, hạt nêm
+        cuFood[25],
         // Tỏi
+        rauLaFood[34],
+        quaFood[7],
+        rauLaFood[41]
         // Rau ăn kèm: Xà lách, cà chua, rau húng
       ].map((food) => {
         return {
@@ -1940,21 +2100,11 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Phần thạch rau câu dừa
-        // 1 trái dừa non
-        // 3 gr thạch rau câu giòn
-        // 1 gói bột rau câu dẻo
-        // 70g đường
-        // Phần sữa dừa
-        // 200g dừa nạo
-        // 80g đường
-        // Sữa đặc, muối
-        // Đá
-        // Bột bắp
-        // Phần trân châu dừa
-        // 300g cùi dừa tươi
-        // 600g bột năng
-        // Nước sôi
+        doHopFood[26], // Phần thạch rau câu dừa
+        quaFood[39], // 1 trái dừa non
+        doHopFood[27], // 3 gr thạch rau câu giòn
+        botFood[12], // 1 gói bột rau câu dẻo
+        giaViFood[3] // 70g đường
       ].map((food) => {
         return {
           recipeId: cheDuaDam.recipeId,
@@ -1984,18 +2134,18 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 350gr khoai lang ruột vàng
-        // 200gr khoai mì
-        // 200gr khoai môn cau
-        // 100gr đậu xanh không vỏ
-        // 150gr đậu phộng
-        // 80gr rong biển
-        // 80gr bột báng
-        // 80gr bột khoai
-        // 500gr cơm dừa nạo
-        // 400gr đường trắng
-        // 2 lá dứa
-        // 1/2 muỗng cà phê muối
+        cuFood[15], // 350gr khoai lang ruột vàng
+        cuFood[38], // 200gr khoai mì
+        cuFood[39], // 200gr khoai môn cau
+        nguCocFood[3], // 100gr đậu xanh không vỏ
+        nguCocFood[4], // 150gr đậu phộng
+        khacFood[1], // 80gr rong biển
+        botFood[13], // 80gr bột báng
+        botFood[14], // 80gr bột khoai
+        quaFood[37], // 500gr cơm dừa nạo
+        giaViFood[3], // 400gr đường trắng
+        rauLaFood[17], // 2 lá dứa
+        giaViFood[18] // 1/2 muỗng cà phê muối
       ].map((food) => {
         return {
           recipeId: cheBaBa.recipeId,
@@ -2034,15 +2184,19 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 1 kg cá diêu hồng
-        // 1 củ hành tây
-        // 1 củ gừng
-        // 1 củ hành tím
-        // 1 củ tỏi
-        // 30g hành lá
-        // 30g rau ngò
-        // 1 quả ớt
-        // Xì dầu (nước tương), dầu hào
+        haiSanFood[20], // 1 kg cá diêu hồng
+        cuFood[13], // 1 củ hành tây
+        cuFood[33], // 1 củ gừng
+        cuFood[31], // 1 củ hành tím
+        cuFood[25], // 1 củ tỏi
+        rauLaFood[13], // 30g hành lá
+        rauLaFood[40], // 30g rau ngò
+        cuFood[27], // 1 quả ớt
+        giaViFood[4], // Xì dầu (nước tương), dầu hào
+        giaViFood[3],
+        giaViFood[5],
+        giaViFood[7],
+        giaViFood[18]
         // Gia vị: tiêu, hạt nêm, muối, đường
       ].map((food) => {
         return {
@@ -2064,12 +2218,17 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 3 – 4 con tôm hùm
-        // 150ml rượu vang trắng
+        haiSanFood[21], // 3 – 4 con tôm hùm
+        doUongFood[12], // 150ml rượu vang trắng
+        giaViFood[18],
+        giaViFood[5],
+        giaViFood[0],
+        cuFood[33],
         // Gia vị: hạt nêm, muối
         // Dầu ăn hoặc dầu Olive
         // 1 nhánh gừng
-        // Ngò và hành lá
+        rauLaFood[40], // Ngò và hành lá
+        rauLaFood[13]
       ].map((food) => {
         return {
           recipeId: tomHumHapBia.recipeId,
@@ -2094,13 +2253,18 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // 200g sứa
-        // 1 quả xoài xanh
-        // 1 củ cà rốt
-        // ½ bát đậu phộng rang
+        haiSanFood[14], // 200g sứa
+        quaFood[33], // 1 quả xoài xanh
+        cuFood[4], // 1 củ cà rốt
+        nguCocFood[4], // ½ bát đậu phộng rang
+        giaViFood[2],
+        cuFood[2],
+        giaViFood[3],
+        cuFood[27],
+        cuFood[25],
         // Gia vị: nước mắm, chanh, đường, ớt, tỏi
-        // Bò khô
-        // Rau thơm, rau mùi
+        doHopFood[28], // Bò khô
+        rauLaFood[37] // Rau thơm, rau mùi
       ].map((food) => {
         return {
           recipeId: goiSuaXoaiXanh.recipeId,
@@ -2132,12 +2296,16 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Ức gà: 2 cái
-        // Ngô hạt: 120 gram
-        // Nấm hương khô: 5 – 6 cái
-        // Bột năng: 30 gram
-        // Rau nêm: hành, ngò
+        thitFood[21], // Ức gà: 2 cái
+        cuFood[40], // Ngô hạt: 120 gram
+        rauLaFood[23], // Nấm hương khô: 5 – 6 cái
+        botFood[10], // Bột năng: 30 gram
+        rauLaFood[13],
+        rauLaFood[40], // Rau nêm: hành, ngò
         // Gia vị thông dụng
+        giaViFood[18],
+        giaViFood[5],
+        giaViFood[0]
       ].map((food) => {
         return {
           recipeId: goiGaBapCai.recipeId,
@@ -2170,11 +2338,15 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Ức gà: 2 cái
-        // Ngô hạt: 120 gram
-        // Nấm hương khô: 5 – 6 cái
-        // Bột năng: 30 gram
-        // Rau nêm: hành, ngò
+        thitFood[21], // Ức gà: 2 cái
+        cuFood[40], // Ngô hạt: 120 gram
+        rauLaFood[23], // Nấm hương khô: 5 – 6 cái
+        botFood[10], // Bột năng: 30 gram
+        rauLaFood[13],
+        rauLaFood[40], // Rau nêm: hành, ngò
+        giaViFood[18],
+        giaViFood[5],
+        giaViFood[0]
         // Gia vị thông dụng
       ].map((food) => {
         return {
@@ -2200,14 +2372,18 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        // Nấm rơm: 100 gram
-        // Nấm hương: 50 gram
-        // Cà rốt: 150 gram
-        // Hạt sen: 150 gram
-        // Bắp hạt: 150 gram
-        // Rau nêm: hành, ngò
-        // Bột bắp: 3 muỗng canh
+        rauLaFood[44], // Nấm rơm: 100 gram
+        rauLaFood[23], // Nấm hương: 50 gram
+        cuFood[4], // Cà rốt: 150 gram
+        nguCocFood[6], // Hạt sen: 150 gram
+        cuFood[40], // Bắp hạt: 150 gram
+        rauLaFood[13],
+        rauLaFood[40], // Rau nêm: hành, ngò
+        botFood[1], // Bột bắp: 3 muỗng canh
         // Gia vị thông dụng
+        giaViFood[18],
+        giaViFood[5],
+        giaViFood[0]
       ].map((food) => {
         return {
           recipeId: nauSupChay.recipeId,
