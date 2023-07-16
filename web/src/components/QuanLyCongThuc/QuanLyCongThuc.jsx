@@ -33,12 +33,15 @@ const QuanLyCongThuc = () => {
           <a href="#1" onClick={() => handleView(record)}>
             View
           </a>
+          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
           <a href="#2" onClick={() => handleEdit(record)}>
             Edit
           </a>
+          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
           <a href="#3" onClick={() => handleDelete(record)}>
             Delete
           </a>
+          <span style={{ marginLeft: '5px', marginRight: '5px' }}></span> {/* Khoảng cách */}
           <a href="#4" onClick={() => handleFavorite(record)}>
             Favorite
           </a>
