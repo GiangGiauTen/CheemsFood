@@ -12,45 +12,45 @@ const layout = {
 const tailLayout = {
 	wrapperCol: { offset: 8, span: 16 },
 }
-let DataDanhMuc = [
-	{
-		categoryId: 1,
-		foodId: 1,
-		foodName: 'Hambager',
-		categogy_name: 'FastFood',
-		categogy_type: 'Food',
-	},
-	{
-		category_id: 2,
-		foodId: 2,
-		foodName: 'Volka',
-		categogy_name: 'Sake',
-		categogy_type: 'Drink',
-	},
-	{
-		category_id: 3,
-		foodId: 3,
-		foodName: 'Miso',
-		categogy_name: 'TinhBot',
-		categogy_type: 'Food',
-	},
-	// Add more food items here...
-	{
-		category_id: 4,
-		foodId: 4,
-		foodName: 'Salad',
-		categogy_name: 'Vegetable',
-		categogy_type: 'Food',
-	},
-	// Add more food items here...
-	{
-		category_id: 5,
-		foodId: 5,
-		foodName: 'PizzaItaly',
-		categogy_name: 'Pizza',
-		categogy_type: 'Food',
-	},
-]
+// let DataDanhMuc = [
+// 	{
+// 		categoryId: 1,
+// 		foodId: 1,
+// 		foodName: 'Hambager',
+// 		categogy_name: 'FastFood',
+// 		categogy_type: 'Food',
+// 	},
+// 	{
+// 		category_id: 2,
+// 		foodId: 2,
+// 		foodName: 'Volka',
+// 		categogy_name: 'Sake',
+// 		categogy_type: 'Drink',
+// 	},
+// 	{
+// 		category_id: 3,
+// 		foodId: 3,
+// 		foodName: 'Miso',
+// 		categogy_name: 'TinhBot',
+// 		categogy_type: 'Food',
+// 	},
+// 	// Add more food items here...
+// 	{
+// 		category_id: 4,
+// 		foodId: 4,
+// 		foodName: 'Salad',
+// 		categogy_name: 'Vegetable',
+// 		categogy_type: 'Food',
+// 	},
+// 	// Add more food items here...
+// 	{
+// 		category_id: 5,
+// 		foodId: 5,
+// 		foodName: 'PizzaItaly',
+// 		categogy_name: 'Pizza',
+// 		categogy_type: 'Food',
+// 	},
+// ]
 interface MyComponentProps {
 	index: number
 	destroy: () => void
@@ -58,14 +58,24 @@ interface MyComponentProps {
 const AddCategory: React.FC<MyComponentProps> = (props) => {
 	const [form] = Form.useForm();
 	let [data,setData] = useState<any>(null);
+	
 	console.log(props.index);
+	
 	let ft = async() => {
 		if(props.index != -1){
 			const response = await fetch('http://localhost:4001/category');
 			let js = await response.json();
 			//console.log(js[props.index]);
+			
+			console.log(js.length)
 			if(response.ok){
-				setData(js[props.index]);
+				for(let i = 0; i < js.length; i++){
+					if(js[i].categoryId == props.index){
+						setData(js[i]);
+						break;
+					}
+				}
+				
 			}
 		}
 		
@@ -78,7 +88,6 @@ const AddCategory: React.FC<MyComponentProps> = (props) => {
 	const onFinish = (values: any) => {
 		console.log(values);
 		Update(values);
-		
 	}
 
 	const onReset = () => {
@@ -92,15 +101,13 @@ const AddCategory: React.FC<MyComponentProps> = (props) => {
 				body: JSON.stringify({
 					name: values.CategoryName,
 					type: values.CategoryType,
-				})
-			});
-			const response2 = await fetch('http://localhost:4001/category');
-			
-			let js = response2.json();
-			console.log(js);
-			console.log(categogy_id);
-			console.log(js[props.index]);
-			console.log(response.status);
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				  }
+			}).then(Response => { props.destroy();}
+				
+			)
 		}
 	}
 	const categogy_name = (data == null)? "": data.categoryName ; 
