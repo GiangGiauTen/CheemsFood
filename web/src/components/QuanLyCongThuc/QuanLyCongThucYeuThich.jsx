@@ -5,18 +5,18 @@ const QuanLyCongThucYeuThich = () => {
   // State for the favorite recipes
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [reservedFoods, setReservedFoods] = useState(reservedFoodsData);
-  useEffect(() =>{
-    setFavoriteRecipes(JSON.parse(localStorage.getItem("listFavor")));
-  },[])
+  useEffect(() => {
+    setFavoriteRecipes(JSON.parse(localStorage.getItem('listFavor')));
+  }, []);
   // Define the columns for the table
   // useEffect(()=> {
   //   setFavoriteRecipes(JSON.parse(localStorage.getItem("listFavor")));
   // },[favoriteRecipes])
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      title: 'Recipe Id',
+      dataIndex: 'recipeId',
+      key: 'recipeId',
     },
     {
       title: 'Recipe Name',
@@ -31,11 +31,17 @@ const QuanLyCongThucYeuThich = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record,position) => (
-        <Space size="middle">
-          <a href="#1" onClick={() => handleView(record)}>View</a>
-          <a href="#2" onClick={() => handleEdit(record)}>Edit</a>
-          <a href="#3" onClick={() => handleDelete(record,text,position)}>Delete</a>
+      render: (text, record, position) => (
+        <Space size="mrecipeIddle">
+          <a href="#1" onClick={() => handleView(record)}>
+            View
+          </a>
+          <a href="#2" onClick={() => handleEdit(record)}>
+            Edit
+          </a>
+          <a href="#3" onClick={() => handleDelete(record, text, position)}>
+            Delete
+          </a>
         </Space>
       ),
     },
@@ -48,61 +54,60 @@ const QuanLyCongThucYeuThich = () => {
   const [newIngredientForm] = Form.useForm();
   const [editedDescription, setEditedDescription] = useState('');
   // Handle view action
-  const handleView = (record) => {
+  const handleView = record => {
     // Handle view action
     setSelectedFood(record);
     setViewModalVisible(true);
   };
 
   // Handle edit action
-  const handleEdit = (record) => {
+  const handleEdit = record => {
     // Handle edit action
     setSelectedFood(record);
-    setEditedDescription(record.description);              //amdkmasmdksamdlksam
+    setEditedDescription(record.description); //amdkmasmdksamdlksam
     editForm.setFieldsValue({
       description: record.description,
-  
     });
     setEditModalVisible(true);
   };
-  
+
   // View modal close handler
   const handleViewModalClose = () => {
     setSelectedFood(null);
     setViewModalVisible(false);
   };
 
-    // Edit modal close handler
-    const handleEditModalClose = () => {
-      setSelectedFood(null);
+  // Edit modal close handler
+  const handleEditModalClose = () => {
+    setSelectedFood(null);
+    setEditModalVisible(false);
+  };
+
+  const handleModalSubmit = () => {
+    editForm.valrecipeIdateFields().then(values => {
+      const updatedFood = {
+        ...selectedFood,
+        description: values.description,
+      };
+
+      const updatedFoods = favoriteRecipes.map(food =>
+        food.recipeId === updatedFood.recipeId ? updatedFood : food,
+      );
+      // localStorage.setItem("listFavor",JSON.stringify(updatedFoods)) // F5 k mất thông tin edit
+      setFavoriteRecipes(updatedFoods);
       setEditModalVisible(false);
-    };
+    });
+  };
 
-    const handleModalSubmit = () => {
-       editForm.validateFields().then((values) => {
-        const updatedFood = {
-          ...selectedFood,
-          description: values.description,
-        };
-    
-        const updatedFoods = favoriteRecipes.map((food) =>
-          food.id === updatedFood.id ? updatedFood : food
-        );
-        // localStorage.setItem("listFavor",JSON.stringify(updatedFoods)) // F5 k mất thông tin edit
-        setFavoriteRecipes(updatedFoods);
-        setEditModalVisible(false);
-      });
-    };
-
-   // Handle delete action
-  const handleDelete = async (record,text,position) => {
+  // Handle delete action
+  const handleDelete = async (record, text, position) => {
     // Perform delete action here
-    await setFavoriteRecipes(favoriteRecipes.splice(position,1));
-    if(favoriteRecipes.length === 0){
+    await setFavoriteRecipes(favoriteRecipes.splice(position, 1));
+    if (favoriteRecipes.length === 0) {
       setFavoriteRecipes(null);
     }
-    await localStorage.setItem("listFavor",JSON.stringify(favoriteRecipes))
-    setFavoriteRecipes(JSON.parse(localStorage.getItem("listFavor")));
+    await localStorage.setItem('listFavor', JSON.stringify(favoriteRecipes));
+    setFavoriteRecipes(JSON.parse(localStorage.getItem('listFavor')));
   };
 
   return (
@@ -115,19 +120,19 @@ const QuanLyCongThucYeuThich = () => {
           <Button key="close" onClick={handleViewModalClose}>
             Close
           </Button>,
-        ]}
-      >
+        ]}>
         {selectedFood && (
           <Form layout="vertical">
             <Form.Item label="Recipe Name">
               <Input value={selectedFood.name} readOnly />
             </Form.Item>
             <Form.Item label="Description">
-              <Input.TextArea value={selectedFood.description} rows={4} readOnly />
+              <Input.TextArea
+                value={selectedFood.description}
+                rows={4}
+                readOnly
+              />
             </Form.Item>
-          
-            
-            
           </Form>
         )}
       </Modal>
@@ -142,18 +147,15 @@ const QuanLyCongThucYeuThich = () => {
           <Button key="save" type="primary" onClick={handleModalSubmit}>
             Save
           </Button>,
-        ]}
-      >
+        ]}>
         {selectedFood && (
           <Form form={editForm} layout="vertical">
             <Form.Item
               name="description"
               label="Description"
-              initialValue={selectedFood.description}
-            >
+              initialValue={selectedFood.description}>
               <Input.TextArea rows={4} />
             </Form.Item>
-            
           </Form>
         )}
       </Modal>

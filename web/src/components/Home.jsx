@@ -58,7 +58,6 @@ function Home() {
     getItem('Quản Lý Đồ Cần Mua', '_4', <ContactsOutlined />, [
       getItem('Cá Nhân', '4'),
       getItem('Nhóm', '41'),
-      getItem('Thêm', '42'),
     ]),
     getItem(
       <Button
