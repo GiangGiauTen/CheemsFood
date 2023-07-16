@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Table, message, DatePicker, Select } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import { API_URL } from '../../utils/apiUrl';
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-
 const AddToNhom = ({ setIsCreateModalOpen, selectedGroup }) => {
   const [form] = Form.useForm();
   const [foodList, setFoodList] = useState([]);
@@ -138,6 +138,9 @@ const AddToNhom = ({ setIsCreateModalOpen, selectedGroup }) => {
           <DatePicker
             style={{ width: '100%' }}
             format="DD-MM-YYYY"
+            disabledDate={current =>
+              current && current < moment().startOf('day')
+            }
             onChange={date => setSelectedDate(date)}
           />
         </Form.Item>

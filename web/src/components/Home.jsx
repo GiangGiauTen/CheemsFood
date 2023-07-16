@@ -4,6 +4,7 @@ import {
   BarChartOutlined,
   ContactsOutlined,
   LogoutOutlined,
+  FileOutlined,
 } from '@ant-design/icons';
 
 import { Layout, Menu, theme, Button } from 'antd';
@@ -46,11 +47,8 @@ function Home() {
   } = theme.useToken();
 
   const items = [
-    getItem('Nhóm', '_1', <TeamOutlined />, [
-      getItem('Danh sách', '1'),
-      getItem('Thêm mới', '11'),
-    ]),
-    getItem('Quản Lý Công Thức', '_2', <HomeOutlined />, [
+    getItem('Nhóm', '_1', <TeamOutlined />, [getItem('Danh sách', '1')]),
+    getItem('Quản Lý Công Thức', '_2', <FileOutlined />, [
       getItem('Danh sách', '2'),
       getItem('Quản Lý Công Thức Yêu Thích', '21'),
     ]),
@@ -106,9 +104,22 @@ function Home() {
             <Header
               style={{
                 padding: 0,
-                background: colorBgContainer,
-              }}
-            />
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 20,
+              }}>
+              <img
+                className="logo"
+                src="logo.png"
+                width={48}
+                height={48}
+                alt="Logo"
+              />
+              <h1 style={{ fontSize: 36, color: '#F9D030' }}>CheemsFood</h1>
+            </Header>
 
             <Content
               style={{
