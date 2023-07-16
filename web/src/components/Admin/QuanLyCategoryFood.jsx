@@ -71,6 +71,7 @@ const QuanLyCategoryFood = () => {
   }
   let Huy = () =>{
     setEditMode(-1);
+    ft();
     console.log("oke");
   }
   // Define the columns for the table
