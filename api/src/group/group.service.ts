@@ -101,6 +101,38 @@ export class GroupService {
     }
   }
 
+  async removeUser(id: number, removeUserDto: AddUserDto) {
+    const { userId } = removeUserDto;
+    try {
+      const group = await this.prisma.gGroup.findUnique({
+        where: { groupId: id }
+      });
+      if (!group) {
+        throw new NotFoundException('Không tìm thấy nhóm');
+      }
+
+      const user = await this.prisma.user.findUnique({ where: { userId } });
+      if (!user) {
+        throw new NotFoundException('Không tìm thấy người dùng');
+      }
+
+      await this.prisma.groupMember.delete({
+        where: {
+          groupId_userId: {
+            groupId: id,
+            userId: userId
+          }
+        }
+      });
+
+      return { message: 'Xóa người dùng khỏi nhóm thành công' };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to remove user from group'
+      );
+    }
+  }
+
   async update(id: number, updateGroupDto: UpdateGroupDto) {
     const { name } = updateGroupDto;
     try {

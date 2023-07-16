@@ -36,6 +36,11 @@ export class GroupController {
     return this.groupService.addUser(+id, addUserDto);
   }
 
+  @Post(':id/removeUser')
+  removeUser(@Param('id') id: string, @Body() addUserDto: AddUserDto) {
+    return this.groupService.removeUser(+id, addUserDto);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupService.update(+id, updateGroupDto);

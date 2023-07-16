@@ -12,8 +12,8 @@ import QuanLyCongThuc from './QuanLyCongThuc/QuanLyCongThuc';
 import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
 import QuanLyDoLuuTru from './QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './QuanLyDoCanMua/QuanLyDoCanMua';
-import AddTeam from './Nhom/AddTeam';
 import React, { useEffect, useState } from 'react';
+import AddTeam from './Nhom/AddTeam';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminView from './Admin/adminView';
@@ -120,11 +120,6 @@ function Home() {
               {menuKey === '1' && (
                 <div>
                   <Nhom />
-                </div>
-              )}
-              {menuKey === '11' && (
-                <div>
-                  <AddTeam />
                 </div>
               )}
               {menuKey === '2' && (
