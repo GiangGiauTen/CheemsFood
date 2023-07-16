@@ -132,22 +132,11 @@ const QuanLyDoLuuTru = () => {
         quantity: values.quantity,
         foodId: selectedFood.food.foodId,
       };
-
-      if (values.quantity === 0) {
-        // Remove the food from storage if quantity is 0
-        setReservedFoods((prevFoods) =>
-          prevFoods.map((food) =>
-            food.food.foodId === updatedFood.foodId ? { ...food, quantity: updatedFood.quantity } : food
-          ).filter((food) => food.quantity !== 0)
-        );
-      } else {
         setReservedFoods((prevFoods) =>
           prevFoods.map((food) =>
             food.food.foodId === updatedFood.foodId ? { ...food, quantity: updatedFood.quantity } : food
           )
         );
-      }
-
       setEditModalVisible(false);
 
       // Update the reserved foods on the server
