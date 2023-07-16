@@ -13,12 +13,11 @@ import QuanLyCongThucYeuThich from './QuanLyCongThuc/QuanLyCongThucYeuThich';
 import QuanLyDoLuuTru from './QuanLyDoLuuTru/QuanLyDoLuuTru';
 import QuanLyDoCanMua from './QuanLyDoCanMua/QuanLyDoCanMua';
 import React, { useEffect, useState } from 'react';
-import AddTeam from './Nhom/AddTeam';
+
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminView from './Admin/adminView';
 import QuanLyDoMuaNhom from './QuanLyDoCanMua/QuanLyDoMuaNhom';
-import ThemDanhSachDoCanMua from './QuanLyDoCanMua/ThemDanhSachDoCanMua';
 
 const { Header, Content, Sider } = Layout;
 
@@ -146,11 +145,6 @@ function Home() {
               {menuKey === '41' && (
                 <div>
                   <QuanLyDoMuaNhom />
-                </div>
-              )}
-              {menuKey === '42' && (
-                <div>
-                  <ThemDanhSachDoCanMua />
                 </div>
               )}
             </Content>
