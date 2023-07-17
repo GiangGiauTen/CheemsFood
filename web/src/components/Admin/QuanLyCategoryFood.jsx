@@ -66,15 +66,17 @@ const QuanLyCategoryFood = () => {
     setData(newData);
   }
   let Edit = (i, foodName) => {
+    console.log(i)
     setEditMode(i);
     setName(foodName);
     setData(data);
     
   }
   let Huy = () =>{
-    setEditMode(-1);
     ft();
-    console.log("oke");
+		console.log(data);
+		setEditMode(-1);
+		console.log('oke')
   }
   // Define the columns for the table
   const columns = [
@@ -82,12 +84,18 @@ const QuanLyCategoryFood = () => {
       title: 'ID',
       render: (text, record, index) => index + 1,
     },    
+     {
+      title: 'Food ID',
+      dataIndex: 'foodId',
+      key: 'foodId',
+     },
     {
       title: 'FoodName',
       dataIndex: 'name',
       key: 'name',
     },   
     {
+      
       title: 'Categogy Name',
       dataIndex: 'category',
       key: 'category',
@@ -118,7 +126,7 @@ const QuanLyCategoryFood = () => {
       {(editMode != -1) && <AddForm foodName={foodName} index = {editMode} destroy = {Huy}></AddForm>}
       {(editMode == -1) && ( <div>
       <h1>Category List</h1>
-      <Table columns={columns} dataSource={danhMuc}/>
+      <Table columns={columns} dataSource={data}/>
       </div>)}
     </div>
   );

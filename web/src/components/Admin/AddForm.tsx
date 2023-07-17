@@ -63,6 +63,7 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 	const [form] = Form.useForm()
 	let [data,setData] = useState<any>(DataDanhMuc);
 	console.log(props.foodName);
+	console.log(props.index);
 	let ft = async() => {
 		if(props.index != -1){
 			const response = await fetch('http://localhost:4001/category');
@@ -75,18 +76,27 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 		}
 		
 	  }
+	  
 	  let updata = async (values) => {
-		const response = await fetch('http://localhost:4001/category/'+values.categoryId+'/addFood',{
+		
+		
+		
+		    console.log('http://localhost:4001/category/'+values.categoryId+'/addFood');
+			console.log(props.index);
+			const response = await fetch('http://localhost:4001/category/'+values.categoryId+'/addFood',{
 			method: "PATCH",
-			body: JSON.stringify({foodId: parseInt(values.foodId)}),
+			body: JSON.stringify({foodId: props.index}),
 			headers: {
 				'Content-Type': 'application/json'
 			  }
 		})
+		console.log(response)
 		if(response.status == 400)message.error('Đã có Category!', () => props.destroy());
-		else if(response.status == 201){
+		else if(response.ok){
 			message.success('Gán Category thành công!', () => props.destroy());
 		}
+		
+		
 		
 	  }
 	useEffect(() => {
@@ -95,6 +105,7 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 	  )
 	  console.log(data);
 	const onFinish = (values: any) => {
+		console.log(values);
 		updata(values);
 	}
 
