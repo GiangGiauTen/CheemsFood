@@ -82,12 +82,19 @@ import {
           style={{
             marginLeft: 200,
           }}>
-          <Header
-            style={{
-              padding: 0,
-              background: colorBgContainer,
-            }}
-          />
+        						<Header
+							style={{
+								padding: 0,
+								display: 'flex',
+								flexDirection: 'row',
+								width: '100%',
+								justifyContent: 'center',
+								alignItems: 'center',
+								gap: 20,
+							}}>
+							<img className='logo' src='logo.png' width={48} height={48} alt='Logo' />
+							<h1 style={{ fontSize: 36, color: '#F9D030' }}>CheemsFood</h1>
+						</Header>
           <Content
             style={{
               margin: '24px 16px 0',
