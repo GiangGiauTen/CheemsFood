@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AddToFavoriteDto } from './dto/add-to-favorite.dto';
 
 @Injectable()
 export class RecipeService {
@@ -53,6 +54,52 @@ export class RecipeService {
     };
   }
 
+  async getAllFavoriteRecipe(id: number) {
+    try {
+      const favoriteRecipe = await this.prisma.favoriteRecipe.findMany({
+        where: { userId: id },
+        select: {
+          recipeId: true
+        }
+      });
+      return favoriteRecipe.map((e) => e.recipeId);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async addOrRemoveFavoriteRecipe(addToFavorite: AddToFavoriteDto) {
+    const { userId, recipeId } = addToFavorite;
+    try {
+      const favoriteRecipe = await this.prisma.favoriteRecipe.findFirst({
+        where: {
+          recipeId: recipeId,
+          userId: userId
+        }
+      });
+      if (favoriteRecipe) {
+        await this.prisma.favoriteRecipe.delete({
+          where: {
+            userId_recipeId: {
+              userId: userId,
+              recipeId: recipeId
+            }
+          }
+        });
+        return 'Xóa công thức yêu thích thành công!';
+      } else {
+        await this.prisma.favoriteRecipe.create({
+          data: {
+            userId: userId,
+            recipeId: recipeId
+          }
+        });
+        return 'Thêm công thức yêu thích thành công!';
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async update(id: number, updateRecipeDto: UpdateRecipeDto) {
     const { name, description, foodIdList } = updateRecipeDto;
     try {
