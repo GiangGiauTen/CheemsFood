@@ -34,6 +34,7 @@ export class SeedService {
   async seed() {
     await this.resetData();
     const dataArr = await JSON.parse(rawUserData);
+    console.log(dataArr);
     const userArr = dataArr.filter((e) => e.role == 'user');
     const adminArr = dataArr.filter((e) => e.role == 'admin');
     const admins = adminArr.map(async (admin) => {
