@@ -1,4 +1,5 @@
-import { Button, Form, Input, Select } from 'antd'
+import { Button, Form, Input, Select, message } from 'antd'
+import Item from 'antd/es/list/Item'
 import React, { useState, useEffect } from 'react'
 
 const { Option } = Select
@@ -56,59 +57,78 @@ let DataDanhMuc = [
 interface MyComponentProps {
 	index: number
 	destroy: () => void
+	foodName: string
 }
 const AddForm: React.FC<MyComponentProps> = (props) => {
 	const [form] = Form.useForm()
-	let [data,setData] = useState(null);
+	let [data,setData] = useState<any>(DataDanhMuc);
+	console.log(props.foodName);
 	let ft = async() => {
 		if(props.index != -1){
-			const response = await fetch('http://localhost:4001/food');
+			const response = await fetch('http://localhost:4001/category');
 			let js = await response.json();
+			//console.log(js[props.index]);
+			console.log(js.length)
 			if(response.ok){
-				setData(js[props.index]); 
+				setData(js);
 			}
 		}
 		
 	  }
-	  
+	  let updata = async (values) => {
+		const response = await fetch('http://localhost:4001/category/'+values.categoryId+'/addFood',{
+			method: "PATCH",
+			body: JSON.stringify({foodId: parseInt(values.foodId)}),
+			headers: {
+				'Content-Type': 'application/json'
+			  }
+		})
+		if(response.status == 400)message.error('Đã có Category!', () => props.destroy());
+		else if(response.status == 201){
+			message.success('Gán Category thành công!', () => props.destroy());
+		}
+		
+	  }
 	useEffect(() => {
 		ft();
 	  },[]
 	  )
 	  console.log(data);
 	const onFinish = (values: any) => {
-		console.log(values)
+		updata(values);
 	}
 
 	const onReset = () => {
 		form.resetFields()
 	}
-
+	
 	return (
 		<Form {...layout} form={form} name='control-hooks' onFinish={onFinish} style={{ maxWidth: 600 }}>
-			<Form.Item name='foodName' label='Food Name' rules={[{ required: true }]}>
-				<Input
-					value={data == null ||props.index == null || props.index == -1 ? '' : "!"}
-					placeholder={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].foodName}
+			<Form.Item name='foodId' label='Food Name' rules={[{ required: false }]}>
+				<Input value={props.index} placeholder={props.foodName} readOnly
 				/>
 			</Form.Item>
-			<Form.Item name='category_type' label='Type' rules={[{ required: true }]}>
+			<Form.Item name='categoryId' label='Type' rules={[{ required: true }]}>
 				<Select
-					value={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].categogy_type}
-					placeholder={props.index == null || props.index == -1 ? '' : DataDanhMuc[props.index].categogy_type}
 					allowClear>
-					<Option value='Thực phẩm tươi'>Thực phẩm tươi</Option>
-					<Option value='Rau-Củ-Quả'>Rau-Củ-Quả</Option>
-					<Option value='Thực phẩm ăn liền'>Thực phẩm ăn liền</Option>
-					<Option value='Sữa'>Sữa</Option>
-					<Option value='Gia vị'>Gia vị</Option>
-					<Option value='Thực phẩm khô'>Thực phẩm khô</Option>
-					<Option value='Đồ hộp'>Đồ hộp</Option>
-					<Option value='Bột'>Bột</Option>
-					<Option value='Đồ uống'>Đồ uống</Option>
-					<Option value='Trứng'>Trứng</Option>
-					<Option value='Chả giò'>Chả giò</Option>
-					<Option value='Khác'>Khác</Option>
+						{data.map(item => (
+							<Option value={item.categoryId}>{item.categoryName}</Option>
+						))}
+						
+						{/* {(() => {
+							for(let i = 0; data != null && i < data.length ;i++) {
+								 return(<Option value={data[i].categoryId}>{data[i].categoryName}</Option>);
+							}
+						}
+					)()} */}
+						
+						
+						
+		
+     
+						
+					
+					
 				</Select>
 			</Form.Item>
 			<Form.Item

@@ -5,7 +5,7 @@ import AddForm from './AddForm.tsx';
 const QuanLyCategoryFood = () => {
   let [editMode, setEditMode] = useState(-1);
   let [data, setData] = useState(null);
-  
+  let [foodName, setName] = useState("");
   let ft = async() => {
     const response = await fetch('http://localhost:4001/food');
     let js = await response.json();
@@ -65,9 +65,11 @@ const QuanLyCategoryFood = () => {
     newData.splice(i,1);
     setData(newData);
   }
-  let Edit = (i) => {
+  let Edit = (i, foodName) => {
     setEditMode(i);
+    setName(foodName);
     setData(data);
+    
   }
   let Huy = () =>{
     setEditMode(-1);
@@ -104,7 +106,7 @@ const QuanLyCategoryFood = () => {
       render: (text, record, index) => (
         <Space size="middle">
           
-          <a onClick={() => Edit(index)}>Edit</a>
+          <a onClick={() => Edit(record.foodId, record.name)}>Edit</a>
           <a onClick={() => Delete(index)}>Delete</a>
         </Space>
       ),
@@ -113,7 +115,7 @@ const QuanLyCategoryFood = () => {
   
   return (
     <div>
-      {(editMode != -1) && <AddForm index = {editMode} destroy = {Huy}></AddForm>}
+      {(editMode != -1) && <AddForm foodName={foodName} index = {editMode} destroy = {Huy}></AddForm>}
       {(editMode == -1) && ( <div>
       <h1>Category List</h1>
       <Table columns={columns} dataSource={danhMuc}/>
