@@ -46,5 +46,47 @@
     "name": "Nguyễn Thành Tiến",
     "password": "123456",
     "role": "user"
+  },
+  {
+    "username": "nimi76d11",
+    "name": "Nhật Minh",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "zanggiauten22",
+    "name": "Trường Giang",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "kien3e",
+    "name": "Phùng Trung Giang",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "punny2",
+    "name": "Đỗ Trung Giang",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "tung12",
+    "name": "Lê Minh Koi",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "tien124",
+    "name": "Nguyễn Thanh Dương",
+    "password": "123456",
+    "role": "user"
+  },
+  {
+    "username": "ThanhMinh123",
+    "name": "Nguyễn Thanh Minh",
+    "password": "123456",
+    "role": "user"
   }
 ]
