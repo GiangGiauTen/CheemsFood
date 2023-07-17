@@ -90,7 +90,7 @@ const AddForm: React.FC<MyComponentProps> = (props) => {
 				'Content-Type': 'application/json'
 			  }
 		})
-		console.log(response.statusText)
+		console.log(response)
 		if(response.status == 400)message.error('Đã có Category!', () => props.destroy());
 		else if(response.ok){
 			message.success('Gán Category thành công!', () => props.destroy());

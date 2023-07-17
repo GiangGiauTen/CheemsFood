@@ -52,6 +52,11 @@ export class CategoryService {
   async addFoodCategory(id: number, addFoodDto: AddFoodDto) {
     const { foodId } = addFoodDto;
     try {
+      await this.prisma.foodCategory.deleteMany({
+        where: {
+          foodId: foodId
+        }
+      })
       await this.prisma.foodCategory.create({
         data: {
           foodId: foodId,
