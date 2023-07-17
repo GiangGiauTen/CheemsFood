@@ -17,7 +17,7 @@ const QuanLyDoLuuTru = () => {
 
   const fetchReservedFoods = async () => {
     try {
-      const response = await axios.get(`${API_URL}/storage/user/${userId}`);
+      const response = await axios.get(`${API_URL}/storage/user/${parseInt(userId)}`);
       setReservedFoods(response.data.foods); // Update to response.data.foods since the API response contains the foods array
     } catch (error) {
       console.error('Error fetching reserved foods:', error);
