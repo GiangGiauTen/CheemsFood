@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Space, Modal, Button, Form, Input, Checkbox } from 'antd';
+import { Table, Space, Modal, Button, Form, Input, Checkbox, Select, DatePicker } from 'antd';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 
@@ -8,13 +8,14 @@ import 'moment/locale/vi';
 const QuanLyDoLuuTru = () => {
     // Reserved foods state
     const [reservedFoods, setReservedFoods] = useState([]);
-
+    const [allFoods, setAllFoods] = useState([]);
     const [userId, setUserId] = useState(localStorage.getItem("userId"));
     const [showOutdated, setShowOutdated] = useState(false);
     useEffect(() => {
         // Fetch the reserved foods data from the endpoint when the component mounts
         fetchReservedFoods();
-    }, [userId]);
+        fetchAllFoods()
+    }, []);
 
     const fetchReservedFoods = async () => {
         try {
@@ -22,6 +23,19 @@ const QuanLyDoLuuTru = () => {
                 `${API_URL}/storage/user/${parseInt(userId)}`,
             );
             setReservedFoods(response.data.foods); // Update to response.data.foods since the API response contains the foods array
+        } catch (error) {
+            console.error('Error fetching reserved foods:', error);
+        }
+    };
+
+    const fetchAllFoods = async () => {
+        try {
+            const response = await axios.get(
+                `${API_URL}/food`,
+            );
+            setAllFoods(response.data.map(food => {
+                return { value: food.foodId, label: food.name }
+            }))
         } catch (error) {
             console.error('Error fetching reserved foods:', error);
         }
@@ -193,22 +207,26 @@ const QuanLyDoLuuTru = () => {
         setAddModalVisible(true);
     };
 
-    const handleAddModalSubmit = () => {
+    const handleAddModalSubmit = async () => {
         newIngredientForm.validateFields().then(values => {
             const newIngredient = {
-                outdate: values.outdate,
-                storageDate: values.storage_date,
-                quantity: parseInt(values.quantity),
-                food: {
-                    foodId: reservedFoods.length + 1, // Generate a unique ID for the new food
-                    name: values.name,
+                foods: [{
+                    foodId: values.name,
                     description: values.description,
-                },
+                    outdate: (new Date(values.outdate)).toLocaleDateString(),
+                    storageDate: (new Date(values.storage_date)).toLocaleDateString(),
+                    quantity: parseInt(values.quantity),
+                }],
             };
 
-            setReservedFoods(prevFoods => [...prevFoods, newIngredient]);
             setAddModalVisible(false);
-            newIngredientForm.resetFields();
+            try {
+                const response = axios.patch(
+                    `${API_URL}/storage/user/${userId}`, { ...newIngredient }
+                );
+            } catch (error) {
+                console.error('Error fetching reserved foods:', error);
+            }
         });
     };
 
@@ -306,18 +324,7 @@ const QuanLyDoLuuTru = () => {
                                 message: 'Please enter the food name',
                             },
                         ]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="description"
-                        label="Description"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please enter the description',
-                            },
-                        ]}>
-                        <Input.TextArea rows={4} />
+                        <Select options={allFoods}></Select>
                     </Form.Item>
                     <Form.Item
                         name="storage_date"
@@ -328,7 +335,7 @@ const QuanLyDoLuuTru = () => {
                                 message: 'Please enter the storage date',
                             },
                         ]}>
-                        <Input />
+                        <DatePicker />
                     </Form.Item>
                     <Form.Item
                         name="outdate"
@@ -339,7 +346,7 @@ const QuanLyDoLuuTru = () => {
                                 message: 'Please enter the outdate',
                             },
                         ]}>
-                        <Input />
+                        <DatePicker />
                     </Form.Item>
                     <Form.Item
                         name="quantity"
