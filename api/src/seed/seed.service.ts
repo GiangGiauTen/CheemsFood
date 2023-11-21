@@ -34,6 +34,7 @@ export class SeedService {
   async seed() {
     await this.resetData();
     const dataArr = await JSON.parse(rawUserData);
+    console.log(dataArr);
     const userArr = dataArr.filter((e) => e.role == 'user');
     const adminArr = dataArr.filter((e) => e.role == 'admin');
     const admins = adminArr.map(async (admin) => {
@@ -358,132 +359,43 @@ export class SeedService {
     });
 
     const thitFoodArr = [
-      [
-        'Ba chỉ bò',
-        'https://hcm.fstorage.vn/images/2022/ba-chi-bo-my-cat-lat-kiaora-khay-500g_5e2d828e-ff74-4f4b-83f1-1afd6623dd6b-og-thumb-1.jpg'
-      ],
-      [
-        'Bắp giò cuộn',
-        'https://meatdeli.com.vn/upload/iblock/520/520347374043dccd34334a6cc208ca10.jpg'
-      ],
-      [
-        'Chân giò heo rút xương',
-        'https://cdn.tgdd.vn/Files/2021/08/14/1375214/bi-quyet-lam-mon-chan-gio-rut-xuong-bo-luoc-mem-ngon-khong-kho-202211281401092189.jpg'
-      ],
-      ['Cánh gà', 'https://hcm.fstorage.vn/images/2022/canh-ga-3f-thumb-1.jpg'],
-      [
-        'Gầu bò',
-        'https://hcm.fstorage.vn/images/2022/gau-bo-my-cat-lat-acefoods-500g.jpg'
-      ],
-      [
-        'Móng giò',
-        'https://image.tienphong.vn/600x315/Uploaded/2023/rwbvhvobvvimsb/2022_01_23/1610589219-fc0fec51340f466e05d616d8169bccb9-4468.jpg'
-      ],
-      [
-        'Thịt heo xay',
-        'https://shopgiachanh.com/wp-content/uploads/2021/09/thit-heo-xay-1.jpg'
-      ],
-      [
-        'Thịt Ba Rọi heo',
-        'https://product.hstatic.net/200000356473/product/ba-roi-baf_1bfa35641557413cb431453e54087300_grande_f11a57c1d0944c828ecf247852096342_1024x1024.jpg'
-      ],
-      [
-        'Thịt Nạc thăn heo',
-        'https://caophatfood.vn/wp-content/uploads/2021/04/THIT-NAC-THAN-HEO.png'
-      ],
-      [
-        'Thịt Nạc dăm heo',
-        'https://cdn.tgdd.vn/2021/05/content/1-800x450-62.jpg'
-      ],
-      [
-        'Thịt Nạc vai heo',
-        'https://orfarm.com.vn/images/products/2020/06/17/original/img_9170jpg_1592388789.jpg'
-      ],
-      [
-        'Thịt Nạc đùi heo',
-        'https://product.hstatic.net/200000356473/product/thit_nac_dui__20626e74c0b54d9abac1df44019cfd29_grande.jpg'
-      ],
-      [
-        'Thịt Thăn bò',
-        'https://vinafood.vn/wp-content/uploads/2021/10/thit-than-bo.jpg'
-      ],
-      [
-        'Thịt vai heo',
-        'https://gourmetfood.vn/wp-content/uploads/2021/08/thit-vai-heo-hang-tuoi-trong-luong-1-kg.jpg'
-      ],
-      [
-        'Thịt xay tươi ướp sẵn',
-        'https://afamilycdn.com/150157425591193600/2023/6/6/photo2023-06-0614-25-01-16860363441331761916755.jpg'
-      ],
-      [
-        'Thịt đùi heo',
-        'https://sagrifood.com.vn/wp-content/uploads/2021/08/thit-dui-heo-600x438.jpg'
-      ],
-      [
-        'Xương đuôi heo',
-        'https://sagrifood.com.vn/wp-content/uploads/2021/08/xuong-duoi-heo-600x600.jpg'
-      ],
-      [
-        'Xương ức gà',
-        'https://storage.googleapis.com/mm-online-bucket/ecommerce-website/uploads/media/146956.jpg'
-      ],
-      [
-        'Đùi gà rút xương',
-        'https://classicdeli.vn/ho-chi-minh/1859-large_default/le-traiteur-dui-ga-rut-xong-dong-lanh.jpg'
-      ],
-      [
-        'Đùi gà tháo khớp',
-        'https://classicdeli.vn/hanoi/492-full_default/frozen-chicken-whole-leg-250g-pc-4-5pcs-pack.jpg'
-      ],
-      [
-        'Đùi tỏi gà',
-        'https://product.hstatic.net/1000141988/product/11_0e620d9e4a864efeb78e83add670996d.jpg'
-      ],
-      [
-        'Ức gà',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210609_132303_809304_uc-ga-co-tac-dung-g.max-1800x1800.jpg'
-      ],
-      [
-        'Xương ống heo',
-        'https://sieuthifoodmart.com/upload/product/xuong-ong-heo-1555.jpeg'
-      ],
-      [
-        'Sườn sụn',
-        'https://laz-img-sg.alicdn.com/p/61fc453e22516b459fe4a56da6ecf8e8.jpg'
-      ],
-      [
-        'Bắp bò',
-        'https://cdn.tgdd.vn/Files/2021/04/03/1340438/bap-bo-la-gi-phan-biet-bap-truoc-bap-sau-cac-mon-an-ngon-tu-bap-bo-202201151417040458.jpeg'
-      ],
-      [
-        'Thịt ba chỉ',
-        'https://khoruou-gourmet.com/wp-content/uploads/2022/01/kr2-2.jpg'
-      ],
-      [
-        'Thịt gà',
-        'https://vnn-imgs-a1.vgcloud.vn/cdn.24h.com.vn/upload/2-2020/images/2020-04-26//1587869941-1b94c14bf0ae1068acab08551fac32f9.jpg'
-      ],
-      [
-        'Nạm bò',
-        'https://thitngonnhapkhau.vn/wp-content/uploads/2022/12/nam-bo_1.jpg'
-      ],
-      [
-        'Gân bò',
-        'https://admin.nongsandungha.com/wp-content/uploads/2022/09/gan-bo-nau-gi-ngon.jpg'
-      ],
-      [
-        'Thịt bò thăn',
-        'https://thitbohuunghi.com/wp-content/uploads/2022/01/3-than-file-wagyu-my.jpg'
-      ],
-      [
-        'Chim cút',
-        'https://www.cet.edu.vn/wp-content/uploads/2019/04/chon-chim-cut-ngon.jpg'
-      ]
+      'Ba chỉ bò',
+      'Bắp giò cuộn',
+      'Chân giò heo rút xương',
+      'Cánh gà',
+      'Gầu bò',
+      'Móng giò',
+      'Thịt heo xay',
+      'Thịt Ba Rọi heo',
+      'Thịt Nạc thăn heo',
+      'Thịt Nạc dăm heo',
+      'Thịt Nạc vai heo',
+      'Thịt Nạc đùi heo',
+      'Thịt Thăn bò',
+      'Thịt vai heo',
+      'Thịt xay tươi ướp sẵn',
+      'Thịt đùi heo',
+      'Xương đuôi heo',
+      'Xương ức gà',
+      'Đùi gà rút xương',
+      'Đùi gà tháo khớp',
+      'Đùi tỏi gà',
+      'Ức gà',
+      'Xương ống heo',
+      'Sườn sụn',
+      'Bắp bò',
+      'Thịt ba chỉ',
+      'Thịt gà',
+      'Nạm bò',
+      'Gân bò',
+      'Thịt bò thăn',
+      'Thịt bò ngon',
+      'Chim cút'
     ];
 
     const thitFoodPromises = thitFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -496,93 +408,33 @@ export class SeedService {
     const thitFood = await Promise.all(thitFoodPromises);
 
     const haiSanFoodArr = [
-      [
-        'Bao tử cá basa',
-        'https://cdn.tgdd.vn/Files/2022/01/22/1412455/bao-tu-ca-ba-sa-la-gi-cach-che-tu-bao-tu-ca-ba-sa-thom-ngon-202201222215342880.jpg'
-      ],
-      [
-        'Bào ngư đông lạnh',
-        'https://product.hstatic.net/1000301274/product/bao_ngu_ed06adae2c9c41c496f209b3fd6b3cb8_1024x1024.png'
-      ],
-      [
-        'Cua đồng',
-        'https://cdn.tgdd.vn/Files/2020/11/20/1308183/loi-ich-cua-cua-dong-doi-voi-suc-khoe-202201201418583640.jpg'
-      ],
-      ['Cá Thu', 'https://statics.vinpearl.com/ca-thu-03_1632822036.jpg'],
-      [
-        'Cá basa tươi',
-        'https://bhfood.vn/wp-content/uploads/2023/06/ca-basa-820-1.jpg'
-      ],
-      [
-        'Cá bạc má tươi',
-        'https://thuysanxunghe.com/wp-content/uploads/2017/07/ca-bac-ma-tuoi-06.jpg'
-      ],
-      [
-        'Cá chim trắng biển tươi',
-        'https://product.hstatic.net/1000219775/product/upload_384709732dea49aba166b5e08b9652f8_grande.jpg'
-      ],
-      [
-        'Cá chỉ',
-        'https://upload.wikimedia.org/wikipedia/commons/7/76/Selaro_leptole_100812-6053_tdp.jpg'
-      ],
-      [
-        'Cá chép',
-        'https://suckhoedoisong.qltns.mediacdn.vn/zoom/480_300/324455921873985536/2023/1/14/photo-1673666183811-16736661843131313527783-0-0-315-504-crop-16736662663301731654172.png'
-      ],
-      [
-        'Cá hồi nguyên con',
-        'https://cdn.5sfood.vn/media/san-pham-5s/ca-hoi-nauy-tuoi-nguyen-con/ca-hoi-nauy-nguyen-con-sfn-1.jpg'
-      ],
-      [
-        'Hàu sữa',
-        'https://cafefcdn.com/203337114487263232/2021/9/8/photo-1-1631067578012706836313.jpg'
-      ],
-      ['Mực ống', 'https://thesakuji.com/wp-content/uploads/2020/11/muc.jpg'],
-      [
-        'Nghêu',
-        'https://product.hstatic.net/1000030244/product/hai_san_song__600___600_px___2__3714aa85cd5e42a88a002ac67aae0f09.png'
-      ],
-      [
-        'Nhộng tằm',
-        'https://vinmec-prod.s3.amazonaws.com/images/20220121_015852_147728_nhong-tam.max-1800x1800.jpg'
-      ],
-      [
-        'Nộm sứa',
-        'https://media.baoquangninh.vn/dataimages/201805/original/images1065897_s1.jpg'
-      ],
-      [
-        'Râu bạch tuộc',
-        'https://thucphamhoangkim.com/wp-content/uploads/2021/08/rau-tuoc-han-quoc-2.png'
-      ],
-      [
-        'Tôm sú',
-        'https://cdn.tgdd.vn/2021/09/CookProductThumb/tomsutuoisong..-620x620.jpg'
-      ],
-      [
-        'Đầu mực lá',
-        'https://csfood.vn/wp-content/uploads/2016/12/%C4%90%E1%BA%A7u-m%E1%BB%B1c-l%C3%A1-6-10-c%C3%A1i.jpg'
-      ],
-      [
-        'Ếch làm sạch',
-        'https://media.loveitopcdn.com/22794/153607-ech-lam-sach.jpg'
-      ],
-      [
-        'Ghẹ',
-        'https://storage-vnportal.vnpt.vn/pyn-ubnd/7589/songcauphuyen/dac-san-ghe-song-cau-.jpg'
-      ],
-      [
-        'Cá diêu hồng',
-        'https://ketnoigiaothuong.vn/wp-content/uploads/2021/09/ca-dieu-hong-nau-gi-ngon.jpg'
-      ],
-      [
-        'Tôm hùm',
-        'https://product.hstatic.net/200000325181/product/1-min-min-min-1_a2b7e7ac473b46248465132a94defeb3_master.jpg'
-      ]
+      'Bao tử cá basa',
+      'Bào ngư đông lạnh',
+      'Cua đồng',
+      'Cá Thu',
+      'Cá basa tươi',
+      'Cá bạc má tươi',
+      'Cá chim trắng biển tươi',
+      'Cá chỉ',
+      'Cá chép',
+      'Cá hồi nguyên con',
+      'Hàu sữa',
+      'Mực ống',
+      'Nghêu',
+      'Nhộng tằm',
+      'Nộm sứa',
+      'Râu bạch tuộc',
+      'Tôm sú',
+      'Đầu mực lá',
+      'Ếch làm sạch',
+      'Ghẹ',
+      'Cá diêu hồng',
+      'Tôm hùm'
     ];
 
     const haiSanFoodPromises = haiSanFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -595,175 +447,56 @@ export class SeedService {
     const haiSanFood = await Promise.all(haiSanFoodPromises);
 
     const rauLaFoodArr = [
-      [
-        'Bí nụ',
-        'https://tinicart.vn/wp-content/uploads/2021/06/b%C3%AD-n%E1%BB%A5.jpg'
-      ],
-      [
-        'Búp măng tươi',
-        'https://www.thucphamchosach.com/images/cua-hang-ban-mang-cu-tuoi.jpg'
-      ],
-      [
-        'Bắp cải',
-        'https://product.hstatic.net/200000423303/product/bap-cai-huu-co_203a09f5391b4cb59bbad82f94c1cd7d.jpg'
-      ],
-      [
-        'Bắp cải trắng',
-        'https://product.hstatic.net/200000182591/product/24._bap_cai_trang_1.1_34c81b2b07264892bfa4e0b6b9375334_16da1aca33b949c1b3ad5f5ae731ec6f.jpg'
-      ],
-      [
-        'Bắp cải tím',
-        'https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_1024x1024.jpg'
-      ],
-      [
-        'Cải bó xôi',
-        'https://product.hstatic.net/200000423303/product/cai-bo-xoi-huu-co_dcef0c0e1fc1491599583cc06a19b830_1024x1024.jpg'
-      ],
-      [
-        'Cải ngồng',
-        'https://product.hstatic.net/200000423303/product/cai_ngong_huu_co_3e072e9a34324b89a4809b56bc979e03_grande.png'
-      ],
-      [
-        'Cải thảo',
-        'https://product.hstatic.net/200000423303/product/cai-thao-huu-co_d5a332d40bf843e283c45aae5039351c_grande.jpg'
-      ],
-      [
-        'Cải xanh',
-        'https://medlatec.vn/ImagePath/images/20230109/20230109_cai-xanh-1.jpg'
-      ],
-      [
-        'Cần tây lớn',
-        'https://lzd-img-global.slatic.net/g/p/27e6155c1f22a7d78df091977d01a112.jpg_720x720q80.jpg'
-      ],
-      [
-        'Cần tây nhỏ',
-        'https://product.hstatic.net/200000189007/product/can_tay_nho_478734ffeccd49a891c486b71c77570c_grande.jpg'
-      ],
-      [
-        'Dọc mùng',
-        'https://product.hstatic.net/200000548939/product/xmen.psd__767___850_px___21__7b5bca27934647ccb91131ee3bae2b4e_master.jpg'
-      ],
-      [
-        'Giá đỗ',
-        'https://cdn.abphotos.link/photos/resized/1024x/2022/09/15/1663235867_6iOHz5QkJxS3IC8d_1663241823-phplqgorp.png'
-      ],
-      ['Hành lá', 'https://dalafood.vn/wp-content/uploads/2022/06/hanh-la.jpg'],
-      ['Húng bạc hà', 'https://xanhviet.vn/images/products/bacha.jpg'],
-      [
-        'Húng láng',
-        'https://product.hstatic.net/1000075554/product/8567_d52e28a6cd2b4dc0b123791f71b3b723_7b01c60da85b4cdd8e65522d35526217_3b5fd1ffed1542d5899585f7901cb957_master.jpg'
-      ],
-      [
-        'Hẹ lá',
-        'https://cdn.tgdd.vn/2021/02/CookProductThumb/c8b892f9c6df018a2a8292f984a3f461-620x620.jpg'
-      ],
-      [
-        'Lá dứa',
-        'https://thucphamdongxanh.com/wp-content/uploads/2019/09/1_K223db31c6LJa7ONAf6M8w.png'
-      ],
-      ['Lá mè', 'https://dalatfarm.net/wp-content/uploads/2021/07/la-nhip.jpg'],
-      [
-        'Mùi ta',
-        'https://cuonfarm.cuonnroll.com/wp-content/uploads/2020/04/cay-mui-ta-2-1.jpg'
-      ],
-      [
-        'Măng',
-        'https://admin.nongsandungha.com/wp-content/uploads/2021/06/mang-cu-tuoi-min.jpg'
-      ],
-      [
-        'Măng tây',
-        'https://dalatfarm.net/wp-content/uploads/2021/06/mang-tay-xanh-dalat.jpg'
-      ],
-      [
-        'Ngọn bí',
-        'https://hoangdongfood.com/wp-content/uploads/2020/04/rau-b%C3%AD.jpg'
-      ],
-      [
-        'Nấm Hương',
-        'https://product.hstatic.net/200000352097/product/nam-huong-nam-dong-co-1_7dde9156f6ba4b4e835a4cb94f4b7b9c.jpg'
-      ],
-      [
-        'Nấm hỗn hợp',
-        'https://cfv.com.vn/uploads/cfv/images/nm_/nam-hon-hop-1523358257.jpg'
-      ],
-      [
-        'Nấm kim châm',
-        'https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/nhung_sai_lam_khi_an_nam_kim_cham_co_the_khien_ban_bi_ngo_doc_2_4ae8c71c8b.jpg'
-      ],
-      [
-        'Rau dền',
-        'https://vinmec-prod.s3.amazonaws.com/images/20201226_005345_144787_rau_den.max-800x800.jpg'
-      ],
-      [
-        'Rau muống',
-        'https://cdn.abphotos.link/photos/resized/1024x/2022/09/15/1663236587_XRMnOSk7BKzTfHlA_1663239577-phppmyjkv.png'
-      ],
-      [
-        'Rau mầm cải xanh',
-        'https://vuahatgiong.com/wp-content/uploads/2018/02/rau-m%E1%BA%A7m-c%E1%BA%A3i-ng%E1%BB%8Dt.jpg'
-      ],
-      [
-        'Rau mầm củ cải',
-        'https://vuahatgiong.com/wp-content/uploads/2018/02/rau-m%E1%BA%A7m-c%E1%BA%A3i-ng%E1%BB%8Dt.jpg'
-      ],
-      [
-        'Súp lơ trắng',
-        'https://dalatfarm.net/wp-content/uploads/2022/03/sup-lo-trang.jpg'
-      ],
-      [
-        'Thì là',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/4/8/cay-thi-la1-1649416686797615226166.jpg'
-      ],
-      [
-        'Tía tô',
-        'https://product.hstatic.net/200000352097/product/_spnt__tia_to_573f10a886154849950522882bad6cab_1024x1024_b5eb300d00874a3f9115973728a48e4f.png'
-      ],
-      ['Xà lách', 'https://roots.vn/wp-content/uploads/2022/09/VEG00303-5.jpg'],
-      [
-        'Kinh giới',
-        'https://cdn.tgdd.vn/2021/03/CookProductThumb/Rau-kinh-gioi-la-gi-tac-dung-cua-rau-kinh-goi-phan-biet-tia-to-va-kinh-gioi-0b-620x620.jpg'
-      ],
-      [
-        'Lá chanh',
-        'https://cdn.tgdd.vn/Files/2017/04/23/975336/meo-dung-la-chanh-trong-nau-an-6_760x506.jpg'
-      ],
-      [
-        'Rau thơm',
-        'https://cooponline.vn/wp-content/uploads/2021/08/rau-thom-lam-sach.jpg'
-      ],
-      [
-        'Rau răm',
-        'https://csfood.vn/wp-content/uploads/2020/04/Rau-r%C4%83m-VietRAT-G%C3%B3i-100g.png'
-      ],
-      [
-        'Hành tăm',
-        'https://dunghangviet.vn/wp-content/uploads/2020/07/hanh-tam.jpg'
-      ],
-      [
-        'Cây ngò rí',
-        'https://vietrau-images-public.s3.ap-southeast-1.amazonaws.com/wp-content/uploads/2021/06/29160908/132146-1.jpg'
-      ],
-      [
-        'Rau húng Láng',
-        'https://yourvacation.vn/uploads/images/h%C3%BAng%20l%C3%A1ng.jpg'
-      ],
-      [
-        'Nấm mèo',
-        'https://tramanhfood.com/wp-content/uploads/2020/01/Nam-Meo-Den-Tuoi.png'
-      ],
-      [
-        'Hoa đậu biếc khô',
-        'https://cdn.tgdd.vn/2021/09/CookDish/huong-cach-bao-quan-hoa-dau-biec-kho-mot-cach-hieu-qua-nhat-avt-1200x676.jpg'
-      ],
-      [
-        'Nấm rơm',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210607_141030_605615_nam-rom-co-tac-dung.max-1800x1800.jpg'
-      ]
+      'Bí nụ',
+      'Búp măng tươi',
+      'Bắp cải',
+      'Bắp cải trắng',
+      'Bắp cải tím',
+      'Cải bó xôi',
+      'Cải ngồng',
+      'Cải thảo',
+      'Cải xanh',
+      'Cần tây lớn',
+      'Cần tây nhỏ ',
+      'Dọc mùng',
+      'Giá đỗ',
+      'Hành lá',
+      'Húng bạc hà',
+      'Húng láng',
+      'Hẹ lá',
+      'Lá dứa',
+      'Lá mè',
+      'Mùi ta',
+      'Măng',
+      'Măng tây',
+      'Ngọn bí',
+      'Nấm Hương',
+      'Nấm hỗn hợp',
+      'Nấm kim châm',
+      'Rau dền ',
+      'Rau muống',
+      'Rau mầm cải xanh ',
+      'Rau mầm củ cải',
+      'Răm',
+      'Súp lơ trắng',
+      'Thì là',
+      'Tía tô',
+      'Xà lách',
+      'Kinh giới',
+      'Lá chanh',
+      'Rau thơm',
+      'Rau răm',
+      'Hành tăm',
+      'Cây ngò rí',
+      'Rau húng Láng',
+      'Nấm mèo',
+      'Hoa đậu biếc khô',
+      'Nấm rơm'
     ];
 
     const rauLaFoodPromises = rauLaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -776,175 +509,52 @@ export class SeedService {
     const rauLaFood = await Promise.all(rauLaFoodPromises);
 
     const cuFoodArr = [
-      [
-        'Bí xanh',
-        'https://cdn.tgdd.vn/2022/07/CookDish/cach-chon-bi-dao-ngon-va-cach-bao-quan-bi-dao-tuoi-ngon-lau-avt-1200x676-1.jpg'
-      ],
-      [
-        'Bí đỏ tròn',
-        'https://product.hstatic.net/200000459373/product/b9edb47fb13ffa61a2f24d9de633ee32_f7dc0339ec9644ae93f7eb26644592d8.jpg'
-      ],
-      [
-        'Chanh có hạt',
-        'https://originmarket.vn/wp-content/uploads/2022/05/Chanh-Co-Hat.png'
-      ],
-      [
-        'Chanh không hạt',
-        'https://product.hstatic.net/200000423303/product/chanh-khong-hat-huu-co_05795cd8857144a1af04a42b2b19e97f.jpg'
-      ],
-      [
-        'Cà rốt',
-        'https://kenh14cdn.com/203336854389633024/2023/7/30/photo-3-16906864058292115155894.png'
-      ],
-      [
-        'Cà tím tròn',
-        'https://winmart.onl/assets/media/images/products/05907/oemctt014_0915_220954_3FYtqT.png'
-      ],
-      [
-        'Củ Sả',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210602_035917_936725_cu-sa-2.max-1800x1800.jpg'
-      ],
-      [
-        'Củ cải trắng',
-        'https://product.hstatic.net/1000354044/product/85087_f362974e73044edc80bf7e6091f598ce_master.jpg'
-      ],
-      [
-        'Củ dền',
-        'https://dalatfarm.net/wp-content/uploads/2022/03/cu-den-do.jpg'
-      ],
-      [
-        'Củ đậu',
-        'https://cdn.tgdd.vn/Files/2019/12/12/1226441/xx-loi-ich-bat-ngo-den-tu-cu-dau-va-nhung-luu-y-can-biet-khi-an-cu-dau.jpg'
-      ],
-      [
-        'Diếp cá',
-        'https://suckhoedoisong.qltns.mediacdn.vn/Images/tuananh2/2021/06/25/1.jpg'
-      ],
-      [
-        'Dưa chuột',
-        'https://product.hstatic.net/200000423303/product/dua-leo-huu-co_6d5ca8015aea4e86bffbeb58e2a431fd_1024x1024.jpg'
-      ],
-      [
-        'Hành củ',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210606_012933_045889_cu-hanh-tim-co-tac-.max-1800x1800.jpg'
-      ],
-      [
-        'Hành tây',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2021/12/27/chua-yeu-sinh-ly-bang-hanh-tay-1640623099790731187596.jpg'
-      ],
-      [
-        'Hạt sen',
-        'https://cdn.abphotos.link/photos/resized/1024x/3057-1632983869-foodland.png'
-      ],
-      [
-        'Khoai lang',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2021/10/3/khoai-lang-16332714337561040798892.jpg'
-      ],
-      [
-        'Khoai lang mật',
-        'https://giadinh.mediacdn.vn/296230595582509056/2022/10/5/khoai-lang-mat2-1664935950195386777259.jpg'
-      ],
-      [
-        'Khoai môn',
-        'https://admin.nongsandungha.com/wp-content/uploads/2021/06/khoai-mon-tim-1-min.jpg'
-      ],
-      [
-        'Khoai tây',
-        'https://image.tienphong.vn/w890/Uploaded/2023/rwbvhvobvvimsb/2021_09_30/5-cach-chong-lao-hoa-da-co-voi-cac-nguyen-lieu-tu-tu-nhien-skinlift-collagen-1-1-6149.jpg'
-      ],
-      [
-        'Lá lốt',
-        'https://images.baodantoc.vn/uploads/2021/Th%C3%A1ng%205/Ng%C3%A0y%206/Thanh/la-lot-chua-dau-nhuc-khop.jpg'
-      ],
-      [
-        'Ngô ngọt',
-        'https://product.hstatic.net/200000423303/product/ngongot_efdb710405b44b06a1ea02e5db5cf3f9.jpg'
-      ],
-      [
-        'Quả bầu',
-        'https://admin.nongsandungha.com/wp-content/uploads/2021/06/qua-bau-min.jpg'
-      ],
-      [
-        'Quất',
-        'https://suckhoedoisong.qltns.mediacdn.vn/Images/nguyenkhanh/2018/02/22/quat.jpg'
-      ],
-      [
-        'Su su',
-        'https://dalatfarm.net/wp-content/uploads/2020/12/su-su-bao-tu-2-4.jpg'
-      ],
-      [
-        'Tiêu xanh',
-        'https://kphucsinh.s3south.storage.com.vn/Contents/%E1%BA%A2nh%20b%C3%A0i%20vi%E1%BA%BFt/tieu-xanh.jpg'
-      ],
-      [
-        'Tỏi',
-        'https://product.hstatic.net/200000423303/product/toi-tep-huu-co_c4a90f7fbed847b4920ea58d82bf53f0_1024x1024.jpg'
-      ],
-      [
-        'Đậu cove',
-        'https://product.hstatic.net/200000423303/product/dau-cove-huu-co_ad40962f4583495398654ddbef3e9504_1024x1024.jpg'
-      ],
-      [
-        'Ớt cay',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/6/18/cach-an-che-bien-bao-quan-ot-2-1655566236587196946971.jpg'
-      ],
-      [
-        'Ớt chuông xanh',
-        'https://media-cdn-v2.laodong.vn/storage/newsportal/2021/12/22/987477/Ot-Chuong-Xanh.jpg'
-      ],
-      [
-        'Ớt chuông đỏ',
-        'https://product.hstatic.net/1000282430/product/qua-ot-chuong-do_grande.jpg'
-      ],
-      [
-        'Ớt sừng',
-        'https://cdn.tgdd.vn/Products/Images/8820/238458/bhx/ot-sung-do-1kg-202105052303029420.jpg'
-      ],
-      [
-        'Hành tím',
-        'https://product.hstatic.net/200000423303/product/hanh_tim_huu_co_df739ce4e2dd4f09a56653b8861f8597_grande.jpg'
-      ],
-      [
-        'Củ riềng',
-        'https://suckhoedoisong.qltns.mediacdn.vn/JRGSJiLd3e5GsxdM0P2pqg65KoKccc/Image/2012/09/Cu-rieng-d69dc.jpg'
-      ],
-      [
-        'Củ gừng',
-        'https://suckhoedoisong.qltns.mediacdn.vn/Images/haiyen/2018/12/17/c_gng.jpg'
-      ],
-      [
-        'Bắp chuối',
-        'https://thucphamdongxanh.com/wp-content/uploads/2019/07/bap-chuoi-bao.jpg'
-      ],
-      [
-        'Trái ớt hiểm',
-        'https://transoceanmart.com/wp-content/uploads/2020/10/ot-hiem-do-ot-chi-thien-100gr.jpg'
-      ],
-      [
-        'Củ nghệ',
-        'https://static.tuoitre.vn/tto/i/s626/2017/05/15/hinh-3-1494836744.jpg'
-      ],
-      [
-        'Tỏi tây',
-        'https://admin.nongsandungha.com/wp-content/uploads/2021/05/hanh-baro-min.jpg'
-      ],
-      [
-        'Khoai mì',
-        'https://tieudung.kinhtedothi.vn/upload_images/images/2022/07/03/khoai-mi.jpg'
-      ],
-      [
-        'Khoai môn cau',
-        'https://rausachtrangia.com/upload/sanpham/khoai-mon-cao47590392.png'
-      ],
-      [
-        'Ngô hạt',
-        'https://upload.wikimedia.org/wikipedia/commons/7/78/Ab_food_06.jpg'
-      ]
+      'Bí xanh',
+      'Bí đỏ tròn',
+      'Chanh có hạt',
+      'Chanh không hạt',
+      'Cà rốt',
+      'Cà tím tròn',
+      'Củ Sả',
+      'Củ cải trắng',
+      'Củ dền',
+      'Củ đậu',
+      'Diếp cá',
+      'Dưa chuột',
+      'Hành củ',
+      'Hành tây',
+      'Hạt sen',
+      'Khoai lang',
+      'Khoai lang mật',
+      'Khoai môn',
+      'Khoai tây',
+      'Lá lốt',
+      'Ngô ngọt',
+      'Quả bầu',
+      'Quất',
+      'Su su',
+      'Tiêu xanh',
+      'Tỏi',
+      'Đậu cove',
+      'Ớt cay',
+      'Ớt chuông xanh',
+      'Ớt chuông đỏ',
+      'Ớt sừng',
+      'Hành tím',
+      'Củ riềng',
+      'Củ gừng',
+      'Bắp chuối',
+      'Trái ớt hiểm',
+      'Củ nghệ',
+      'Tỏi tây',
+      'Khoai mì',
+      'Khoai môn cau',
+      'Ngô hạt'
     ];
 
     const cuFoodPromises = cuFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -957,165 +567,51 @@ export class SeedService {
     const cuFood = await Promise.all(cuFoodPromises);
 
     const quaFoodArr = [
-      [
-        'Bơ sáp',
-        'https://api.traicaynguyenthung.vn/Upload/MATERIAL_EXT_4_WEBSITE/12435_Files_0/AiFruitBoxes_Bo-sap3_20230404102450077.jpg'
-      ],
-      [
-        'Bưởi 5 roi',
-        'https://cdn.tgdd.vn/Products/Images/8788/273343/bhx/buoi-nam-roi-trai-tu-900g-tro-len-202205121128329279.jpg'
-      ],
-      [
-        'Bưởi hồng da xanh',
-        'https://storage.googleapis.com/mm-online-bucket/ecommerce-website/uploads/media/202432.jpg'
-      ],
-      [
-        'Bưởi đường lá cam',
-        'https://www.conngongvang.com/wp-content/uploads/2019/01/buoi_duong_la_cam_tan_trieu.jpg'
-      ],
-      [
-        'Cam',
-        'https://cdn.tgdd.vn/Products/Images/8788/202933/bhx/cam-vang-uc-09-11kg-3-5-trai-202308180954212556.jpg'
-      ],
-      [
-        'Cam Sành loại nhỏ',
-        'https://cdn.tgdd.vn/Products/Images/8788/226917/bhx/cam-sanh-loai-2-tui-1kg-202101271631264363.jpg'
-      ],
-      [
-        'Cam sành loại 1',
-        'https://i1.wp.com/thucphamtantai.com/wp-content/uploads/2019/10/canh-sanh-loai-1.png'
-      ],
-      [
-        'Cà Chua',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2021/9/25/tac-dung-cua-ca-chua-doi-voi-suc-khoe-1-1632310636-831-width640height427-1632567723926-16325677242441321628137.jpg'
-      ],
-      [
-        'Chanh leo',
-        'https://file.hstatic.net/200000271601/file/thiet_ke_khong_ten__24__b1acf6aa2cfb4b5dab1ed417079ef087_grande.png'
-      ],
-      ['Cherry đỏ', 'https://ninhco.com/uploads/images/cherry-do-my.jpg'],
-      [
-        'Chuối',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2021/10/14/chuoi1-16341869574602070184903.jpg'
-      ],
-      [
-        'Chôm chôm',
-        'https://redpineinternational.vn/wp-content/uploads/2021/06/rambutan-jbq7r7dj.jpg'
-      ],
-      [
-        'Dưa hấu',
-        'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/6/19/dua-hau-giong-my-tui-2kg-2021071016125311551-16556534088771758641220.jpg'
-      ],
-      [
-        'Dưa hấu không hạt',
-        'https://storage.googleapis.com/mm-online-bucket/ecommerce-website/uploads/media/35575-1.jpg'
-      ],
-      ['Dưa lê', 'https://cdn.tgdd.vn/2021/05/CookProduct/duale-1200x676.jpg'],
-      [
-        'Dưa lê trắng',
-        'https://cdn.tgdd.vn/Products/Images/8788/245080/bhx/dua-le-trang-tui-1kg-3-5-trai-202302241727402848.jpg'
-      ],
-      [
-        'Dưa lưới',
-        'https://file.hstatic.net/200000240163/article/cantaloupe-sep132019-min_54231607536f419295344b34f43f160f_1024x1024.jpg'
-      ],
-      [
-        'Dưa lưới vỏ xanh',
-        'https://bhfood.vn/wp-content/uploads/2023/06/dua-luoi-854.jpg'
-      ],
-      [
-        'Dứa/khóm',
-        'https://thucphamdongxanh.com/wp-content/uploads/2019/09/dua-nu-hoang.jpg'
-      ],
-      [
-        'Dừa xiêm',
-        'https://foody24h.vn/uploads/collections/dua-xiem-ben-tre-4022-2021-11-075.jpg'
-      ],
-      [
-        'Hồng Xiêm',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210613_083444_334660_Qua-hong-xiem-mien-na.max-800x800.jpg'
-      ],
-      [
-        'Kiwi',
-        'https://photo-cms-kienthuc.epicdn.me/w730/Uploaded/2023/zagtrt/2023_08_29/qua-kiwi-8777.jpg'
-      ],
-      [
-        'Lê Nam Phi',
-        'https://product.hstatic.net/1000282430/product/le-nam-phi-.jpg'
-      ],
-      [
-        'Mận',
-        'https://citifruit.com/uploads/images/Products/60/Man-An-Phuoc-800%C3%97800.jpg'
-      ],
-      [
-        'Nho xanh',
-        'https://cdn.tgdd.vn/Products/Images/8788/296801/bhx/nho-xanh-khong-hat-tui-1kg-202211041023156860.jpg'
-      ],
-      [
-        'Nho đen ngón tay Úc',
-        'https://dt-pro.vn/upload/product/nho-den-ngon-tay-uc.jpg'
-      ],
-      [
-        'Sầu riêng',
-        'https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/loi_ich_cua_sau_rieng_doi_voi_suc_khoe_la_gi_an_sau_rieng_co_nong_khong_1_5074a6a783.jpg'
-      ],
-      [
-        'Thanh long',
-        'https://hoangphatfruit.com/vnt_upload/product/10_2022/thanh_long_ruot_trang_hoang_phat_fruit.png'
-      ],
-      [
-        'Thanh long ruột đỏ',
-        'https://redpineinternational.vn/wp-content/uploads/2021/08/thanh-long-ruot-do-01.jpg'
-      ],
-      [
-        'Táo',
-        'https://newfreshfoods.com.vn/datafiles/3/2018-02-27/16100958642348_tao-do-my-red-delicious-size-36-44.jpg'
-      ],
-      [
-        'Táo xanh',
-        'https://product.hstatic.net/1000282430/product/tao_xanh_my_grande.jpg'
-      ],
-      [
-        'Việt Quất',
-        'https://product.hstatic.net/1000406611/product/vietquat2_f7e53ee3da3c498899e280a51b09709b_master.jpg'
-      ],
-      [
-        'Vải thiều',
-        'https://vaithieu.net/wp-content/uploads/2018/01/vai-thieu-tuoi-1.png'
-      ],
-      [
-        'Xoài',
-        'https://vnn-imgs-f.vgcloud.vn/2019/06/01/14/tu-vu-be-9-tuoi-suyt-chet-vi-an-xoai-chuyen-gia-canh-bao-khong-an-xoai-neu-co-dau-hieu-sau.jpg'
-      ],
-      [
-        'Đu đủ ruột đỏ',
-        'https://kingfoodmart.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fsc_pcm_product%2Fprod%2F2023%2F4%2F28%2F283-97549.jpg&w=3840&q=75'
-      ],
-      [
-        'Me',
-        'https://suckhoedoisong.qltns.mediacdn.vn/Images/haiyen/2017/03/20/me.jpg'
-      ],
-      [
-        'Trái thơm',
-        'https://file.hstatic.net/1000303672/file/pineapple_70e32d95d25b45ba856db5d58ff5bf5e_1024x1024.png'
-      ],
-      [
-        'Dừa nạo',
-        'https://thabico.com/wp-content/uploads/2022/06/DC-High-700x-700.jpg'
-      ],
-      [
-        'Dừa sợi',
-        'https://sanjifoods.com/cdn/shop/products/d1eda1772a0d7c0b2e7ec57d97ea8636.jpg?v=1677907562'
-      ],
-      [
-        'Dừa non',
-        'https://cdn.tgdd.vn/2021/01/content/Meo-phan-biet-va-cach-chon-dua-lam-mut-cho-ngay-tet-thom-ngon-dung-chuan-2-800x534.jpg'
-      ]
+      'Bơ sáp',
+      'Bưởi 5 roi',
+      'Bưởi hồng da xanh',
+      'Bưởi đường lá cam',
+      'Cam',
+      'Cam Sành loại nhỏ',
+      'Cam sành loại 1',
+      'Cà Chua',
+      'Chanh leo',
+      'Cherry đỏ',
+      'Chuối',
+      'Chôm chôm',
+      'Dưa hấu',
+      'Dưa hấu không hạt',
+      'Dưa lê',
+      'Dưa lê trắng',
+      'Dưa lưới',
+      'Dưa lưới vỏ xanh',
+      'Dứa/khóm',
+      'Dừa xiêm',
+      'Hồng Xiêm',
+      'Kiwi',
+      'Lê Nam Phi',
+      'Mận',
+      'Nho xanh',
+      'Nho đen ngón tay Úc',
+      'Sầu riêng',
+      'Thanh long',
+      'Thanh long ruột đỏ',
+      'Táo',
+      'Táo xanh',
+      'Việt Quất',
+      'Vải thiều',
+      'Xoài',
+      'Đu đủ ruột đỏ',
+      'Me',
+      'Trái thơm',
+      'Dừa nạo',
+      'Dừa sợi',
+      'Dừa non'
     ];
 
     const quaFoodPromises = quaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1128,60 +624,24 @@ export class SeedService {
     const quaFood = await Promise.all(quaFoodPromises);
 
     const miFoodArr = [
-      [
-        'Mì tôm Hảo hảo',
-        'https://acecookvietnam.vn/wp-content/uploads/2017/07/H%E1%BA%A3o-H%E1%BA%A3o-T%C3%B4m-chua-cay_down33_.png'
-      ],
-      ['Mì tôm Omachi', 'https://i.imgur.com/vYmWSVy.png'],
-      [
-        'Mì tôm 3 miền',
-        'https://cdn.tgdd.vn/Products/Images/2565/82546/bhx/mi-3-mien-gold-chua-cay-thai-goi-75g-202004291141179866.jpg'
-      ],
-      [
-        'Mì Lẩu Thái',
-        'https://cdn.tgdd.vn/Products/Images/2565/80148/bhx/mi-the-gioi-mi-lau-thai-tom-goi-80gr-2-org.jpg'
-      ],
-      [
-        'Mì Đệ Nhất',
-        'https://acecookvietnam.vn/wp-content/uploads/2017/08/3D-BB-MI-DE-NHAT-THIT-BAM-1.png'
-      ],
-      [
-        'Mì ăn liền Kokomi',
-        'https://vicomi.com.vn/wp-content/uploads/2023/06/thung-30-goi-mi-kokomi-tom-chua-cay-65g-201912101055035782.jpg'
-      ],
-      [
-        'Mì cay Samyang Hàn Quốc',
-        'https://cdn.tgdd.vn/Files/2018/08/16/1110196/cac-loai-mi-cay-samyang-han-quoc-hot-nhat-hien-nay-202202141355576299.jpg'
-      ],
-      [
-        'Mì tôm Miliket',
-        'https://cdn.tgdd.vn/Products/Images/2565/86895/bhx/mi-miliket-dac-biet-giay-vang-vi-tom-goi-65g-202004151409036827.jpg'
-      ],
-      [
-        'Mì Cung Đình',
-        'https://product.hstatic.net/200000356473/product/mi-cung-dinh-tom-chua-cay-80g_d1235b05327b48818cb03aa127877334.jpg'
-      ],
-      [
-        'Mikochi',
-        'https://acecookvietnam.vn/wp-content/uploads/2023/06/3D-BB-MIKOCHI-SUON-HEO_RENEW_DOC.png'
-      ],
-      [
-        'Mì xào Tiểu Nhị',
-        'https://uni-president.com.vn/upload/product/spaghetti-bo-sot-chua-cay-3926.png'
-      ],
-      [
-        'Mì ăn liền koreno',
-        'https://lzd-img-global.slatic.net/g/p/adcd0fe40cb5ef5b0aa386430e88a3e0.jpg_720x720q80.jpg'
-      ],
-      [
-        'Mì Spaghetti',
-        'https://www.havamall.com/wp-content/uploads/2019/05/2529c03e4be0aebef7f1.png'
-      ]
+      'Mì tôm Hảo hảo',
+      'Mì tôm Omachi',
+      'Mì tôm 3 miền',
+      'Mì Lẩu Thái',
+      'Mì Đệ Nhất',
+      'Mì ăn liền Kokomi',
+      'Mì cay Samyang Hàn Quốc',
+      'Mì tôm Miliket',
+      'Mì Cung Đình',
+      'Mikochi',
+      'Mì xào Tiểu Nhị',
+      'Mì ăn liền koreno',
+      'Mì Spaghetti'
     ];
 
     const miFoodPromises = miFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1194,32 +654,17 @@ export class SeedService {
     const miFood = await Promise.all(miFoodPromises);
 
     const chaoFoodArr = [
-      [
-        'Cháo đậu xanh',
-        'https://cdn.tgdd.vn/2020/07/CookRecipe/Avatar/chao-dau-xanh-giai-cam-thumbnail.jpg'
-      ],
-      [
-        'Cháo thịt bằm',
-        'https://daotaobeptruong.vn/wp-content/uploads/2020/03/chao-thit-bam.jpg'
-      ],
-      [
-        'Cháo rau nấm',
-        'https://cdn.tgdd.vn/2021/04/CookRecipe/GalleryStep/thanh-pham-18.jpg'
-      ],
-      ['Cháo gà', 'https://cookbeo.com/media/2020/08/chao-ga/chao-ga-4x3.jpg'],
-      [
-        'Cháo bò',
-        'https://cdn.tgdd.vn/2021/11/CookDish/cach-nau-chao-bo-tri-ton-dac-san-an-giang-moi-la-hap-dan-don-avt-1200x676.jpg'
-      ],
-      [
-        'Cháo cá hồi',
-        'https://cdn.tgdd.vn/Files/2017/03/26/965322/cach-nau-chao-ca-hoi-cho-be-khong-bi-tanh-202203211413554439.jpg'
-      ]
+      'Cháo đậu xanh',
+      'Cháo thịt bằm',
+      'Cháo rau nấm',
+      'Cháo gà',
+      'Cháo bò',
+      'Cháo cá hồi'
     ];
 
     const chaoFoodPromises = chaoFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1232,43 +677,19 @@ export class SeedService {
     const chaoFood = await Promise.all(chaoFoodPromises);
 
     const phoBunMienFoodArr = [
-      [
-        'Phở gà',
-        'https://cdn.statically.io/img/gachaybo.com/f=auto/wp-content/uploads/2020/11/pho-ga-1.jpg'
-      ],
-      [
-        'Phở bò',
-        'https://cdn.tgdd.vn/Files/2022/01/25/1412805/cach-nau-pho-bo-nam-dinh-chuan-vi-thom-ngon-nhu-hang-quan-202201250230038502.jpg'
-      ],
-      [
-        'Miến phú hương',
-        'https://img-global.cpcdn.com/005_steps/140bed537bdece9e/480x360cq70/photo.jpg'
-      ],
-      [
-        'Bún bò',
-        'https://cdn.tgdd.vn/Files/2018/04/01/1078873/nau-bun-bo-hue-cuc-de-tai-nha-tu-vien-gia-vi-co-san-202109161718049940.jpg'
-      ],
-      [
-        'Bún giò heo',
-        'https://cdn.tgdd.vn/2021/06/CookRecipe/GalleryStep/thanh-pham-1230.jpg'
-      ],
-      [
-        'Bún riêu cua',
-        'https://daotaobeptruong.vn/wp-content/uploads/2020/06/bun-rieu-cua.jpg'
-      ],
-      [
-        'Bún tươi',
-        'https://img-global.cpcdn.com/recipes/5787e5f4eb2020d7/680x482cq70/bun-t%C6%B0%C6%A1i-recipe-main-photo.jpg'
-      ],
-      [
-        'Bánh phở',
-        'https://thucphamnhanh.com/wp-content/uploads/2020/10/banh-pho-loai-1kg-4.jpg'
-      ]
+      'Phở gà',
+      'Phở bò',
+      'Miến phú hương',
+      'Bún bò',
+      'Bún giò heo',
+      'Bún riêu cua',
+      'Bún tươi',
+      'Bánh phở'
     ];
 
     const phoBunMienFoodPromises = phoBunMienFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1281,27 +702,15 @@ export class SeedService {
     const phoBunMienFood = await Promise.all(phoBunMienFoodPromises);
 
     const suaTuoiFoodArr = [
-      [
-        'Sữa tươi Vinamilk',
-        'https://cooponline.vn/wp-content/uploads/2013/03/sua-tuoi-tiet-trung-vinamilk-100-khong-duong1-hop-giay-1l.jpg'
-      ],
-      [
-        'Sữa tươi TH True Milk',
-        'https://bizweb.dktcdn.net/thumb/1024x1024/100/363/523/products/sua-tuoi-tiet-trung-co-duong-th-1-lit.png?v=1624629882230'
-      ],
-      [
-        'Sữa tươi Dutch Lady',
-        'https://www.dutchlady.com.vn/sites/default/files/2022-06/FRESH.png'
-      ],
-      [
-        'Sữa tươi',
-        'https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/sua_tuoi_khong_duong_bao_nhieu_calo_uong_nhieu_co_map_khong1_e5a8148dfa.jpg'
-      ]
+      'Sữa tươi Vinamilk',
+      'Sữa tươi TH True Milk',
+      'Sữa tươi Dutch Lady',
+      'Sữa tươi'
     ];
 
     const suaTuoiFoodPromises = suaTuoiFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1314,39 +723,18 @@ export class SeedService {
     const suaTuoiFood = await Promise.all(suaTuoiFoodPromises);
 
     const suaHopFoodArr = [
-      [
-        'Sữa đậu nành đậu đỏ Vinamilk',
-        'https://salt.tikicdn.com/cache/w1200/ts/product/c3/10/1a/eafa8be7f4e744c0018af22fdd33eea4.jpg'
-      ],
-      [
-        'Sữa đậu nành hạt óc chó Vinamilk',
-        'https://product.hstatic.net/1000074072/product/hop_super_nut_oc_cho_-_180ml_-_side_view_8092526d69fb45eb93152e681d84a47d_master.jpg'
-      ],
-      [
-        'Sữa đậu nành hạnh nhân Vinamilk',
-        'https://cdn.tgdd.vn/Products/Images/2943/203655/bhx/loc-4-hop-sua-dau-nanh-hanh-nhan-vinamilk-180ml-201906111258462315.jpg'
-      ],
-      [
-        'Sữa lúa mạch socola Ovaltine',
-        'https://batos.vn/images/products/2023/07/13/loc-4-hop-sua-lua-mach-vi-socola-ovaltine-bo-sung-canxi-110ml-202305061034486410-335.jpg'
-      ],
-      [
-        'Sữa lúa mạch Milo Nestle',
-        'https://cdn.tgdd.vn/Products/Images/2945/225160/bhx/sua-lua-mach-milo-nap-van-hop-210ml-202104140055511486.jpg'
-      ],
-      [
-        'Sữa bắp non',
-        'https://minhcaumart.vn/media/com_eshop/products/8936025771606.webp'
-      ],
-      [
-        'Sữa đậu nành canxi Fami',
-        'https://product.hstatic.net/200000078749/product/sua_dau_nanh_fami_canxi_200ml-01_copy_9fc46c66c787496ca2d2b668201fa332_1f05e82febfe432d8678159a3d2367cb.jpg'
-      ]
+      'Sữa đậu nành đậu đỏ Vinamilk',
+      'Sữa đậu nành hạt óc chó Vinamilk',
+      'Sữa đậu nành hạnh nhân Vinamilk',
+      'Sữa lúa mạch socola Ovaltine',
+      'Sữa lúa mạch Milo Nestle',
+      'Sữa bắp non',
+      'Sữa đậu nành canxi Fami'
     ];
 
     const suaHopFoodPromises = suaHopFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1362,7 +750,7 @@ export class SeedService {
 
     const suaBotFoodPromises = suaBotFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1375,27 +763,15 @@ export class SeedService {
     const suaBotFood = await Promise.all(suaBotFoodPromises);
 
     const suaDacFoodArr = [
-      [
-        'Sữa đặc Ông Thọ',
-        'https://product.hstatic.net/1000074072/product/slide21_db451001b8154f5d8d6ae9f5036b56a6_master.png'
-      ],
-      [
-        'Kem đặc có đường Vinamilk Ngôi Sao Phương Nam',
-        'https://csfood.vn/wp-content/uploads/2016/10/Kem-%C4%91%E1%BA%B7c-c%C3%B3-%C4%91%C6%B0%E1%BB%9Dng-Ng%C3%B4i-Sao-Ph%C6%B0%C6%A1ng-Nam-nh%C3%A3n-xanh-Vinamilk-h%E1%BB%99p-380g.jpg'
-      ],
-      [
-        'Sữa đặc Dutch Lady',
-        'https://cdn.tgdd.vn/Products/Images/2526/83920/bhx/sua-dac-co-duong-dutch-lady-nguyen-kem-lon-380g-202305091529152634.jpg'
-      ],
-      [
-        'Creamer đặc sữa pha chế Nutimilk',
-        'https://nutifood.com.vn/files/brands/nutimilk-creamer-moi/610x610-px.png'
-      ]
+      'Sữa đặc Ông Thọ',
+      'Kem đặc có đường Vinamilk Ngôi Sao Phương Nam',
+      'Sữa đặc Dutch Lady',
+      'Creamer đặc sữa pha chế Nutimilk'
     ];
 
     const suaDacFoodPromises = suaDacFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1408,31 +784,16 @@ export class SeedService {
     const suaDacFood = await Promise.all(suaDacFoodPromises);
 
     const suaChuaFoodArr = [
-      [
-        'Sữa chua',
-        'https://nghebep.com/wp-content/uploads/2017/12/sua-chua-hay-con-goi-la-yaourt.jpg'
-      ],
-      [
-        'Sữa chua không đường',
-        'https://nghebep.com/wp-content/uploads/2017/12/sua-chua-hay-con-goi-la-yaourt.jpg'
-      ],
-      [
-        'Sữa chua ít đường',
-        'https://nghebep.com/wp-content/uploads/2017/12/sua-chua-hay-con-goi-la-yaourt.jpg'
-      ],
-      [
-        'Sữa uống lên men Yakult',
-        'https://tienhuynh.vn/files/upload/san-pham/sua/sua-len-men-yakult-65ml.jpg'
-      ],
-      [
-        'Váng sữa',
-        'https://cdn.tgdd.vn/2021/12/CookDish/vang-sua-la-gi-vang-sua-lam-tu-gi-cac-loai-vang-sua-va-cach-avt-1200x676.jpg'
-      ]
+      'Sữa chua',
+      'Sữa chua không đường',
+      'Sữa chua ít đường',
+      'Sữa uống lên men Yakult',
+      'Váng sữa'
     ];
 
     const suaChuaFoodPromises = suaChuaFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1445,47 +806,20 @@ export class SeedService {
     const suaChuaFood = await Promise.all(suaChuaFoodPromises);
 
     const boSuaPhoMaiFoodArr = [
-      [
-        'Phô mai Con Bò Cười',
-        'https://sieuthihuyhung.com/wp-content/uploads/2020/04/unnamed-2-2.jpg'
-      ],
-      [
-        'Bơ lạt',
-        'https://cdn.nhathuoclongchau.com.vn/unsafe/800x0/filters:quality(95)/https://cms-prod.s3-sgn09.fptcloud.com/bo_lat_la_gi_1_404fdf400b.jpg'
-      ],
-      [
-        'Bơ mặn',
-        'https://cdn.tgdd.vn/Files/2020/03/02/1239515/bo-lat-va-bo-man-khac-nhau-nhu-the-nao-202003020819420944.jpg'
-      ],
-      [
-        'Phô Mai Lát',
-        'https://bizweb.dktcdn.net/100/439/247/products/a4d051d2-6b03-4d1e-b717-0b6c4617c129-1669977222392.jpg?v=1669977226553'
-      ],
-      [
-        'Phô mai dây hun khói',
-        'https://thitbonhapkhau.com/Upload/Anh-Moi-2022/Pho-Mai-Xong-Khoi/Pho-mai-xong-khoi-nga-3.jpg'
-      ],
-      [
-        'Phô mai gói',
-        'https://nguyenhafood.vn/uploads/2023/06/27/dc9706901b0cc34a3b68a6a7d6f6e760.png'
-      ],
-      [
-        'Phô mai hun khói',
-        'https://product.hstatic.net/1000301274/product/phomai_tet_ad12223973ee42d39d2693b8fad88320.png'
-      ],
-      [
-        'Phô mai lát',
-        'https://sieuthiandam.com/wp-content/uploads/2019/08/ph%C3%B4-mai-l%C3%A1t.jpg'
-      ],
-      [
-        'Phô mai vuông',
-        'https://bizweb.dktcdn.net/100/435/899/products/aadccead-f4c6-4a38-b967-09c8192357e1.jpg?v=1631028032753'
-      ]
+      'Phô mai Con Bò Cười',
+      'Bơ lạt',
+      'Bơ mặn',
+      'Phô Mai Lát',
+      'Phô mai dây hun khói',
+      'Phô mai gói',
+      'Phô mai hun khói',
+      'Phô mai lát',
+      'Phô mai vuông'
     ];
 
     const boSuaPhoMaiFoodPromises = boSuaPhoMaiFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1501,7 +835,7 @@ export class SeedService {
 
     const gaoFoodPromises = gaoFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1514,36 +848,18 @@ export class SeedService {
     const gaoFood = await Promise.all(gaoFoodPromises);
 
     const nguCocFoodArr = [
-      ['Ngũ cốc ăn sáng', 'https://huongxuashop.com/150542-6.png'],
-      [
-        'Ngũ cốc dinh dưỡng',
-        'https://cdn.tgdd.vn/Products/Images/8286/79376/bhx/ngu-coc-dinh-duong-vinacafe-bfast-bich-500g-202004241129496588.jpg'
-      ],
-      [
-        'Gạo lứt',
-        'https://medlatec.vn/ImagePath/images/20211127/20211127_gao-lut-co-tot-khong-2.png'
-      ],
-      [
-        'Đậu xanh',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210608_032022_514614_dau-xanh-co-tac-dun.max-1800x1800.jpg'
-      ],
-      [
-        'Đậu phộng',
-        'https://medlatec.vn/ImagePath/images/20221114/20221114_dau-phong-1.jpg'
-      ],
-      [
-        'Cốm xanh',
-        'https://congthuong-cdn.mastercms.vn/stores/news_dataimages/thanhhuong/072021/25/08/in_article/4235_z2631717096362869d7a80653da770ef88b317fff2c865-1626943393084.jpg?rt=20210725084235'
-      ],
-      [
-        'Hạt sen',
-        'https://vinmec-prod.s3.amazonaws.com/images/20210407_161012_134157_an-hat-sen-de-ngu.max-1800x1800.jpg'
-      ]
+      'Ngũ cốc ăn sáng',
+      'Ngũ cốc dinh dưỡng',
+      'Gạo lứt',
+      'Đậu xanh',
+      'Đậu phộng',
+      'Cốm xanh',
+      'Hạt sen'
     ];
 
     const nguCoFoodPromises = nguCocFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1556,124 +872,40 @@ export class SeedService {
     const nguCocFood = await Promise.all(nguCoFoodPromises);
 
     const doHopFoodArr = [
-      ['Cá ngừ', 'https://cdn.tgdd.vn/2020/11/CookProduct/1-1200x676-3.jpg'],
-      [
-        'Bò hầm',
-        'https://daotaobeptruong.vn/wp-content/uploads/2016/09/793ea701476d5db2a4fd8cf1e0bf5880.jpg'
-      ],
-      [
-        'Bơ thực vật',
-        'https://cdn.tgdd.vn/Files/2022/06/29/1443495/top-6-loai-bo-thuc-vat-min-ngon-chat-luong-tot-ban-tai-bach-hoa-xanh-202206291609504983.jpg'
-      ],
-      [
-        'Bơ đậu phộng',
-        'https://cdn.tgdd.vn/Products/Images/3465/174516/bhx/bo-dau-phong-min-golden-farm-hu-170g-201911201533371675.jpg'
-      ],
-      [
-        'Cà pháo lọ',
-        'https://csfood.vn/wp-content/uploads/2016/06/C%C3%A0-ph%C3%A1o-Ng%E1%BB%8Dc-Li%C3%AAn-l%E1%BB%8D-365g.jpg'
-      ],
-      [
-        'Cá chỉ cháy tỏi',
-        'https://hainamfoods.vn/wp-content/uploads/2020/04/ca-chi-chay-toi-hu-60g.png'
-      ],
-      [
-        'Cá khô chỉ vàng khay',
-        'https://file.hstatic.net/200000419817/file/ca-chi-vang-natufood-200g-10_e6067e3a5706409cbc3549e4ca096cf2.jpg'
-      ],
-      [
-        'Cá ngừ đại dương ngâm dầu',
-        'https://cdn.lottemart.vn/media/catalog/product/cache/0x0/8/9/8935025531029.jpg.webp'
-      ],
-      [
-        'Heo hầm',
-        'https://vissanmart.com/pub/media/catalog/product/cache/ee97423e9fa68a0b8b7aae16fe28a6ff/h/e/heo_h_m_150g.jpg'
-      ],
-      [
-        'Khô cá chỉ vàng',
-        'https://file.hstatic.net/200000419817/file/ca-chi-vang-natufood-200g-10_e6067e3a5706409cbc3549e4ca096cf2.jpg'
-      ],
-      [
-        'Khô cá cơm',
-        'https://dulichquynhon-phuyen.com/wp-content/uploads/2022/08/ca-com-kho-scaled-1.jpg'
-      ],
-      [
-        'Mực cán ăn liền',
-        'https://sanphamdiaphuong.vn/wp-content/uploads/2021/05/muc-can-tam.jpg'
-      ],
-      [
-        'Mực rim hộp',
-        'https://bizweb.dktcdn.net/100/308/217/files/muc-rim-me.jpg?v=1533263059203'
-      ],
-      [
-        'Mực sấy gừng',
-        'https://salt.tikicdn.com/ts/product/9b/31/b2/741e4474f2cc82792eb287c014a4ba01.png'
-      ],
-      [
-        'Pate gan',
-        'https://cdn.tgdd.vn/Products/Images/3238/83336/bhx/pate-gan-ha-long-170g-2-org.jpg'
-      ],
-      [
-        'Pate thịt heo',
-        'https://vissanmart.com/danang/pub/media/catalog/product/cache/ee97423e9fa68a0b8b7aae16fe28a6ff/p/a/pate_thit_heo_170g.png'
-      ],
-      [
-        'Ruốc khô',
-        'https://cdn.tgdd.vn/Products/Images/8318/200160/bhx/ruoc-kho-phong-phuong-goi-100g-202011021320110530.jpg'
-      ],
-      [
-        'Thịt gà hộp',
-        'https://cdn.tgdd.vn/Products/Images/3238/273332/bhx/thit-ga-glavproduct-hop-350g-202203250819303393.jpg'
-      ],
-      [
-        'Thịt heo viên',
-        'https://cdn.tgdd.vn/Products/Images/3238/159048/bhx/thit-heo-vien-3-phut-heo-cao-boi-masan-hop-200g-201912031624113275.jpg'
-      ],
-      [
-        'Thịt hộp',
-        'https://cdn.tgdd.vn/Products/Images/3238/83320/bhx/thit-heo-spam-classic-hormel-foods-hop-340g-201910061032078950.jpg'
-      ],
-      [
-        'Thịt xay',
-        'https://finefoodvn.com/datafiles/31836/upload/files/Th%E1%BB%8Bt%20heo/thit-xay-heo-1.jpg'
-      ],
-      [
-        'Tôm khô hộp',
-        'https://bepcuaha.com/wp-content/uploads/2019/08/TomkhoAnHoa200g-1.jpg'
-      ],
-      [
-        'Tôm nõn hộp',
-        'https://lzd-img-global.slatic.net/g/p/87626015809488565aed2882413ffda5.jpg_960x960q80.jpg_.webp'
-      ],
-      [
-        'Mắm ruốc Huế',
-        'https://csfood.vn/wp-content/uploads/2016/05/Mam-Ruoc-Hue-Ngoc-Lien-Hu-400g.jpg'
-      ],
-      [
-        'Nước cốt dừa',
-        'https://cdn.tgdd.vn/Products/Images/7086/83319/bhx/nuoc-cot-dua-wonderfarm-lon-400ml-201904121507574493.jpg'
-      ],
-      [
-        'Kim chi Hàn Quốc',
-        'https://www.huongnghiepaau.com/wp-content/uploads/2022/06/kim-chi-cai-thao-chua-vi-han-quoc.jpg'
-      ],
-      [
-        'Thạch rau câu dừa',
-        'https://cdn.tgdd.vn/Files/2017/08/18/1014229/cach-lam-rau-cau-dua-nhieu-lop-thom-mat-ngon-mieng-202110301706336992.jpg'
-      ],
-      [
-        'Thạch rau câu giòn',
-        'https://cdn.nguyenkimmall.com/images/companies/_1/tin-tuc/kinh-nghiem-meo-hay/b%E1%BA%BFp/bot-lam-rau-cau-gion.jpg'
-      ],
-      [
-        'Bò khô',
-        'https://i-giadinh.vnecdn.net/2021/03/15/1-1615818742-7067-1615818945.jpg'
-      ]
+      'Cá ngừ',
+      'Bò hầm',
+      'Bơ thực vật',
+      'Bơ đậu phộng',
+      'Cà pháo lọ',
+      'Cá chỉ cháy tỏi',
+      'Cá khô chỉ vàng khay',
+      'Cá ngừ đại dương ngâm dầu',
+      'Heo hầm',
+      'Khô cá chỉ vàng',
+      'Khô cá cơm',
+      'Mực cán ăn liền',
+      'Mực rim hộp',
+      'Mực sấy gừng',
+      'Pate gan',
+      'Pate thịt heo',
+      'Ruốc khô',
+      'Thịt gà hộp',
+      'Thịt heo viên',
+      'Thịt hộp',
+      'Thịt xay',
+      'Tôm khô hộp',
+      'Tôm nõn hộp',
+      'Mắm ruốc Huế',
+      'Nước cốt dừa',
+      'Kim chi Hàn Quốc',
+      'Thạch rau câu dừa',
+      'Thạch rau câu giòn',
+      'Bò khô'
     ];
 
     const doHopFoodPromises = doHopFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1686,68 +918,26 @@ export class SeedService {
     const doHopFood = await Promise.all(doHopFoodPromises);
 
     const botFoodArr = [
-      [
-        'Bột bánh rán',
-        'https://cdn.tgdd.vn/Products/Images//2388/134816/bhx/files/1.jpg'
-      ],
-      [
-        'Bột bắp Meizan',
-        'https://cdn.tgdd.vn/Products/Images/2388/272027/bhx/bot-bap-meizan-goi-1kg-202202260801542720.jpg'
-      ],
-      [
-        'Bột chiên giòn',
-        'https://bizweb.dktcdn.net/100/128/766/files/bot-chien-gion-vinh-thuan.jpg?v=1549945569899'
-      ],
-      [
-        'Bột chiên gà giòn',
-        'https://csfood.vn/wp-content/uploads/2015/03/Bot-Chien-Ga-Gion-Aji-Quick.jpg'
-      ],
-      [
-        'Bột chiên xù',
-        'https://bizweb.dktcdn.net/100/439/247/products/ac8169197de7551ef624f20e7926af34-1657139872336.jpg?v=1657139880697'
-      ],
-      [
-        'Bột mì chuyên dụng cho Bánh Mì',
-        'https://www.lottemart.vn/media/catalog/product/cache/0x0/8/9/8936055280321-1.jpg.webp'
-      ],
-      [
-        'Bột mì chuyên bánh bông lan',
-        'https://www.lottemart.vn/media/catalog/product/cache/0x0/8/9/8936055280345.jpg.webp'
-      ],
-      [
-        'Bột mì đa dụng',
-        'https://cdn.tgdd.vn/Products/Images/2388/83375/bhx/bot-mi-da-dung-meizan-goi-1kg-201903221403085142.jpg'
-      ],
-      [
-        'Bột tàu hủ',
-        'https://bizweb.dktcdn.net/thumb/grande/100/004/714/products/bot-tau-hu-singapore-1.png?v=1635474879263'
-      ],
-      [
-        'Bột cà ri',
-        'https://giavivietan.com/wp-content/uploads/2020/01/B%E1%BB%98T-CARY-XK-5-GR-10-GR-576x800.png'
-      ],
-      [
-        'Bột năng',
-        'https://cdn.tgdd.vn/Products/Images/2388/229781/bhx/bot-nang-tai-ky-goi-1kg-202010191620469875.jpg'
-      ],
-      [
-        'Bột gạo',
-        'https://cdn.tgdd.vn/Products/Images/2388/83414/bhx/bot-gao-taky-400gam-2-org.jpg'
-      ],
-      [
-        'Bột rau câu dẻo',
-        'https://giaohang.de/cdn/shop/products/cadeo.jpg?v=1571694781'
-      ],
-      ['Bột báng', 'https://cdn.tgdd.vn/2020/12/CookProduct/2-1200x676-7.jpg'],
-      [
-        'Bột khoai',
-        'https://cachnau.vn/wp-content/uploads/2021/10/bot-khoai.jpg'
-      ]
+      'Bột bánh rán',
+      'Bột bắp Meizan',
+      'Bột chiên giòn',
+      'Bột chiên gà giòn',
+      'Bột chiên xù',
+      'Bột mì chuyên dụng cho Bánh Mì',
+      'Bột mì chuyên bánh bông lan',
+      'Bột mì đa dụng',
+      'Bột tàu hủ',
+      'Bột cà ri',
+      'Bột năng',
+      'Bột gạo',
+      'Bột rau câu dẻo',
+      'Bột báng',
+      'Bột khoai'
     ];
 
     const botFoodPromises = botFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1760,136 +950,43 @@ export class SeedService {
     const botFood = await Promise.all(botFoodPromises);
 
     const giaViFoodArr = [
-      [
-        'Dầu ăn',
-        'https://lanchi.vn/wp-content/uploads/2021/11/DAU-AN-SIMPLY-2L.jpg'
-      ],
-      [
-        'Dầu olive',
-        'https://static.ecosite.vn/17049/product/2021/06/12/tinh-dau-olive-nguyen-huong-1623490965.jpg'
-      ],
-      [
-        'Nước mắm',
-        'https://www.adcfoods.com/wp-content/uploads/2017/12/Nuoc-mam-ca-com-Tams-30N-cua-ADCFoods-web.png'
-      ],
-      [
-        'Đường',
-        'https://csfood.vn/wp-content/uploads/2016/05/%C4%90%C6%B0%E1%BB%9Dng-tinh-luy%E1%BB%87n-Bi%C3%AAn-H%C3%B2a-g%C3%B3i-500g.1.jpg'
-      ],
-      [
-        'Nước tương',
-        'https://vietreview.vn/wp-content/uploads/2020/06/63052_chk_591_20150520_8934804019567_1_1-350x350.jpg'
-      ],
-      ['Hạt nêm', 'https://assets.unileversolutions.com/v1/63248860.png'],
-      [
-        'Bột canh',
-        'https://cholimexfood.com.vn/wp-content/uploads/2019/12/bot-canh.jpg'
-      ],
-      [
-        'Hạt tiêu',
-        'https://vcdn1-suckhoe.vnecdn.net/2022/04/22/black-pepper-jpeg-1650619589-5864-1650619709.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=xW3h5wtyQdK15hrAEd_ANg'
-      ],
-      [
-        'Tương ớt',
-        'https://vinamart.com.vn/wp-content/uploads/2022/04/tuong-ot-chinsu-250g.jpg'
-      ],
-      [
-        'Tương cà',
-        'https://sieuthihoaba.com.vn/wp-content/uploads/2020/09/tuong-ca-chinsu-250gx24-201908311403202029.jpg'
-      ],
-      [
-        'Mật ong',
-        'https://cdn.tgdd.vn/Files/2019/09/24/1201371/mat-ong-tac-dung-than-ky-cach-dung-va-luu-y-khi-dung-mat-ong-202302281355111013.jpeg'
-      ],
-      [
-        'Mì chính',
-        'https://tinnghiafood.vn/FileUpload/Images/mi-chinh-ajinomoto-1-kg.jpg'
-      ],
-      [
-        'Ớt bột',
-        'https://tongkhogiavi.com/wp-content/uploads/2022/04/ot-bot-kho-xay.jpg'
-      ],
-      [
-        'Mayonnaise',
-        'https://storage.googleapis.com/mm-online-bucket/ecommerce-website/uploads/media/225312.jpg'
-      ],
-      [
-        'Wasabi',
-        'https://product.hstatic.net/200000356095/product/wasabi_7f1b903fa9f94f31a438eace88612b07.jpg'
-      ],
-      [
-        'Giấm',
-        'https://abby.vn/wp-content/uploads/2021/03/B6715-1614564095302.jpeg'
-      ],
-      [
-        'Hương thảo',
-        'https://vcdn-suckhoe.vnecdn.net/2023/03/04/c2-1959-1460347325-jpeg-167789-7202-8909-1677898827.jpg'
-      ],
-      [
-        'Sốt mè rang',
-        'https://product.hstatic.net/1000030244/product/nuoc-xot-me-rang-2_e1cdf56e877c415cbfb747050d79f55b.jpg'
-      ],
-      [
-        'Muối',
-        'https://muoibaclieu.com.vn/wp-content/uploads/2022/09/DKS07496-scaled.jpg'
-      ],
-      [
-        'Nghệ',
-        'https://honeco.com/wp-content/uploads/2023/09/tac-dung-cua-nghe.jpg'
-      ],
-      [
-        'Mắm tôm',
-        'https://csfood.vn/wp-content/uploads/2015/03/Mam-Tom-Do-Tri-Hai-Chai-210g.png'
-      ],
-      [
-        'Sa tế',
-        'https://cholimexfood.com.vn/wp-content/uploads/2020/02/SATE-TOM-XO-100.jpg'
-      ],
-      [
-        'Dầu hào',
-        'https://product.hstatic.net/200000401369/product/dau-hao-dam-dac-maggi-chai-350g-202209082118170548_61e86c5fd0b24b5cacee3cc848521b65.png'
-      ],
-      [
-        'Muối i-ốt',
-        'https://product.hstatic.net/1000141988/product/muoi_i-ot_bac_lieu_500gr_c6d49e4aa2724f2f9302bf4c83cd7d3e.jpg'
-      ],
-      [
-        'Bột ngọt',
-        'https://storage.googleapis.com/mm-online-bucket/ecommerce-website/uploads/media/135806.jpg'
-      ],
-      [
-        'Dấm trắng',
-        'https://product.hstatic.net/1000296868/product/dam_trang_trungthanh_foods_47a40f5183c94a9dad60e80a2c23e56e.jpg'
-      ],
-      [
-        'Đường phèn',
-        'https://bizweb.dktcdn.net/thumb/grande/100/169/223/products/duong-phen-bien-hoa.jpg?v=1500709424393'
-      ],
-      [
-        'Dầu màu điều',
-        'https://dhfoods.com.vn/vnt_upload/product/10_2022/VN_Dau_Mau_Dieu_1.png'
-      ],
-      [
-        'Đường cát trắng',
-        'https://down-vn.img.susercontent.com/file/da2764d613b765b8bcc1d4fa429b7aee'
-      ],
-      [
-        'Vani',
-        'https://dolambanh.net/wp-content/uploads/2019/02/Vani-500ml.jpg'
-      ],
-      [
-        'Dầu vừng',
-        'https://nguquynh.com.vn/thumb/sanpham/dauvungnguyenchatnguquynh1lit_1200_1200.jpg'
-      ],
-      [
-        'Ngũ vị hương',
-        'https://giavivietan.com/wp-content/uploads/2020/08/B%E1%BB%99t-ng%C5%A9-v%E1%BB%8B-h%C6%B0%C6%A1ng-500gr-ch%C3%A9n-b%E1%BB%99t.png'
-      ]
+      'Dầu ăn',
+      'Dầu olive',
+      'Nước mắm',
+      'Đường',
+      'Nước tương',
+      'Hạt nêm',
+      'Bột canh',
+      'Hạt tiêu',
+      'Tương ớt',
+      'Tương cà',
+      'Mật ong',
+      'Mì chính',
+      'Ớt bột',
+      'Mayonnaise',
+      'Wasabi',
+      'Giấm',
+      'Hương thảo',
+      'Sốt mè rang',
+      'Muối',
+      'Nghệ',
+      'Mắm tôm',
+      'Sa tế',
+      'Dầu hào',
+      'Muối i-ốt',
+      'Bột ngọt',
+      'Dấm trắng',
+      'Đường phèn',
+      'Dầu màu điều',
+      'Đường cát trắng',
+      'Vani',
+      'Dầu vừng',
+      'Ngũ vị hương'
     ];
 
     const giaViFoodPromises = giaViFoodArr.map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1902,79 +999,28 @@ export class SeedService {
     const giaViFood = await Promise.all(giaViFoodPromises);
 
     const doUongFoodArr = [
-      [
-        'Nước lọc',
-        'https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100,s_300x300/https://cdn.tgdd.vn/Products/Images/2563/79249/nuoc-tinh-khiet-dasani-500ml-thumb-600x600.jpg'
-      ],
-      [
-        'Coca cola',
-        'https://product.hstatic.net/200000356473/product/cocacola-chai-390ml_7214ffae946e4e63826e8f38a45ed5fa.jpg'
-      ],
-      [
-        'Pepsi',
-        'https://product.hstatic.net/1000141988/product/nuoc_ngot_pepsi_lon_320_ml_415ef91bdb15487ab3079155c3635f66.jpg'
-      ],
-      [
-        '7up',
-        'https://product.hstatic.net/1000301274/product/_10100996__7up_320ml_sleek_lon_0366766c074a4b538595ed8d91dc6b0d.png'
-      ],
-      [
-        'Spite',
-        'https://victoryplaza.vn/media/product/4140_nuoc_ngot_sprite_lon_330ml_2_1.jpg'
-      ],
-      [
-        'Fanta',
-        'https://www.coca-cola.com/content/dam/onexp/vn/home-image/fanta/Fanta_Orange_RCG_320ml_Desktop.png'
-      ],
-      [
-        'Trà chanh',
-        'https://tokyodeliexpress.com.vn/Data/Sites/5/Product/786/tea-07.jpg'
-      ],
-      [
-        'Trà đào',
-        'https://sieuthibsmart.com/wp-content/uploads/2021/02/31.png'
-      ],
-      [
-        'Trà sữa',
-        'https://product.hstatic.net/200000421745/product/ts_tran_chau_052aed385e41470db7cec46eddfcfdbb_1024x1024.png'
-      ],
-      ['Matcha', 'https://saigonoicafe.com/resize-image/600x/menu/matcha1.jpg'],
-      [
-        'Bia',
-        'https://bianhapkhau.net/wp-content/uploads/2019/04/bia-corona-chai-355ml.jpg'
-      ],
-      [
-        'Rượu trắng',
-        'https://thucphamxanh.orgs.vn/wp-content/uploads/2021/04/ruou-nep-go-cong-300x300.jpg'
-      ],
-      [
-        'Rượu vang',
-        'https://product.hstatic.net/200000311961/product/ruou-vang-do-aromo-carmenere_da6e1c4302a94f17a8eb5a873fd75eab.jpg'
-      ],
-      [
-        'Rượu',
-        'https://thucphamxanh.orgs.vn/wp-content/uploads/2021/04/ruou-nep-go-cong-300x300.jpg'
-      ],
-      [
-        'Bia lon',
-        'https://pvmarthanoi.com.vn/wp-content/uploads/2022/12/Untitled-1.png'
-      ],
-      [
-        'Bia hơi',
-        'https://dailybiahoixuanthang.com.vn/wp-content/uploads/2021/04/unnamed.jpg'
-      ],
-      ['Cà phê hòa tan', 'https://i.imgur.com/rAL7Asc.png'],
-      [
-        'Cà phê lon',
-        'https://www.highlandscoffee.com.vn/vnt_upload/product/06_2023/CA_PHE_SUA_185ml_v3.jpg'
-      ],
-      [
-        'Cà phê xay',
-        'https://ongbi.vn/wp-content/uploads/2020/11/ca-phe-rang-xay.jpg'
-      ]
+      'Nước lọc',
+      'Coca cola',
+      'Pessi',
+      '7up',
+      'Spite',
+      'Fanta',
+      'Trà chanh',
+      'Trà đào',
+      'Trà sữa',
+      'Matcha',
+      'Bia',
+      'Rượu trắng',
+      'Rượu vang',
+      'Rượu',
+      'Bia lon',
+      'Bia hơi',
+      'Cà phê hòa tan',
+      'Cà phê lon',
+      'Cà phê xay'
     ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -1987,29 +1033,14 @@ export class SeedService {
     const doUongFood = await Promise.all(doUongFoodArr);
 
     const trungFoodArr = [
-      [
-        'Trứng gà ta',
-        'https://market.nhovn.com/public/upload/images/trung-ga-ta-1226.jpg'
-      ],
-      [
-        'Trứng gà công nghiệp',
-        'https://xanhmarket.vn/thumbnails/6-127bc1827775/trung.800x800.jpg'
-      ],
-      [
-        'Trứng vịt',
-        'https://shopgiachanh.com/wp-content/uploads/2021/09/trung-vit.jpg'
-      ],
-      [
-        'Trứng ngỗng',
-        'https://hcmp.edu.vn/wp-content/uploads/2022/09/duong-chat-trong-trung-ngong.jpg'
-      ],
-      [
-        'Trứng cút',
-        'https://hoangdongfood.com/wp-content/uploads/2020/04/trung-cut-ba-huan-16450227033_1000_750_1c970e53-b724-405c-8723-10e622b9eae3.jpg'
-      ]
+      'Trứng gà ta',
+      'Trứng gà công nghiệp',
+      'Trứng vịt',
+      'Trứng ngỗng',
+      'Trứng cút'
     ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -2020,41 +1051,17 @@ export class SeedService {
     });
     const trungFood = await Promise.all(trungFoodArr);
     const chaGioFoodArr = [
-      [
-        'Giò bò',
-        'https://nppmanhthoan.com/wp-content/uploads/2021/12/Cha-bo-co-hue-800x750-1.jpg'
-      ],
-      [
-        'Giò lụa',
-        'https://lh3.googleusercontent.com/AFhV4u_XnQGevrGz5N-JJ_POYQnM5bThVYB-Us9UUXkTBvCvRYah0tHH33-TLWmO5P4pGJMulbzvlvSjI-ZcNF5RtSI2lP-tTw'
-      ],
-      [
-        'Giò thủ',
-        'https://giochatuyet.com/uploads/source/bai-viet-cha-lua/gio-thu.jpg'
-      ],
-      [
-        'Chả chiên',
-        'https://media.loveitopcdn.com/31293/thumb/cha-chien-1.png'
-      ],
-      [
-        'Chả bì',
-        'https://api.bapi.com.vn/file.api/files/image/Original/4688daa7-df55-4d2c-a98d-f507dcaabbc4'
-      ],
-      [
-        'Nem chua',
-        'https://dacsanlamqua.com/wp-content/uploads/2017/02/nem-chua-da-nang-1.jpg'
-      ],
-      [
-        'Nem lụi',
-        'https://dulichkhampha24.com/wp-content/uploads/2022/10/nem-lui-da-nang-2-4.jpg'
-      ],
-      [
-        'Chả Huế',
-        'https://product.hstatic.net/200000667673/product/cha-hue-cuu-long-2_d08e62d304eb4c6fadfe9957f702d44f.jpg'
-      ]
+      'Giò bò',
+      'Giò lụa',
+      'Giò thủ',
+      'Chả chiên',
+      'Chả bì',
+      'Nem chua',
+      'Nem lụi',
+      'Chả Huế'
     ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -2066,46 +1073,19 @@ export class SeedService {
     const chaGioFood = await Promise.all(chaGioFoodArr);
 
     const khacFoodArr = [
-      [
-        'Đậu hủ',
-        'https://thucphamnhanh.com/wp-content/uploads/2020/10/dau-hu-trang-mieng-5.jpg'
-      ],
-      [
-        'Rong biển lá',
-        'https://product.hstatic.net/200000300020/product/la_nori_931e8aff3c154f42933faae3259fe8a6_master.png'
-      ],
-      [
-        'Rong biển vụn',
-        'https://bizweb.dktcdn.net/thumb/grande/100/456/761/products/rong-bien-soi-han-quoc-wando.png?v=1672727083333'
-      ],
-      ['Mẻ', 'https://cdn.tgdd.vn/2020/07/CookProductThumb/12-620x620-3.jpg'],
-      [
-        'Hành khô',
-        'https://bizweb.dktcdn.net/thumb/grande/100/390/808/products/hanh-bac-500x500.jpg?v=1592904805923'
-      ],
-      [
-        'Huyết heo',
-        'https://thucphamnhanh.com/wp-content/uploads/2020/10/huyet-heo-loai-1kg-4.jpg'
-      ],
-      [
-        'Vỏ bưởi',
-        'https://qik.com.vn/files/image/1728-cach-nau-vo-buoi-goi-dau.jpg'
-      ],
-      [
-        'Phèn chua',
-        'https://cdn.tgdd.vn/2023/08/CookRecipe/CookTipsNote/phen-chua-phi-la-gi-tac-dung-cua-phen-chua-trong-nau-an-tipsnote-800x450.jpg'
-      ],
-      [
-        'Mè trắng',
-        'https://anphufood.com.vn/wp-content/uploads/2020/03/m%C3%A8-tr%E1%BA%AFng.jpg'
-      ],
-      [
-        'Đậu phụ non',
-        'https://cdn.tgdd.vn/Products/Images/7461/206302/bhx/dau-hu-non-vi-nguyen-hop-280g-202303141129377101.jpg'
-      ]
+      'Đậu hũ',
+      'Rong biển lá',
+      'Rong biển vụn',
+      'Mẻ',
+      'Hành khô',
+      'Huyết heo',
+      'Vỏ bưởi',
+      'Phèn chua',
+      'Mè trắng',
+      'Đậu phụ non'
     ].map(async (food) => {
       const dataFood = await this.prisma.food.create({
-        data: { name: food[0], description: food[0], imageUrl: food[1] }
+        data: { name: food, description: food }
       });
       return await this.prisma.foodCategory.create({
         data: {
@@ -2146,6 +1126,7 @@ export class SeedService {
         });
       })
     });
+
     const allFoods = [
       thitFood,
       haiSanFood,
@@ -2181,10 +1162,10 @@ export class SeedService {
         return getMultipleRandom(
           allFoods,
           1 + Math.floor(Math.random() * 10)
-        ).map((food) => {
+        ).map((foodId) => {
           return {
             toBuyListId: listId,
-            foodId: food.foodId,
+            foodId: foodId.foodId,
             quantity: 1 + Math.floor(Math.random() * 10)
           };
         });

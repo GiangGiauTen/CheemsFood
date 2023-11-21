@@ -10,7 +10,6 @@ datasource db {
 model Food {
   foodId      Int               @id @default(autoincrement())
   name        String
-  imageUrl    String?
   description String?
   categories  FoodCategory[]
   recipes     RecipeFoodList[]
