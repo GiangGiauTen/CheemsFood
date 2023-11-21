@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Space, Modal, Button, Form, Input } from 'antd';
+import { Table, Space, Modal, Button, Form, Input, Checkbox } from 'antd';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 
-
+import moment from 'moment';
+import 'moment/locale/vi';
 const QuanLyDoLuuTru = () => {
     // Reserved foods state
     const [reservedFoods, setReservedFoods] = useState([]);
 
-    const [userId, setUserId] = useState(localStorage.getItem("userId"));
-
+    const [userId, setUserId] = useState(4);
+    const [showOutdated, setShowOutdated] = useState(false);
     useEffect(() => {
         // Fetch the reserved foods data from the endpoint when the component mounts
         fetchReservedFoods();
@@ -17,13 +18,23 @@ const QuanLyDoLuuTru = () => {
 
     const fetchReservedFoods = async () => {
         try {
-            const response = await axios.get(`${API_URL}/storage/user/${parseInt(userId)}`);
+            const response = await axios.get(
+                `${API_URL}/storage/user/${parseInt(userId)}`,
+            );
             setReservedFoods(response.data.foods); // Update to response.data.foods since the API response contains the foods array
         } catch (error) {
             console.error('Error fetching reserved foods:', error);
         }
     };
 
+    const saveReservedFoods = async foods => {
+        try {
+            await axios.post(`${API_URL}/storage/user/${userId}`, { foods }); // Pass the foods array as the request body
+            console.log('Reserved foods saved successfully');
+        } catch (error) {
+            console.error('Error saving reserved foods:', error);
+        }
+    };
     const saveReservedFoods = async (foods) => {
         try {
             await axios.post(`${API_URL}/storage/user/${userId}`, { foods }); // Pass the foods array as the request body
@@ -48,22 +59,22 @@ const QuanLyDoLuuTru = () => {
             render: (text, record) => record.food.name, // Render the food name value
         },
         {
-            title: 'Image',
-            dataIndex: 'food.imageUrl',
-            key: 'imageUrl',
-            render: (text, record) => <img src={record.food.imageUrl} height={125} />, // Render the food name value
+            title: 'Food Name',
+            dataIndex: 'food.name',
+            key: 'name',
+            render: (text, record) => record.food.name, // Render the food name value
         },
         {
             title: 'Storage Date',
             dataIndex: 'storageDate',
             key: 'storageDate',
-            render: (date) => new Date(date).toLocaleDateString(), // Format the date
+            render: date => new Date(date).toLocaleDateString(), // Format the date
         },
         {
             title: 'Outdate',
             dataIndex: 'outdate',
             key: 'outdate',
-            render: (date) => new Date(date).toLocaleDateString(), // Format the date
+            render: date => new Date(date).toLocaleDateString(), // Format the date
         },
         {
             title: 'Quantity',
@@ -75,9 +86,18 @@ const QuanLyDoLuuTru = () => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a href="#1" onClick={() => handleView(record)}>View</a>
-                    <a href="#2" onClick={() => handleEdit(record)}>Edit</a>
-                    <a href="#3" onClick={() => handleDelete(record)}>Delete</a>
+                    <a href="#1" onClick={() => handleView(record)}>
+                        View
+                    </a>
+                    <a href="#2" onClick={() => handleEdit(record)}>
+                        Edit
+                    </a>
+                    <a
+                        href="#3"
+                        onClick={() => handleDelete(record)}
+                        style={{ color: 'red' }}>
+                        Delete
+                    </a>
                 </Space>
             ),
         },
@@ -90,9 +110,22 @@ const QuanLyDoLuuTru = () => {
     const [editForm] = Form.useForm();
     const [addModalVisible, setAddModalVisible] = useState(false);
     const [newIngredientForm] = Form.useForm();
+    const [searchValue, setSearchValue] = useState('');
 
+    // Search input change handler
+    const handleSearchChange = e => {
+        setSearchValue(e.target.value);
+    };
+    // Apply search and filter
+    const filteredFoods = reservedFoods.filter(food => {
+        const nameMatch = food.food.name
+            .toLowerCase()
+            .includes(searchValue.toLowerCase());
+        const outdateBefore = moment(food.outdate).isBefore(moment(), 'day');
+        return showOutdated ? outdateBefore && nameMatch : nameMatch;
+    });
     // Handle view action
-    const handleView = (food) => {
+    const handleView = food => {
         setSelectedFood(food);
         setViewModalVisible(true);
     };
@@ -126,7 +159,7 @@ const QuanLyDoLuuTru = () => {
     };
 
     const handleModalSubmit = () => {
-        editForm.validateFields().then((values) => {
+        editForm.validateFields().then(values => {
             const updatedFood = {
                 ...selectedFood,
                 food: {
@@ -137,17 +170,19 @@ const QuanLyDoLuuTru = () => {
             };
 
             if (values.quantity === 0) {
-                setReservedFoods((prevFoods) =>
-                    prevFoods.filter((food) => food.food.foodId !== updatedFood.food.foodId)
+                setReservedFoods(prevFoods =>
+                    prevFoods.filter(
+                        food => food.food.foodId !== updatedFood.food.foodId,
+                    ),
                 );
             } else {
-                setReservedFoods((prevFoods) =>
-                    prevFoods.map((food) => {
+                setReservedFoods(prevFoods =>
+                    prevFoods.map(food => {
                         if (food.food.foodId === updatedFood.food.foodId) {
                             return updatedFood;
                         }
                         return food;
-                    })
+                    }),
                 );
             }
 
@@ -165,7 +200,7 @@ const QuanLyDoLuuTru = () => {
     };
 
     const handleAddModalSubmit = () => {
-        newIngredientForm.validateFields().then((values) => {
+        newIngredientForm.validateFields().then(values => {
             const newIngredient = {
                 outdate: values.outdate,
                 storageDate: values.storage_date,
@@ -177,7 +212,7 @@ const QuanLyDoLuuTru = () => {
                 },
             };
 
-            setReservedFoods((prevFoods) => [...prevFoods, newIngredient]);
+            setReservedFoods(prevFoods => [...prevFoods, newIngredient]);
             setAddModalVisible(false);
             newIngredientForm.resetFields();
         });
@@ -185,11 +220,24 @@ const QuanLyDoLuuTru = () => {
 
     return (
         <div>
-            <h1>Reserved Food List</h1>
+            {/* <h1>Reserved Food List</h1> */}
+            <div style={{ marginBottom: '16px' }}>
+                <Input
+                    placeholder="Tìm món ăn"
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                    style={{ width: '200px', marginRight: '16px' }}
+                />
+                <Checkbox
+                    onChange={e => setShowOutdated(e.target.checked)}
+                    style={{ marginRight: '16px' }}>
+                    Lọc ra đồ ăn đã hết hạn
+                </Checkbox>
+            </div>
             <Button type="primary" onClick={handleAdd}>
                 Add
             </Button>
-            <Table columns={columns} dataSource={reservedFoods} />
+            <Table columns={columns} dataSource={filteredFoods} />
             <Modal
                 title="Food Details"
                 visible={viewModalVisible}
@@ -198,15 +246,18 @@ const QuanLyDoLuuTru = () => {
                     <Button key="close" onClick={handleViewModalClose}>
                         Close
                     </Button>,
-                ]}
-            >
+                ]}>
                 {selectedFood && (
                     <Form layout="vertical">
                         <Form.Item label="Food Name">
                             <Input value={selectedFood.food.name} readOnly />
                         </Form.Item>
                         <Form.Item label="Description">
-                            <Input.TextArea value={selectedFood.food.description} rows={4} readOnly />
+                            <Input.TextArea
+                                value={selectedFood.food.description}
+                                rows={4}
+                                readOnly
+                            />
                         </Form.Item>
                         <Form.Item label="Storage Date">
                             <Input value={selectedFood.storageDate} readOnly />
@@ -231,10 +282,12 @@ const QuanLyDoLuuTru = () => {
                     <Button key="save" type="primary" onClick={handleModalSubmit}>
                         Save
                     </Button>,
-                ]}
-            >
+                ]}>
                 {selectedFood && (
-                    <Form form={editForm} layout="vertical" initialValues={editFormInitialValues}>
+                    <Form
+                        form={editForm}
+                        layout="vertical"
+                        initialValues={editFormInitialValues}>
                         <Form.Item name="description" label="Description">
                             <Input.TextArea rows={4} />
                         </Form.Item>
@@ -248,8 +301,7 @@ const QuanLyDoLuuTru = () => {
                 title="Add Food"
                 visible={addModalVisible}
                 onCancel={() => setAddModalVisible(false)}
-                onOk={handleAddModalSubmit}
-            >
+                onOk={handleAddModalSubmit}>
                 <Form form={newIngredientForm} layout="vertical">
                     <Form.Item
                         name="name"
@@ -259,8 +311,7 @@ const QuanLyDoLuuTru = () => {
                                 required: true,
                                 message: 'Please enter the food name',
                             },
-                        ]}
-                    >
+                        ]}>
                         <Input />
                     </Form.Item>
                     <Form.Item
@@ -271,8 +322,7 @@ const QuanLyDoLuuTru = () => {
                                 required: true,
                                 message: 'Please enter the description',
                             },
-                        ]}
-                    >
+                        ]}>
                         <Input.TextArea rows={4} />
                     </Form.Item>
                     <Form.Item
@@ -283,8 +333,7 @@ const QuanLyDoLuuTru = () => {
                                 required: true,
                                 message: 'Please enter the storage date',
                             },
-                        ]}
-                    >
+                        ]}>
                         <Input />
                     </Form.Item>
                     <Form.Item
@@ -295,8 +344,7 @@ const QuanLyDoLuuTru = () => {
                                 required: true,
                                 message: 'Please enter the outdate',
                             },
-                        ]}
-                    >
+                        ]}>
                         <Input />
                     </Form.Item>
                     <Form.Item
@@ -312,11 +360,12 @@ const QuanLyDoLuuTru = () => {
                                     if (!value || /^[0-9]+$/.test(value)) {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject('Please enter a valid integer for quantity');
+                                    return Promise.reject(
+                                        'Please enter a valid integer for quantity',
+                                    );
                                 },
                             }),
-                        ]}
-                    >
+                        ]}>
                         <Input type="number" min={0} />
                     </Form.Item>
                 </Form>
