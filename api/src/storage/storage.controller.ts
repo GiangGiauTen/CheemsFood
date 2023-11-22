@@ -1,7 +1,7 @@
-import { Controller, Get, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Post, Param } from '@nestjs/common';
 import { StorageService } from './storage.service';
 import { UpdateStorageDto } from './dto/update-storage.dto';
-
+import { AddFoodToStorageDto } from './dto/add-food-to-storage.dto';
 @Controller('storage')
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
@@ -17,5 +17,13 @@ export class StorageController {
     @Body() updateStorageDto: UpdateStorageDto
   ) {
     return this.storageService.update(+userId, updateStorageDto);
+  }
+
+  @Post('/user/:userId')
+  addFood(
+    @Param('userId') userId: string,
+    @Body() foodToAdd: AddFoodToStorageDto
+  ) {
+    return this.storageService.addFoodToStorage(+userId, foodToAdd);
   }
 }

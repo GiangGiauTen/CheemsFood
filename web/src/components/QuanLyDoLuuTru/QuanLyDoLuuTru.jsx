@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Space, Modal, Button, Form, Input, Checkbox, Select, DatePicker } from 'antd';
+import { Table, Space, Modal, Button, Form, Input, Checkbox, Select, DatePicker, message } from 'antd';
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 
@@ -7,6 +7,7 @@ import moment from 'moment';
 import 'moment/locale/vi';
 const QuanLyDoLuuTru = () => {
     // Reserved foods state
+    const [messageApi, contextHolder] = message.useMessage();
     const [reservedFoods, setReservedFoods] = useState([]);
     const [allFoods, setAllFoods] = useState([]);
     const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -208,27 +209,41 @@ const QuanLyDoLuuTru = () => {
     };
 
     const handleAddModalSubmit = async () => {
-        newIngredientForm.validateFields().then(values => {
+        newIngredientForm.validateFields().then(async values => {
             const newIngredient = {
-                foods: [{
+                food: {
                     foodId: values.name,
                     description: values.description,
                     outdate: (new Date(values.outdate)).toLocaleDateString(),
                     storageDate: (new Date(values.storage_date)).toLocaleDateString(),
                     quantity: parseInt(values.quantity),
-                }],
+                },
             };
 
             setAddModalVisible(false);
+
             try {
-                const response = axios.patch(
+                const response = await axios.post(
                     `${API_URL}/storage/user/${userId}`, { ...newIngredient }
                 );
+
+                console.log(response.status);
+
+                if (response.status === 201) {
+                    message.success('Add food to storage successfully',
+                        [1], async () => {
+                            await fetchReservedFoods();
+                        });
+                } else {
+                    console.error('Unexpected status code:', response.status);
+                }
+
             } catch (error) {
                 console.error('Error fetching reserved foods:', error);
             }
         });
     };
+
 
     return (
         <div>
@@ -324,7 +339,7 @@ const QuanLyDoLuuTru = () => {
                                 message: 'Please enter the food name',
                             },
                         ]}>
-                        <Select options={allFoods}></Select>
+                        <Select options={allFoods} optionFilterProp="label" showSearch></Select>
                     </Form.Item>
                     <Form.Item
                         name="storage_date"
