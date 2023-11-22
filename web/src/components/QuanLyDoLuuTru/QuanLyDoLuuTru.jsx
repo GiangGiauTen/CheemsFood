@@ -31,12 +31,12 @@ const QuanLyDoLuuTru = () => {
 
     const fetchAllFoods = async () => {
         try {
-            const response = await axios.get(
-                `${API_URL}/food`,
+            const response = await axios.get(`${API_URL}/food`);
+            setAllFoods(
+                response.data.map(food => {
+                    return { value: food.foodId, label: food.name };
+                }),
             );
-            setAllFoods(response.data.map(food => {
-                return { value: food.foodId, label: food.name }
-            }))
         } catch (error) {
             console.error('Error fetching reserved foods:', error);
         }
