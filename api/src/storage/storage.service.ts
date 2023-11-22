@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateStorageDto } from './dto/update-storage.dto';
+import { AddFoodToStorageDto } from './dto/add-food-to-storage.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -65,6 +66,27 @@ export class StorageService {
               }
             });
           }
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return 'Updated successfully';
+  }
+
+  async addFoodToStorage(userId: number, foodToAdd: AddFoodToStorageDto) {
+    const { food } = foodToAdd;
+    try {
+      const storage = await this.prisma.storage.findUnique({
+        where: { userId: userId }
+      });
+      await this.prisma.storageFood.create({
+        data: {
+          foodId: food.foodId,
+          storageId: storage.storageId,
+          quantity: food.quantity,
+          outdate: new Date(food.outdate),
+          storageDate: new Date(food.storageDate)
         }
       });
     } catch (err) {
