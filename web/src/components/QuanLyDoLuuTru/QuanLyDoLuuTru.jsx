@@ -49,18 +49,10 @@ const QuanLyDoLuuTru = () => {
         }),
       );
     } catch (error) {
-      console.error('Error fetching reserved foods:', error);
+      console.error('Error fetching all foods:', error);
     }
   };
 
-  const saveReservedFoods = async foods => {
-    try {
-      await axios.post(`${API_URL}/storage/user/${userId}`, { foods }); // Pass the foods array as the request body
-      console.log('Reserved foods saved successfully');
-    } catch (error) {
-      console.error('Error saving reserved foods:', error);
-    }
-  };
 
   // Define the columns for the table
   const columns = [
@@ -161,9 +153,18 @@ const QuanLyDoLuuTru = () => {
   // Handle delete action
   const handleDelete = food => {
     // Perform delete action here
+    // set food quantity = 0 and update to database
+    food.quantity = 0;
+    axios.patch(`${API_URL}/storage/user/${userId}`, {
+      foods: [food],
+    });
+    messageApi.success('Delete food successfully', [1], async () => {
+      await fetchReservedFoods();
+    });
     setReservedFoods(prevFoods =>
       prevFoods.filter(item => item.food.foodId !== food.food.foodId),
     );
+
   };
 
   // View modal close handler
@@ -190,6 +191,7 @@ const QuanLyDoLuuTru = () => {
       };
 
       if (values.quantity === 0) {
+        //delete food
         setReservedFoods(prevFoods =>
           prevFoods.filter(
             food => food.food.foodId !== updatedFood.food.foodId,
@@ -230,27 +232,55 @@ const QuanLyDoLuuTru = () => {
           quantity: parseInt(values.quantity),
         },
       };
-
+      //if newIngredient exist in reservedFoods and newIngredient.outdate = reservedFoods.outdate and newIngredient.storageDate = reservedFoods.storageDate then update reservedFoods.quantity += newIngredient.quantity
+      const existedFood = reservedFoods.find(
+        food =>
+          food.food.foodId === newIngredient.food.foodId
+          && new Date(food.outdate).toLocaleDateString() === newIngredient.food.outdate
+          && new Date(food.storageDate).toLocaleDateString() === newIngredient.food.storageDate
+      );
       setAddModalVisible(false);
-
-      try {
-        const response = await axios.post(`${API_URL}/storage/user/${userId}`, {
-          ...newIngredient,
-        });
-
-        console.log(response.status);
-
-        if (response.status === 201) {
-          message.success('Add food to storage successfully', [1], async () => {
-            await fetchReservedFoods();
-          });
-        } else {
-          console.error('Unexpected status code:', response.status);
+      if (existedFood) {
+        existedFood.quantity += newIngredient.food.quantity;
+        try {
+          const response = await axios.patch(
+            `${API_URL}/storage/user/${userId}`,
+            {
+              foods: [existedFood], // Send only the updated food item
+            }
+          );
+          console.log(response.status);
+          if (response.status === 200) {
+            message.success('Add food to storage successfully', [1], async () => {
+              await fetchReservedFoods();
+            });
+          } else {
+            console.error('Unexpected status code:', response.status);
+          }
+        } catch (error) {
+          console.error('Error fetching reserved foods:', error);
         }
-      } catch (error) {
-        console.error('Error fetching reserved foods:', error);
       }
-    });
+      else {
+        try {
+          const response = await axios.post(`${API_URL}/storage/user/${userId}`, {
+            ...newIngredient,
+          });
+          console.log(response.status);
+
+          if (response.status === 201) {
+            message.success('Add food to storage successfully', [1], async () => {
+              await fetchReservedFoods();
+            });
+          } else {
+            console.error('Unexpected status code:', response.status);
+          }
+        } catch (error) {
+          console.error('Error fetching reserved foods:', error);
+        }
+      }
+    }
+    );
   };
 
   return (
