@@ -158,13 +158,9 @@ const QuanLyDoLuuTru = () => {
     axios.patch(`${API_URL}/storage/user/${userId}`, {
       foods: [food],
     });
-    messageApi.success('Delete food successfully', [1], async () => {
+    message.success('Delete food successfully', [0.5], async () => {
       await fetchReservedFoods();
     });
-    setReservedFoods(prevFoods =>
-      prevFoods.filter(item => item.food.foodId !== food.food.foodId),
-    );
-
   };
 
   // View modal close handler
@@ -189,23 +185,21 @@ const QuanLyDoLuuTru = () => {
         },
         quantity: values.quantity,
       };
-
-      if (values.quantity === 0) {
+      // change quantity to Int
+      updatedFood.quantity = parseInt(updatedFood.quantity);
+      axios.patch(`${API_URL}/storage/user/${userId}`, {
+        foods: [updatedFood],
+      });
+      if (updatedFood.quantity === 0) {
         //delete food
-        setReservedFoods(prevFoods =>
-          prevFoods.filter(
-            food => food.food.foodId !== updatedFood.food.foodId,
-          ),
-        );
+        message.success('Delete food successfully', [0.5], async () => {
+          await fetchReservedFoods();
+        });
       } else {
-        setReservedFoods(prevFoods =>
-          prevFoods.map(food => {
-            if (food.food.foodId === updatedFood.food.foodId) {
-              return updatedFood;
-            }
-            return food;
-          }),
-        );
+        //update food
+        message.success('Update food successfully', [0.5], async () => {
+          await fetchReservedFoods();
+        });
       }
 
       setEditModalVisible(false);
