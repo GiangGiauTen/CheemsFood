@@ -3,6 +3,7 @@ import { Table, Space, Modal, Button, Form, Input, Tooltip, Checkbox, message } 
 import { InfoCircleTwoTone, HeartTwoTone, ShareAltOutlined, DownloadOutlined } from '@ant-design/icons';  // Add these imports
 import axios from 'axios'
 import { API_URL } from '../../utils/apiUrl'
+import jsPDF from 'jspdf';
 
 const QuanLyCongThuc = () => {
 	const [reservedFoods, setReservedFoods] = useState([])
@@ -98,50 +99,24 @@ const QuanLyCongThuc = () => {
 
 	const handleDownload = async (record) => {
 		try {
-			// Replace 'YOUR_RESTPACK_API_KEY' with your actual Restpack API key
-			const apiKey = axios.get(`${API_URL}/recipe/${record.recipeId}`);
-			const restpackApiUrl = 'https://restpack.io/api/html2pdf/v6/convert';
+			// Fetch the recipe details from your server
+			const response = await axios.get(`${API_URL}/recipe/${record.recipeId}`);
+			const recipe = response.data;
 
-			const htmlContent = `
-			<html>
-			  <head>
-				<title>${record.name} Recipe</title>
-			  </head>
-			  <body>
-				<h1>${record.name}</h1>
-				<p>${record.description}</p>
-				<!-- Add more content as needed -->
-			  </body>
-			</html>
-		  `;
+			// Create a new instance of jsPDF
+			const pdf = new jsPDF();
 
-			const response = await axios.post(restpackApiUrl, {
-				source: htmlContent,
-				options: {
-					// Add any additional options as needed, check Restpack documentation
-				},
-			}, {
-				headers: {
-					'Content-Type': 'application/json',
-					'x-api-key': apiKey,
-				},
-				responseType: 'arraybuffer', // Tell axios to expect a binary response
-			});
+			// Set font to support Unicode characters (including Vietnamese)
+			pdf.setFont('Arial', 'normal');
 
-			// Create a Blob from the binary response
-			const blob = new Blob([response.data], { type: 'application/pdf' });
+			// Add content to the PDF
+			pdf.text(`Recipe: ${recipe.name}`, 10, 10);
+			pdf.text(`Description: ${recipe.description}`, 10, 20);
+			pdf.text(`Ingredients: ${recipe.foods.map((food) => food.foodNames).join(', ')}`, 10, 140);
+			// Add more content as needed
 
-			// Create a download link
-			const downloadLink = document.createElement('a');
-			downloadLink.href = URL.createObjectURL(blob);
-			downloadLink.download = `recipe_${record.recipeId}.pdf`;
-
-			// Append the link to the body and click it programmatically
-			document.body.appendChild(downloadLink);
-			downloadLink.click();
-
-			// Remove the link from the DOM
-			document.body.removeChild(downloadLink);
+			// Save the PDF with a specific filename
+			pdf.save(`recipe_${record.recipeId}.pdf`);
 		} catch (error) {
 			console.error('Error downloading PDF:', error);
 		}
