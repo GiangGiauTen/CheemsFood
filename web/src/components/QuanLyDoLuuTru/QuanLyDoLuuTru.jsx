@@ -53,7 +53,6 @@ const QuanLyDoLuuTru = () => {
     }
   };
 
-
   // Define the columns for the table
   const columns = [
     {
@@ -145,7 +144,7 @@ const QuanLyDoLuuTru = () => {
   };
 
   // Handle delete action
-  const handleDelete = (food) => {
+  const handleDelete = food => {
     // Show delete confirmation modal
     Modal.confirm({
       title: 'Delete Food',
@@ -235,9 +234,11 @@ const QuanLyDoLuuTru = () => {
       //if newIngredient exist in reservedFoods and newIngredient.outdate = reservedFoods.outdate and newIngredient.storageDate = reservedFoods.storageDate then update reservedFoods.quantity += newIngredient.quantity
       const existedFood = reservedFoods.find(
         food =>
-          food.food.foodId === newIngredient.food.foodId
-          && new Date(food.outdate).toLocaleDateString() === newIngredient.food.outdate
-          && new Date(food.storageDate).toLocaleDateString() === newIngredient.food.storageDate
+          food.food.foodId === newIngredient.food.foodId &&
+          new Date(food.outdate).toLocaleDateString() ===
+            newIngredient.food.outdate &&
+          new Date(food.storageDate).toLocaleDateString() ===
+            newIngredient.food.storageDate,
       );
       setAddModalVisible(false);
       if (existedFood) {
@@ -247,31 +248,41 @@ const QuanLyDoLuuTru = () => {
             `${API_URL}/storage/user/${userId}`,
             {
               foods: [existedFood], // Send only the updated food item
-            }
+            },
           );
           console.log(response.status);
           if (response.status === 200) {
-            message.success('Add food to storage successfully', [1], async () => {
-              await fetchReservedFoods();
-            });
+            message.success(
+              'Add food to storage successfully',
+              [1],
+              async () => {
+                await fetchReservedFoods();
+              },
+            );
           } else {
             console.error('Unexpected status code:', response.status);
           }
         } catch (error) {
           console.error('Error fetching reserved foods:', error);
         }
-      }
-      else {
+      } else {
         try {
-          const response = await axios.post(`${API_URL}/storage/user/${userId}`, {
-            ...newIngredient,
-          });
+          const response = await axios.post(
+            `${API_URL}/storage/user/${userId}`,
+            {
+              ...newIngredient,
+            },
+          );
           console.log(response.status);
 
           if (response.status === 201) {
-            message.success('Add food to storage successfully', [1], async () => {
-              await fetchReservedFoods();
-            });
+            message.success(
+              'Add food to storage successfully',
+              [1],
+              async () => {
+                await fetchReservedFoods();
+              },
+            );
           } else {
             console.error('Unexpected status code:', response.status);
           }
@@ -279,8 +290,7 @@ const QuanLyDoLuuTru = () => {
           console.error('Error fetching reserved foods:', error);
         }
       }
-    }
-    );
+    });
   };
 
   return (
