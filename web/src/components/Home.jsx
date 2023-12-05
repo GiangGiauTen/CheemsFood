@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 
 import { Layout, Menu, theme, Button } from 'antd';
+import GoiYMonAn from './DayFood/GoiYMonAn';
 import Nhom from './Nhom/Nhom';
 import QuanLyCongThuc from './QuanLyCongThuc/QuanLyCongThuc';
 import QuanLyDoLuuTru from './QuanLyDoLuuTru/QuanLyDoLuuTru';
@@ -43,12 +44,13 @@ function Home() {
   } = theme.useToken();
 
   const items = [
-    getItem('Nhóm', '1', <TeamOutlined />),
-    getItem('Quản Lý Công Thức', '2', <FileOutlined />),
-    getItem('Quản Lý Đồ Lưu Trữ', '3', <LayoutOutlined />),
-    getItem('Quản Lý Đồ Cần Mua', '_4', <ShoppingCartOutlined />, [
-      getItem('Cá Nhân', '4'),
-      getItem('Nhóm', '41'),
+    getItem('Gợi Ý Món Ăn', '1', <TeamOutlined />),
+    getItem('Nhóm', '2', <TeamOutlined />),
+    getItem('Quản Lý Công Thức', '3', <FileOutlined />),
+    getItem('Quản Lý Đồ Lưu Trữ', '4', <LayoutOutlined />),
+    getItem('Quản Lý Đồ Cần Mua', '_5', <ShoppingCartOutlined />, [
+      getItem('Cá Nhân', '5'),
+      getItem('Nhóm', '51'),
     ]),
     getItem(
       <Button
@@ -125,26 +127,31 @@ function Home() {
               }}>
               {menuKey === '1' && (
                 <div>
-                  <Nhom />
+                  <GoiYMonAn />
                 </div>
               )}
               {menuKey === '2' && (
+                <div>
+                  <Nhom />
+                </div>
+              )}
+              {menuKey === '3' && (
                 <div>
                   <QuanLyCongThuc />
                 </div>
               )}
 
-              {menuKey === '3' && (
+              {menuKey === '4' && (
                 <div>
                   <QuanLyDoLuuTru />
                 </div>
               )}
-              {menuKey === '4' && (
+              {menuKey === '5' && (
                 <div>
                   <QuanLyDoCanMua />
                 </div>
               )}
-              {menuKey === '41' && (
+              {menuKey === '51' && (
                 <div>
                   <QuanLyDoMuaNhom />
                 </div>
