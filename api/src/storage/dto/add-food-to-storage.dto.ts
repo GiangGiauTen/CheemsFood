@@ -1,7 +1,6 @@
 import { IsArray, IsNotEmpty } from 'class-validator';
 
-export class UpdateStorageDto {
-  @IsArray()
+export class AddFoodToStorageDto {
   @IsNotEmpty()
-  foods: any;
+  food: any;
 }
