@@ -151,18 +151,30 @@ const QuanLyDoLuuTru = () => {
   };
 
   // Handle delete action
-  const handleDelete = food => {
-    // Perform delete action here
-    // set food quantity = 0 and update to database
-    food.quantity = 0;
-    axios.patch(`${API_URL}/storage/user/${userId}`, {
-      foods: [food],
-    });
-    message.success('Delete food successfully', [0.5], async () => {
-      await fetchReservedFoods();
+  const handleDelete = (food) => {
+    // Show delete confirmation modal
+    Modal.confirm({
+      title: 'Delete Food',
+      content: 'Are you sure you want to delete this food?',
+      onOk: async () => {
+        // Perform delete action here
+
+        // set food quantity = 0 and update to database
+        food.quantity = 0;
+        await axios.patch(`${API_URL}/storage/user/${userId}`, {
+          foods: [food],
+        });
+
+        // Display success message and fetch updated data
+        message.success('Delete food successfully', 0.5, async () => {
+          await fetchReservedFoods();
+        });
+      },
+      onCancel: () => {
+        // Do nothing if user cancels the delete action
+      },
     });
   };
-
   // View modal close handler
   const handleViewModalClose = () => {
     setSelectedFood(null);
