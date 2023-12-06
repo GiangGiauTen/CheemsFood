@@ -5,7 +5,6 @@ import {
   Modal,
   Button,
   Form,
-  Select,
   Input,
   Tooltip,
   Checkbox,
@@ -22,12 +21,14 @@ import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 import jsPDF from 'jspdf';
 
+const Meta = { Card };
+const recipesPerPage = 6;
+
 const QuanLyCongThuc = () => {
   const [reservedFoods, setReservedFoods] = useState([]);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
-  const [allFoods, setAllFoods] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [filterFavorites, setFilterFavorites] = useState(false);
   const [shareModalVisible, setShareModalVisible] = useState(false);
@@ -35,10 +36,6 @@ const QuanLyCongThuc = () => {
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editableRecipe, setEditableRecipe] = useState(null);
-  const [userId, setUserId] = useState(localStorage.getItem('userId'));
-  const [addModalVisible, setAddModalVisible] = useState(false);
-  const [newFoodForm] = Form.useForm();
-
   const columns = [
     {
       title: 'ID',
@@ -115,10 +112,12 @@ const QuanLyCongThuc = () => {
         console.error('Error fetching groups:', error);
       }
     };
-
     fetchGroups();
   }, []);
 
+  const handlePageChange = pageNumber => {
+    setCurrentPage(pageNumber);
+  };
   const handleCheckboxChange = checkedValues => {
     setSelectedGroups(checkedValues);
   };
@@ -184,7 +183,6 @@ const QuanLyCongThuc = () => {
       console.error(error);
     }
   };
-  console.log(reservedFoods);
 
   const fetchFavoriteRecipe = async () => {
     try {
@@ -278,43 +276,6 @@ const QuanLyCongThuc = () => {
     return (!filterFavorites || isFavorite) && nameMatch;
   });
 
-  const handleAdd = () => {
-    console.log('Add new food');
-    setSelectedFood(null);
-    setAddModalVisible(true);
-  };
-
-  const handleAddModalSubmit = async () => {
-    newFoodForm.validateFields().then(async values => {
-      console.log('Received values of form:', values);
-      const newRecipe = {
-        name: values.name,
-        description: values.description,
-      };
-      setAddModalVisible(false);
-      try {
-        const response = await axios.post(`${API_URL}/recipe`, {
-          ...newRecipe,
-        });
-        console.log(response.status);
-
-        if (response.status === 201) {
-          message.success(
-            'Add recipe to storage successfully',
-            [1],
-            async () => {
-              await fetchReservedFoods();
-            },
-          );
-        } else {
-          console.error('Unexpected status code:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching reserved foods:', error);
-      }
-    });
-  };
-
   return (
     <div>
       <h1>Danh sách công thức nấu ăn</h1>
@@ -335,11 +296,89 @@ const QuanLyCongThuc = () => {
           Chọn những món ăn yêu thích
         </label>
       </div>
-      <Button type="primary" onClick={handleAdd}>
-        Add
-      </Button>
 
-      <Table columns={columns} dataSource={filteredFoods} />
+      <Row gutter={[16, 16]}>
+        {filteredFoods
+          .slice(
+            (currentPage - 1) * recipesPerPage,
+            currentPage * recipesPerPage,
+          )
+          .map((recipe, id) => (
+            <Col key={id} xs={24} sm={12} md={8} lg={8}>
+              <Card
+                style={{ width: '100%' }}
+                cover={
+                  <img
+                    alt="Recipe"
+                    src={recipe.imgUrl}
+                    style={{
+                      height: '200px',
+                      objectFit: 'cover',
+                    }}
+                  />
+                }
+                actions={[
+                  <Tooltip title="Detail">
+                    <a onClick={() => handleViewModal(recipe)}>
+                      <InfoCircleTwoTone />
+                    </a>
+                  </Tooltip>,
+                  <Tooltip
+                    title={
+                      favoriteRecipes.includes(recipe.recipeId)
+                        ? 'Remove from favorite'
+                        : 'Add to favorite'
+                    }>
+                    <a onClick={() => handleFavorite(recipe)}>
+                      {favoriteRecipes.includes(recipe.recipeId) ? (
+                        <HeartTwoTone twoToneColor="#eb2f96" />
+                      ) : (
+                        <HeartTwoTone />
+                      )}
+                    </a>
+                  </Tooltip>,
+                  <Tooltip title="Chỉnh Sửa">
+                    <a onClick={() => handleEdit(recipe)}>
+                      <EditOutlined />
+                    </a>
+                  </Tooltip>,
+                  <Tooltip title="Share">
+                    <a onClick={() => handleShare(recipe)}>
+                      <ShareAltOutlined />
+                    </a>
+                  </Tooltip>,
+                  <Tooltip title="Download">
+                    <a onClick={() => handleDownload(recipe)}>
+                      <DownloadOutlined />
+                    </a>
+                  </Tooltip>,
+                ]}>
+                <Card.Meta
+                  title={recipe.name}
+                  description={
+                    <div
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3,
+                      }}>
+                      {recipe.description}
+                    </div>
+                  }
+                />
+              </Card>
+            </Col>
+          ))}
+      </Row>
+
+      <Pagination
+        current={currentPage}
+        pageSize={recipesPerPage}
+        total={filteredFoods.length}
+        onChange={handlePageChange}
+      />
 
       <Modal
         title="Food Details"
@@ -377,36 +416,6 @@ const QuanLyCongThuc = () => {
             </Form.Item>
           </Form>
         )}
-      </Modal>
-      <Modal
-        title="Add Food"
-        visible={addModalVisible}
-        onCancel={() => setAddModalVisible(false)}
-        onOk={handleAddModalSubmit}>
-        <Form form={newFoodForm} layout="vertical">
-          <Form.Item
-            name="name"
-            label="name"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the food name',
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="description"
-            rules={[
-              {
-                required: true,
-                message: 'Please enter the description',
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-        </Form>
       </Modal>
       <Modal
         title="Chỉnh Sửa Công Thức"
