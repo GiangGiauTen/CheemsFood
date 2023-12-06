@@ -41,7 +41,8 @@ const QuanLyCongThuc = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editableRecipe, setEditableRecipe] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [newFoodForm] = Form.useForm();
   useEffect(() => {
     // Fetch the list of groups for the current user
     const fetchGroups = async () => {
@@ -218,7 +219,42 @@ const QuanLyCongThuc = () => {
     const isFavorite = favoriteRecipes.includes(food.recipeId);
     return (!filterFavorites || isFavorite) && nameMatch;
   });
+  const handleAdd = () => {
+    console.log('Add new food');
+    setSelectedFood(null);
+    setAddModalVisible(true);
+  };
 
+  const handleAddModalSubmit = async () => {
+    newFoodForm.validateFields().then(async values => {
+      console.log('Received values of form:', values);
+      const newRecipe = {
+        name: values.name,
+        description: values.description,
+      };
+      setAddModalVisible(false);
+      try {
+        const response = await axios.post(`${API_URL}/recipe`, {
+          ...newRecipe,
+        });
+        console.log(response.status);
+
+        if (response.status === 201) {
+          message.success(
+            'Add recipe to storage successfully',
+            [1],
+            async () => {
+              await fetchReservedFoods();
+            },
+          );
+        } else {
+          console.error('Unexpected status code:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching reserved foods:', error);
+      }
+    });
+  };
   return (
     <div>
       <h1>Danh sách công thức nấu ăn</h1>
@@ -239,7 +275,9 @@ const QuanLyCongThuc = () => {
           Chọn những món ăn yêu thích
         </label>
       </div>
-
+      <Button type="primary" onClick={handleAdd}>
+        Add
+      </Button>
       <Row gutter={[16, 16]}>
         {filteredFoods
           .slice(
@@ -359,6 +397,36 @@ const QuanLyCongThuc = () => {
             </Form.Item>
           </Form>
         )}
+      </Modal>
+      <Modal
+        title="Add Food"
+        visible={addModalVisible}
+        onCancel={() => setAddModalVisible(false)}
+        onOk={handleAddModalSubmit}>
+        <Form form={newFoodForm} layout="vertical">
+          <Form.Item
+            name="name"
+            label="name"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the food name',
+              },
+            ]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="description"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the description',
+              },
+            ]}>
+            <Input />
+          </Form.Item>
+        </Form>
       </Modal>
       <Modal
         title="Chỉnh Sửa Công Thức"
