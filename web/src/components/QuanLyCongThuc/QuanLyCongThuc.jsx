@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Card,
   Table,
   Space,
   Modal,
@@ -9,6 +10,9 @@ import {
   Tooltip,
   Checkbox,
   message,
+  Pagination,
+  Row,
+  Col,
 } from 'antd';
 import {
   InfoCircleTwoTone,
@@ -36,68 +40,7 @@ const QuanLyCongThuc = () => {
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editableRecipe, setEditableRecipe] = useState(null);
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: 'recipeId',
-      key: 'recipeId',
-    },
-    {
-      title: 'Tên món ăn',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Cách làm',
-      dataIndex: 'description',
-      key: 'description',
-      render: text => {
-        return String(text).split(' ').slice(0, 50).join(' ') + ' ...';
-      },
-    },
-    {
-      title: '',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <Tooltip title="Detail">
-            <a onClick={() => handleViewModal(record)}>
-              <InfoCircleTwoTone />
-            </a>
-          </Tooltip>
-          <Tooltip
-            title={
-              favoriteRecipes.includes(record.recipeId)
-                ? 'Remove from favorite'
-                : 'Add to favorite'
-            }>
-            <a onClick={() => handleFavorite(record)}>
-              {favoriteRecipes.includes(record.recipeId) ? (
-                <HeartTwoTone twoToneColor="#eb2f96" />
-              ) : (
-                <HeartTwoTone />
-              )}
-            </a>
-          </Tooltip>
-          <Tooltip title="Chỉnh Sửa">
-            <a onClick={() => handleEdit(record)}>
-              <EditOutlined />
-            </a>
-          </Tooltip>
-          <Tooltip title="Share">
-            <a onClick={() => handleShare(record)}>
-              <ShareAltOutlined />
-            </a>
-          </Tooltip>
-          <Tooltip title="Download">
-            <a onClick={() => handleDownload(record)}>
-              <DownloadOutlined />
-            </a>
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     // Fetch the list of groups for the current user
