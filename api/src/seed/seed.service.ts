@@ -2761,7 +2761,7 @@ export class SeedService {
 
     const phoCuonThitBo = await this.prisma.recipe.create({
       data: {
-        name: 'phoCuonThitBo',
+        name: 'Phở cuốn thịt bò',
         imgUrl:
           'https://barona.vn/storage/meo-vat/51/cach-lam-pho-cuon-thit-bo.jpg',
         description: `Tỏi bóc bỏ, giã nát, vắt lấy nước để riêng, xác tỏi để riêng. Thịt bò rửa sạch, để ráo, cắt lát mỏng, ngang thớ, to bản. Sau đó, ướp vào thịt bò 1 muỗng cà phê hạt nêm, 1 muỗng cà phê tiêu, 1 muỗng cà phê bột ngọt, 2 muỗng cà phê nước mắm, đảo đều lên. Tiếp tục cho nước tỏi, 1 muỗng canh dầu ăn vào, trộn đều lên cho thịt thấm gia vị. Ướp thịt bò với dầu ăn để miếng thịt bóng đẹp hơn.
@@ -3461,3 +3461,4 @@ export class SeedService {
     });
   }
 }
+``;
