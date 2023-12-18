@@ -279,13 +279,6 @@ const QuanLyCongThuc = () => {
         ))}
       </Row>
 
-      <Pagination
-        current={currentPage}
-        pageSize={recipesPerPage}
-        total={randomRecipes.length}
-        onChange={handlePageChange}
-      />
-
       <Modal
         title="Food Details"
         visible={viewModalVisible}
