@@ -1,59 +1,71 @@
-import React, { useEffect, useState } from 'react'
-import { Table, Space } from 'antd'
-
+import React, { useEffect, useState } from 'react';
+import { Table, Space, Button, Modal, Form, Input } from 'antd';
+import { notification } from 'antd';
+import axios from 'axios';
+//im
 const QuanLyTaiKhoan = () => {
-	// Sample data for reserved foods
-	
-	// let taiKhoan = [
-	// 	{
-	// 		userId: 1,
-	// 		name: 'Nguyễn Thanh Dương',
-	// 		username: 'katanashi',
-	// 	},
-	// 	{
-	// 		userId: 2,
-	// 		name: 'Trần Công Minh',
-	// 		username: 'CongMei',
-	// 	},
-	// 	{
-	// 		userId: 3,
-	// 		name: 'Phạm Chính Thống',
-	// 		username: 'ChingThong',
-	// 	},
-	// 	// Add more food items here...
-	// 	{
-	// 		userId: 4,
-	// 		name: 'Nguyễn Nhật Minh',
-	// 		username: 'Nminh',
-	// 	},
-	// 	// Add more food items here...
-	// 	{
-	// 		userId: 5,
-	// 		name: 'Phạm Minh Chính',
-	// 		username: 'MeiChin',
-	// 	},
-	// ]
-	let [data, setData] = useState(null);
-	let ft = async () => {
-		const response = await fetch('http://localhost:4001/user')
-		let js = await response.json()
+	const [data, setData] = useState(null);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [form] = Form.useForm();
+
+	const fetchData = async () => {
+		const response = await fetch('http://localhost:4001/user');
+		const js = await response.json();
 		if (response.ok) {
-			console.log(js);
 			setData(js);
 		}
-	}
-	useEffect(() => {
-		ft()
-	}, [])
+	};
 
-	
-	let taiKhoan = data;
-	let Delete = (i) => {
-		let newTaiKhoan = [...taiKhoan]
-		newTaiKhoan.splice(i, 1)
-		setData(newTaiKhoan)
-	}
-	// Define the columns for the table
+	useEffect(() => {
+		fetchData();
+	}, []);
+
+	const handleDelete = (i) => {
+		const newTaiKhoan = [...data];
+		newTaiKhoan.splice(i, 1);
+		setData(newTaiKhoan);
+	};
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleOk = async () => {
+		try {
+			const response = await axios.post('http://localhost:4001/auth/signup', {
+				username: form.getFieldValue('username'),
+				password: form.getFieldValue('password'),
+				name: form.getFieldValue('name'),
+				role: form.getFieldValue('role'),
+			});
+
+			console.log('Thêm tài khoản thành công:', response.data);
+
+			// Display success notification
+			notification.success({
+				message: 'Success',
+				description: 'Tài khoản đã được tạo thành công.',
+			});
+
+			form.resetFields(); // Reset form
+			setIsModalVisible(false); // Đóng modal
+			fetchData(); // Refresh data after successful creation
+		} catch (error) {
+			console.error('Thêm tài khoản không thành công:', error);
+
+			// Display error notification
+			notification.error({
+				message: 'Error',
+				description: 'Đã xảy ra lỗi khi tạo tài khoản.',
+			});
+		}
+	};
+
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
+
 	const columns = [
 		{
 			title: 'ID',
@@ -69,24 +81,66 @@ const QuanLyTaiKhoan = () => {
 			dataIndex: 'name',
 			key: 'name',
 		},
-
 		{
 			title: 'Action',
 			key: 'action',
 			render: (text, record, index) => (
 				<Space size='middle'>
-					<a onClick={() => Delete(index)}>Delete</a>
+					<a onClick={() => handleDelete(index)}>Delete</a>
 				</Space>
 			),
 		},
-	]
+	];
+
+
 
 	return (
 		<div>
 			<h1>Account List</h1>
-			<Table columns={columns} dataSource={taiKhoan} />
-		</div>
-	)
-}
+			<Button type="primary" onClick={showModal}>
+				Thêm tài khoản
+			</Button>
+			<Table columns={columns} dataSource={data} />
 
-export default QuanLyTaiKhoan
+			<Modal
+				title="Thêm tài khoản mới"
+				visible={isModalVisible}
+				onOk={handleOk}
+				onCancel={handleCancel}
+			>
+				<Form form={form} >
+					<Form.Item
+						name="username"
+						label="Tên đăng nhập"
+						rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
+					>
+						<Input />
+					</Form.Item>
+					<Form.Item
+						name="password"
+						label="Mật khẩu"
+						rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+					>
+						<Input />
+					</Form.Item>
+					<Form.Item
+						name="name"
+						label="Họ và tên"
+						rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
+					>
+						<Input />
+					</Form.Item>
+					<Form.Item
+						name="role"
+						label="Vai trò"
+						rules={[{ required: true, message: 'Vui lòng nhập vai trò!' }]}
+					>
+						<Input />
+					</Form.Item>
+				</Form>
+			</Modal>
+		</div>
+	);
+};
+
+export default QuanLyTaiKhoan;

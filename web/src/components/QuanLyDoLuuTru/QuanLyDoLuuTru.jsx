@@ -56,12 +56,6 @@ const QuanLyDoLuuTru = () => {
   // Define the columns for the table
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'food.foodId',
-      key: 'foodId',
-      render: (text, record) => record.food.foodId, // Render the food ID value
-    },
-    {
       title: 'Food Name',
       dataIndex: 'food.name',
       key: 'name',

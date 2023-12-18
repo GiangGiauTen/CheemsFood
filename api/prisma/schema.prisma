@@ -28,6 +28,7 @@ model Category {
 model Recipe {
   recipeId    Int              @id @default(autoincrement())
   name        String
+  imgUrl      String?
   description String
   foods       RecipeFoodList[]
   users       FavoriteRecipe[]
