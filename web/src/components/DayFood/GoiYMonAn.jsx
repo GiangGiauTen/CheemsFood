@@ -10,7 +10,6 @@ import {
   Tooltip,
   Checkbox,
   message,
-  Pagination,
   Row,
   Col,
 } from 'antd';
@@ -40,7 +39,7 @@ const QuanLyCongThuc = () => {
   const [selectedGroups, setSelectedGroups] = useState([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editableRecipe, setEditableRecipe] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [randomRecipe, setRandomRecipe] = useState([]);
 
   useEffect(() => {
     // Fetch the list of groups for the current user
@@ -58,9 +57,6 @@ const QuanLyCongThuc = () => {
     fetchGroups();
   }, []);
 
-  const handlePageChange = pageNumber => {
-    setCurrentPage(pageNumber);
-  };
   const handleCheckboxChange = checkedValues => {
     setSelectedGroups(checkedValues);
   };
