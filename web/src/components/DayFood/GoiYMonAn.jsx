@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import jsPDF from 'jspdf';
 import {
   Card,
   Table,
@@ -22,8 +23,6 @@ import {
 } from '@ant-design/icons'; // Add these imports
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
-import jsPDF from 'jspdf';
-
 const Meta = { Card };
 const recipesPerPage = 6;
 
@@ -66,11 +65,6 @@ const QuanLyCongThuc = () => {
     setEditModalVisible(false);
   };
 
-  // Modal chỉnh sửa open handler
-  const handleEdit = record => {
-    setEditableRecipe(record);
-    setEditModalVisible(true);
-  };
   const handleShareClick = () => {
     // Implement the logic to share the recipe with selected groups
     message.success('Recipe shared successfully!');
@@ -82,7 +76,6 @@ const QuanLyCongThuc = () => {
   const handleShare = record => {
     setSelectedFood(record);
     setShareModalVisible(true);
-    console.log(randomRecipes);
   };
 
   const handleDownload = async record => {
@@ -118,6 +111,9 @@ const QuanLyCongThuc = () => {
       const response = await axios.get(`${API_URL}/recipe`);
       if (response.status === 200) {
         setReservedFoods(response.data);
+        setRandomRecipe(
+          response.data.sort(() => Math.random() - 0.5).slice(0, 6),
+        );
       }
     } catch (error) {
       console.error(error);
@@ -167,20 +163,6 @@ const QuanLyCongThuc = () => {
       console.error('Lỗi khi chỉnh sửa công thức:', error);
     }
   };
-  // Handle favor action
-  const handleFavorite = async record => {
-    await axios.post(`${API_URL}/recipe/favorite`, {
-      userId: parseInt(localStorage.getItem('userId')),
-      recipeId: record.recipeId,
-    });
-    if (favoriteRecipes.includes(record.recipeId))
-      setFavoriteRecipes(favoriteRecipes.filter(e => e !== record.recipeId));
-    else
-      setFavoriteRecipes(prevFavoriteRecipes => [
-        ...prevFavoriteRecipes,
-        record.recipeId,
-      ]);
-  };
 
   // View modal close handler
   const handleViewModalClose = () => {
@@ -197,18 +179,6 @@ const QuanLyCongThuc = () => {
     });
   };
 
-  // Search input change handler
-  const handleSearchChange = e => {
-    setSearchValue(e.target.value);
-  };
-
-  // Filter favorites checkbox change handler
-  const handleFilterFavoritesChange = e => {
-    setFilterFavorites(e.target.checked);
-  };
-  const generateRandomRecipes = foods => {
-    return foods.sort(() => Math.random() - 0.5).slice(0, 6);
-  };
   // Apply search and filter
   const filteredFoods = reservedFoods.filter(food => {
     const nameMatch = food.name
@@ -217,14 +187,13 @@ const QuanLyCongThuc = () => {
     const isFavorite = favoriteRecipes.includes(food.recipeId);
     return (!filterFavorites || isFavorite) && nameMatch;
   });
-  const randomRecipes = generateRandomRecipes(filteredFoods);
   return (
     <div>
       <h1>Hôm nay là 1 ngày tuyệt vời để nấu ăn </h1>
       <h1>Bạn đã thử những món ăn này chưa </h1>
 
       <Row gutter={[16, 16]}>
-        {randomRecipes.map((recipe, id) => (
+        {randomRecipe.map((recipe, id) => (
           <Col key={id} xs={24} sm={12} md={8} lg={8}>
             <Card
               style={{ width: '100%' }}
