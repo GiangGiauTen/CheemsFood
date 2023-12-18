@@ -24,6 +24,7 @@ import {
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
 import jsPDF from 'jspdf';
+import { amiriFont } from './font.js';
 
 const Meta = { Card };
 const recipesPerPage = 6;
@@ -91,27 +92,35 @@ const QuanLyCongThuc = () => {
 
     const handleDownload = async record => {
         try {
-            // Fetch the recipe details from your server
+            const pdf = new jsPDF();
+            pdf.addFileToVFS("Amiri-Regular.ttf", amiriFont);
+            pdf.addFont("Amiri-Regular.ttf", "Amiri", "normal");
+            pdf.setFont("Amiri");
+
+            debugger;
             const response = await axios.get(`${API_URL}/recipe/${record.recipeId}`);
             const recipe = response.data;
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            pdf.setFontSize(20);
+            pdf.text(`Recipe: ${recipe.name}`, 10, 20);
+            let yPosition = 30;
+            pdf.setFontSize(12);
+            pdf.text(20, yPosition, 'Description:');
+            yPosition += 10;
+            pdf.setFontSize(10);
+            const descriptionLines = pdf.splitTextToSize(recipe.description, pageWidth - 40);
+            pdf.text(descriptionLines, 20, yPosition);
+            yPosition += (descriptionLines.length * 4) + 10;
 
-            // Create a new instance of jsPDF
-            const pdf = new jsPDF();
+            pdf.setFontSize(12);
+            pdf.text(20, yPosition, 'Ingredients:');
+            yPosition += 10;
 
-            // Set font to support Unicode characters (including Vietnamese)
-            pdf.setFont('Arial', 'normal');
-
-            // Add content to the PDF
-            pdf.text(`Recipe: ${recipe.name}`, 10, 10);
-            pdf.text(`Description: ${recipe.description}`, 10, 20);
-            pdf.text(
-                `Ingredients: ${recipe.foods.map(food => food.foodNames).join(', ')}`,
-                10,
-                140,
-            );
-            // Add more content as needed
-
-            // Save the PDF with a specific filename
+            pdf.setFontSize(10);
+            const ingredients = recipe.foods.map(food => food.foodNames).join(', ');
+            const ingredientLines = pdf.splitTextToSize(ingredients, pageWidth - 40);
+            pdf.text(ingredientLines, 20, yPosition);
+            yPosition += (ingredientLines.length * 6) + 10;
             pdf.save(`recipe_${record.recipeId}.pdf`);
         } catch (error) {
             console.error('Error downloading PDF:', error);
