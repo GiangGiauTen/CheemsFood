@@ -5,8 +5,11 @@ import {
   Body,
   Patch,
   Param,
-  Delete
+  Delete,
+  UploadedFile,
+  UseInterceptors
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
@@ -16,9 +19,11 @@ import { AddToFavoriteDto } from './dto/add-to-favorite.dto';
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 
-  @Post()
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
+  @Post('/')
+  @UseInterceptors(FileInterceptor('img')) // 'img' should match the field name in FormData
+  createRecipe(@UploadedFile() imgFile, @Body() recipeData: any) {
+    // Handle the uploaded image (imgFile) and other recipe data (recipeData)
+    return this.recipeService.createRecipe(imgFile, recipeData);
   }
 
   @Get()
