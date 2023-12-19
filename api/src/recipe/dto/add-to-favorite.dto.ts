@@ -7,4 +7,5 @@ export class AddToFavoriteDto {
   @IsNotEmpty()
   @IsNumber()
   userId: number;
+  imgUrl: string;
 }

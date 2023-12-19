@@ -7,4 +7,6 @@ export class CreateRecipeDto {
   @IsString()
   description: string;
   foodIdList: number[];
+  imgUrl: string;
+  img: any;
 }

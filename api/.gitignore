@@ -50,3 +50,5 @@ node_modules
 !.vscode/extensions.json
 node_modules
 !.env
+!uploads
+/uploads/*

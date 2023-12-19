@@ -9,6 +9,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { SeedModule } from './seed/seed.module';
 import { ToBuyListModule } from './to-buy-list/to-buy-list.module';
 import { CategoryModule } from './category/category.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -22,6 +23,9 @@ import { CategoryModule } from './category/category.module';
     SeedModule,
     ToBuyListModule,
     CategoryModule,
-  ],
+    MulterModule.register({
+      dest: './uploads'
+    })
+  ]
 })
 export class AppModule {}
