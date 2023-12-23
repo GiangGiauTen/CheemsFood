@@ -9,8 +9,7 @@ async function bootstrap() {
   config();
   app.useGlobalPipes(new ValidationPipe());
   app.use('/uploads', express.static('uploads'));
-
-  await app.init();
+  await app.listen(3000);
 }
 
 bootstrap();
