@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateToBuyListDto } from './dto/create-to-buy-list.dto';
 import { UpdateToBuyListDto } from './dto/update-to-buy-list.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class ToBuyListService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async create(createToBuyListDto: CreateToBuyListDto) {
     const { ownerId, groupOwnerId, date, toBuyListDetail } = createToBuyListDto;
     if (ownerId == null && groupOwnerId == null) {
@@ -22,7 +22,7 @@ export class ToBuyListService {
     }
     let newToBuyList = null;
     if (ownerId) {
-      newToBuyList = await this.prisma.toBuyList.create({
+      newToBuyList = await prisma.toBuyList.create({
         data: {
           date: date ? date : new Date(),
           ownerId: ownerId,
@@ -30,7 +30,7 @@ export class ToBuyListService {
         }
       });
     } else if (groupOwnerId) {
-      newToBuyList = await this.prisma.toBuyList.create({
+      newToBuyList = await prisma.toBuyList.create({
         data: {
           date: date ? date : new Date(),
           groupOwnerId: groupOwnerId,
@@ -38,7 +38,7 @@ export class ToBuyListService {
         }
       });
     }
-    await this.prisma.toBuyListDetail.createMany({
+    await prisma.toBuyListDetail.createMany({
       data: toBuyListDetail.map((detail) => {
         return {
           toBuyListId: newToBuyList.toBuyListId,
@@ -61,21 +61,21 @@ export class ToBuyListService {
         message: 'Hãy cung cấp Id của chủ sở hữu to-buy-list'
       };
     }
-    const result = await this.prisma.toBuyList.findMany({
+    const result = await prisma.toBuyList.findMany({
       where: { ownerId: ownerId }
     });
     return result;
   }
 
   async findAllListOfGroup(groupOwnerId: number) {
-    const result = await this.prisma.toBuyList.findMany({
+    const result = await prisma.toBuyList.findMany({
       where: { groupOwnerId: groupOwnerId }
     });
     return result;
   }
 
   async findOne(id: number) {
-    const result = await this.prisma.toBuyList.findUnique({
+    const result = await prisma.toBuyList.findUnique({
       where: { toBuyListId: id },
       select: {
         toBuyListId: true,
@@ -93,7 +93,7 @@ export class ToBuyListService {
 
   async update(id: number, updateToBuyListDto: UpdateToBuyListDto) {
     const { date, toBuyListDetail } = updateToBuyListDto;
-    const existingToBuyList = await this.prisma.toBuyList.findUnique({
+    const existingToBuyList = await prisma.toBuyList.findUnique({
       where: { toBuyListId: id }
     });
     if (!existingToBuyList) {
@@ -102,17 +102,17 @@ export class ToBuyListService {
         message: `Không tìm thấy danh sách đồ cần mua với id: ${id}`
       };
     }
-    const updatedToBuyList = await this.prisma.toBuyList.update({
+    const updatedToBuyList = await prisma.toBuyList.update({
       where: { toBuyListId: id },
       data: {
         date: date || existingToBuyList.date
       }
     });
     if (toBuyListDetail) {
-      await this.prisma.toBuyListDetail.deleteMany({
+      await prisma.toBuyListDetail.deleteMany({
         where: { toBuyListId: id }
       });
-      await this.prisma.toBuyListDetail.createMany({
+      await prisma.toBuyListDetail.createMany({
         data: toBuyListDetail.map((detail) => ({
           toBuyListId: id,
           foodId: detail.foodId,
@@ -128,7 +128,7 @@ export class ToBuyListService {
   }
 
   async remove(id: number) {
-    const existingToBuyList = await this.prisma.toBuyList.findUnique({
+    const existingToBuyList = await prisma.toBuyList.findUnique({
       where: { toBuyListId: id }
     });
     if (!existingToBuyList) {
@@ -137,10 +137,10 @@ export class ToBuyListService {
         message: `Không tìm thấy danh sách đồ cần mua với id: ${id}`
       };
     }
-    await this.prisma.toBuyListDetail.deleteMany({
+    await prisma.toBuyListDetail.deleteMany({
       where: { toBuyListId: id }
     });
-    await this.prisma.toBuyList.delete({
+    await prisma.toBuyList.delete({
       where: { toBuyListId: id }
     });
     return {

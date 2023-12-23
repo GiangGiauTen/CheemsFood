@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class FoodService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async create(createFoodDto: CreateFoodDto) {
     const { name, description } = createFoodDto;
-    const food = await this.prisma.food.create({
+    const food = await prisma.food.create({
       data: {
         name,
         description
@@ -18,7 +18,7 @@ export class FoodService {
   }
 
   async findAll() {
-    const foods = await this.prisma.food.findMany({
+    const foods = await prisma.food.findMany({
       select: {
         foodId: true,
         imageUrl: true,
@@ -42,7 +42,7 @@ export class FoodService {
   async findOne(id: number) {
     const foodId = id;
     try {
-      const food = await this.prisma.food.findUnique({
+      const food = await prisma.food.findUnique({
         where: {
           foodId: foodId
         },
@@ -72,7 +72,7 @@ export class FoodService {
   async update(id: number, updateFoodDto: UpdateFoodDto) {
     const { name, description } = updateFoodDto;
     try {
-      const updateFood = await this.prisma.food.update({
+      const updateFood = await prisma.food.update({
         where: { foodId: id },
         data: {
           name,
@@ -90,7 +90,7 @@ export class FoodService {
 
   async remove(id: number) {
     try {
-      const listOfRecipe = await this.prisma.recipeFoodList.findMany({
+      const listOfRecipe = await prisma.recipeFoodList.findMany({
         where: { foodId: id }
       });
       if (listOfRecipe.length > 0) {
@@ -99,7 +99,7 @@ export class FoodService {
           message: 'Thức ăn đã tồn tại trong công thức, không thể xóa'
         };
       }
-      const listOfStorage = await this.prisma.storageFood.findMany({
+      const listOfStorage = await prisma.storageFood.findMany({
         where: { foodId: id }
       });
       if (listOfStorage.length > 0) {
@@ -108,7 +108,7 @@ export class FoodService {
           message: 'Thức ăn đã tồn tại trong kho lưu trữ, không thể xóa'
         };
       }
-      const listOfToBuyLlist = await this.prisma.toBuyListDetail.findMany({
+      const listOfToBuyLlist = await prisma.toBuyListDetail.findMany({
         where: { foodId: id }
       });
       if (listOfToBuyLlist.length > 0) {
@@ -118,10 +118,10 @@ export class FoodService {
             'Thức ăn đã tồn tại trong danh sách đồ cần mua, không thể xóa'
         };
       }
-      await this.prisma.foodCategory.deleteMany({
+      await prisma.foodCategory.deleteMany({
         where: { foodId: id }
       });
-      const updateFood = await this.prisma.food.delete({
+      const updateFood = await prisma.food.delete({
         where: { foodId: id }
       });
       if (updateFood) return { message: 'Xóa thành công' };

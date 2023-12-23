@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateStorageDto } from './dto/update-storage.dto';
 import { AddFoodToStorageDto } from './dto/add-food-to-storage.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class StorageService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async getUserStorage(userId: number) {
-    const storage = await this.prisma.storage.findUnique({
+    const storage = await prisma.storage.findUnique({
       where: {
         userId: userId
       },
@@ -29,18 +29,18 @@ export class StorageService {
   async update(userId: number, updateStorageDto: UpdateStorageDto) {
     const { foods } = updateStorageDto;
     try {
-      const storage = await this.prisma.storage.findUnique({
+      const storage = await prisma.storage.findUnique({
         where: { userId: userId }
       });
       foods.forEach(async (food) => {
-        const foodInStorage = await this.prisma.storageFood.findFirst({
+        const foodInStorage = await prisma.storageFood.findFirst({
           where: {
             foodId: food.foodId,
             storageId: storage.storageId
           }
         });
         if (!foodInStorage) {
-          await this.prisma.storageFood.create({
+          await prisma.storageFood.create({
             data: {
               foodId: food.foodId,
               storageId: storage.storageId,
@@ -51,13 +51,13 @@ export class StorageService {
           });
         } else {
           if (food.quantity === 0) {
-            await this.prisma.storageFood.delete({
+            await prisma.storageFood.delete({
               where: {
                 storageFoodId: foodInStorage.storageFoodId
               }
             });
           } else {
-            await this.prisma.storageFood.update({
+            await prisma.storageFood.update({
               data: {
                 quantity: food.quantity
               },
@@ -77,10 +77,10 @@ export class StorageService {
   async addFoodToStorage(userId: number, foodToAdd: AddFoodToStorageDto) {
     const { food } = foodToAdd;
     try {
-      const storage = await this.prisma.storage.findUnique({
+      const storage = await prisma.storage.findUnique({
         where: { userId: userId }
       });
-      await this.prisma.storageFood.create({
+      await prisma.storageFood.create({
         data: {
           foodId: food.foodId,
           storageId: storage.storageId,

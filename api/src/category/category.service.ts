@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { AddFoodDto } from './dto/add-food-dto';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
 
   async create(createCategoryDto: CreateCategoryDto) {
     const { name, type } = createCategoryDto;
-    const newCategory = await this.prisma.category.create({
+    const newCategory = await prisma.category.create({
       data: {
         categoryName: name,
         categoryType: type
@@ -20,7 +20,7 @@ export class CategoryService {
   }
 
   async findAll() {
-    const categories = await this.prisma.category.findMany();
+    const categories = await prisma.category.findMany();
     return categories;
   }
 
@@ -31,7 +31,7 @@ export class CategoryService {
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const { name, type } = updateCategoryDto;
     try {
-      await this.prisma.category.update({
+      await prisma.category.update({
         where: {
           categoryId: id
         },
@@ -52,12 +52,12 @@ export class CategoryService {
   async addFoodCategory(id: number, addFoodDto: AddFoodDto) {
     const { foodId } = addFoodDto;
     try {
-      await this.prisma.foodCategory.deleteMany({
+      await prisma.foodCategory.deleteMany({
         where: {
           foodId: foodId
         }
-      })
-      await this.prisma.foodCategory.create({
+      });
+      await prisma.foodCategory.create({
         data: {
           foodId: foodId,
           categoryId: id

@@ -5,15 +5,15 @@ import {
 } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { AddUserDto } from './dto/addMember.dto';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class GroupService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async create(createGroupDto: CreateGroupDto) {
     const { userId, groupName } = createGroupDto;
-    const group = await this.prisma.gGroup.create({
+    const group = await prisma.gGroup.create({
       data: {
         name: groupName,
         users: {
@@ -28,7 +28,7 @@ export class GroupService {
   }
 
   async findAllGroupOfAnUser(userId: number) {
-    const groups = await this.prisma.groupMember.findMany({
+    const groups = await prisma.groupMember.findMany({
       where: {
         userId: userId
       },
@@ -45,7 +45,7 @@ export class GroupService {
   }
 
   async teamDetail(groupId: number) {
-    const group = await this.prisma.gGroup.findUnique({
+    const group = await prisma.gGroup.findUnique({
       where: { groupId },
       include: {
         users: {
@@ -69,19 +69,19 @@ export class GroupService {
   async addUser(id: number, addUserDto: AddUserDto) {
     const { userId } = addUserDto;
     try {
-      const group = await this.prisma.gGroup.findUnique({
+      const group = await prisma.gGroup.findUnique({
         where: { groupId: id }
       });
       if (!group) {
         throw new NotFoundException('Không tìm thấy nhóm');
       }
 
-      const user = await this.prisma.user.findUnique({ where: { userId } });
+      const user = await prisma.user.findUnique({ where: { userId } });
       if (!user) {
         throw new NotFoundException('Không tìm thấy người dùng');
       }
 
-      const groupMember = await this.prisma.groupMember.create({
+      const groupMember = await prisma.groupMember.create({
         data: {
           groupId: id,
           userId: userId,
@@ -104,19 +104,19 @@ export class GroupService {
   async removeUser(id: number, removeUserDto: AddUserDto) {
     const { userId } = removeUserDto;
     try {
-      const group = await this.prisma.gGroup.findUnique({
+      const group = await prisma.gGroup.findUnique({
         where: { groupId: id }
       });
       if (!group) {
         throw new NotFoundException('Không tìm thấy nhóm');
       }
 
-      const user = await this.prisma.user.findUnique({ where: { userId } });
+      const user = await prisma.user.findUnique({ where: { userId } });
       if (!user) {
         throw new NotFoundException('Không tìm thấy người dùng');
       }
 
-      await this.prisma.groupMember.delete({
+      await prisma.groupMember.delete({
         where: {
           groupId_userId: {
             groupId: id,
@@ -136,14 +136,14 @@ export class GroupService {
   async update(id: number, updateGroupDto: UpdateGroupDto) {
     const { name } = updateGroupDto;
     try {
-      const group = await this.prisma.gGroup.findUnique({
+      const group = await prisma.gGroup.findUnique({
         where: {
           groupId: id
         }
       });
       if (!group) throw new NotFoundException('Group not found');
       else
-        await this.prisma.gGroup.update({
+        await prisma.gGroup.update({
           data: {
             name: name
           },

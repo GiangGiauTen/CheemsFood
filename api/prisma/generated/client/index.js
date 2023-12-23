@@ -239,7 +239,8 @@ const config = {
   ],
   "activeProvider": "postgresql",
   "dataProxy": false,
-  "postinstall": false
+  "postinstall": false,
+  "ciName": "Vercel"
 }
 
 const fs = require('fs')

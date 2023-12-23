@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import prisma from '../../lib/prisma';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async findAll() {
-    const users = await this.prisma.user.findMany({
+    const users = await prisma.user.findMany({
       where: {
         role: { not: 'admin' }
       }

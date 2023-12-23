@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
+import prisma from '../../lib/prisma';
 
 function getMultipleRandom(arr, num) {
   const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -9,22 +9,22 @@ function getMultipleRandom(arr, num) {
 
 @Injectable()
 export class SeedService {
-  constructor(private prisma: PrismaService) {}
+  constructor() {}
   async resetData() {
-    await this.prisma.toBuyListDetail.deleteMany();
-    await this.prisma.toBuyList.deleteMany();
-    await this.prisma.groupMember.deleteMany();
-    await this.prisma.foodCategory.deleteMany();
-    await this.prisma.recipeFoodList.deleteMany();
-    await this.prisma.favoriteRecipe.deleteMany();
-    await this.prisma.storageFood.deleteMany();
-    await this.prisma.recipe.deleteMany();
-    await this.prisma.storage.deleteMany();
-    await this.prisma.food.deleteMany();
-    await this.prisma.category.deleteMany();
-    await this.prisma.gGroup.deleteMany();
-    await this.prisma.storage.deleteMany();
-    await this.prisma.user.deleteMany();
+    await prisma.toBuyListDetail.deleteMany();
+    await prisma.toBuyList.deleteMany();
+    await prisma.groupMember.deleteMany();
+    await prisma.foodCategory.deleteMany();
+    await prisma.recipeFoodList.deleteMany();
+    await prisma.favoriteRecipe.deleteMany();
+    await prisma.storageFood.deleteMany();
+    await prisma.recipe.deleteMany();
+    await prisma.storage.deleteMany();
+    await prisma.food.deleteMany();
+    await prisma.category.deleteMany();
+    await prisma.gGroup.deleteMany();
+    await prisma.storage.deleteMany();
+    await prisma.user.deleteMany();
   }
 
   async seed() {
@@ -125,7 +125,7 @@ export class SeedService {
     const adminArr = dataArr.filter((e) => e.role == 'admin');
     const admins = adminArr.map(async (admin) => {
       const hashpsw = await argon.hash(admin.password);
-      const new_user = await this.prisma.user.create({
+      const new_user = await prisma.user.create({
         data: {
           username: admin.username,
           password: hashpsw,
@@ -138,7 +138,7 @@ export class SeedService {
     });
     const users = userArr.map(async (user) => {
       const hashpsw = await argon.hash(user.password);
-      const new_user = await this.prisma.user.create({
+      const new_user = await prisma.user.create({
         data: {
           username: user.username,
           password: hashpsw,
@@ -152,8 +152,8 @@ export class SeedService {
     const adminUsers = await Promise.all(admins);
     const regularUsers = await Promise.all(users);
 
-    const gr1 = await this.prisma.gGroup.create({ data: { name: 'Cheems' } });
-    await this.prisma.groupMember.createMany({
+    const gr1 = await prisma.gGroup.create({ data: { name: 'Cheems' } });
+    await prisma.groupMember.createMany({
       data: [
         {
           groupId: gr1.groupId,
@@ -188,8 +188,8 @@ export class SeedService {
       ]
     });
 
-    const gr2 = await this.prisma.gGroup.create({ data: { name: 'Monke' } });
-    await this.prisma.groupMember.createMany({
+    const gr2 = await prisma.gGroup.create({ data: { name: 'Monke' } });
+    await prisma.groupMember.createMany({
       data: [
         {
           groupId: gr2.groupId,
@@ -214,10 +214,10 @@ export class SeedService {
       ]
     });
 
-    const gr3 = await this.prisma.gGroup.create({
+    const gr3 = await prisma.gGroup.create({
       data: { name: 'Cô bé bán Simp' }
     });
-    await this.prisma.groupMember.createMany({
+    await prisma.groupMember.createMany({
       data: [
         {
           groupId: gr3.groupId,
@@ -237,10 +237,10 @@ export class SeedService {
       ]
     });
 
-    const gr4 = await this.prisma.gGroup.create({
+    const gr4 = await prisma.gGroup.create({
       data: { name: 'Wjbu, Vozer, fan MU' }
     });
-    await this.prisma.groupMember.createMany({
+    await prisma.groupMember.createMany({
       data: [
         {
           groupId: gr4.groupId,
@@ -260,10 +260,10 @@ export class SeedService {
       ]
     });
 
-    const gr5 = await this.prisma.gGroup.create({
+    const gr5 = await prisma.gGroup.create({
       data: { name: 'Cá mặn một nắng' }
     });
-    await this.prisma.groupMember.createMany({
+    await prisma.groupMember.createMany({
       data: [
         {
           groupId: gr5.groupId,
@@ -283,161 +283,161 @@ export class SeedService {
       ]
     });
     const groupArr = await Promise.all([gr1, gr2, gr3, gr4, gr5]);
-    const thitCategory = await this.prisma.category.create({
+    const thitCategory = await prisma.category.create({
       data: {
         categoryName: 'Thịt',
         categoryType: 'Thực phẩm tươi'
       }
     });
 
-    const haiSanCategory = await this.prisma.category.create({
+    const haiSanCategory = await prisma.category.create({
       data: {
         categoryName: 'Thủy - hải sản',
         categoryType: 'Thực phẩm tươi'
       }
     });
 
-    const rauLaCategory = await this.prisma.category.create({
+    const rauLaCategory = await prisma.category.create({
       data: {
         categoryName: 'Rau lá',
         categoryType: 'Rau-Củ-Quả'
       }
     });
 
-    const cuCategory = await this.prisma.category.create({
+    const cuCategory = await prisma.category.create({
       data: {
         categoryName: 'Củ',
         categoryType: 'Rau-Củ-Quả'
       }
     });
 
-    const traiCayCategory = await this.prisma.category.create({
+    const traiCayCategory = await prisma.category.create({
       data: {
         categoryName: 'Trái cây',
         categoryType: 'Rau-Củ-Quả'
       }
     });
 
-    const miCategory = await this.prisma.category.create({
+    const miCategory = await prisma.category.create({
       data: {
         categoryName: 'Mì',
         categoryType: 'Thực phẩm ăn liền'
       }
     });
 
-    const chaoCategory = await this.prisma.category.create({
+    const chaoCategory = await prisma.category.create({
       data: {
         categoryName: 'Cháo',
         categoryType: 'Thực phẩm ăn liền'
       }
     });
 
-    const phoBunMienCategory = await this.prisma.category.create({
+    const phoBunMienCategory = await prisma.category.create({
       data: {
         categoryName: 'Phở, bún, miến',
         categoryType: 'Thực phẩm ăn liền'
       }
     });
 
-    const suaTuoiCategory = await this.prisma.category.create({
+    const suaTuoiCategory = await prisma.category.create({
       data: {
         categoryName: 'Sữa tươi',
         categoryType: 'Sữa'
       }
     });
 
-    const suaHopCategory = await this.prisma.category.create({
+    const suaHopCategory = await prisma.category.create({
       data: {
         categoryName: 'Sữa hộp',
         categoryType: 'Sữa'
       }
     });
 
-    const suaBotCategory = await this.prisma.category.create({
+    const suaBotCategory = await prisma.category.create({
       data: {
         categoryName: 'Sữa bột',
         categoryType: 'Sữa'
       }
     });
 
-    const suaDacCategory = await this.prisma.category.create({
+    const suaDacCategory = await prisma.category.create({
       data: {
         categoryName: 'Sữa đặc',
         categoryType: 'Sữa'
       }
     });
 
-    const suaChuaCategory = await this.prisma.category.create({
+    const suaChuaCategory = await prisma.category.create({
       data: {
         categoryName: 'Sữa chua',
         categoryType: 'Sữa'
       }
     });
 
-    const boSuaPhoMaiCategory = await this.prisma.category.create({
+    const boSuaPhoMaiCategory = await prisma.category.create({
       data: {
         categoryName: 'Bơ sữa, phô mai',
         categoryType: 'Sữa'
       }
     });
 
-    const giaViCategory = await this.prisma.category.create({
+    const giaViCategory = await prisma.category.create({
       data: {
         categoryName: 'Gia vị',
         categoryType: 'Gia vị'
       }
     });
 
-    const gaoCategory = await this.prisma.category.create({
+    const gaoCategory = await prisma.category.create({
       data: {
         categoryName: 'Gạo',
         categoryType: 'Thực phẩm khô'
       }
     });
 
-    const nguCocCategory = await this.prisma.category.create({
+    const nguCocCategory = await prisma.category.create({
       data: {
         categoryName: 'Ngũ cốc, Yến mạch',
         categoryType: 'Thực phẩm khô'
       }
     });
 
-    const doHopCategory = await this.prisma.category.create({
+    const doHopCategory = await prisma.category.create({
       data: {
         categoryName: 'Đồ hộp',
         categoryType: 'Đồ hộp'
       }
     });
 
-    const botCategory = await this.prisma.category.create({
+    const botCategory = await prisma.category.create({
       data: {
         categoryName: 'Bột',
         categoryType: 'Bột'
       }
     });
 
-    const doUongCategory = await this.prisma.category.create({
+    const doUongCategory = await prisma.category.create({
       data: {
         categoryName: 'Đồ uống',
         categoryType: 'Đồ uống'
       }
     });
 
-    const trungCategory = await this.prisma.category.create({
+    const trungCategory = await prisma.category.create({
       data: {
         categoryName: 'Trứng',
         categoryType: 'Trứng'
       }
     });
 
-    const chaGioCategory = await this.prisma.category.create({
+    const chaGioCategory = await prisma.category.create({
       data: {
         categoryName: 'Chả giò',
         categoryType: 'Chả giò'
       }
     });
 
-    const khacCategory = await this.prisma.category.create({
+    const khacCategory = await prisma.category.create({
       data: {
         categoryName: 'Khác',
         categoryType: 'Khác'
@@ -569,10 +569,10 @@ export class SeedService {
     ];
 
     const thitFoodPromises = thitFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: thitCategory.categoryId
@@ -668,10 +668,10 @@ export class SeedService {
     ];
 
     const haiSanFoodPromises = haiSanFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: haiSanCategory.categoryId
@@ -849,10 +849,10 @@ export class SeedService {
     ];
 
     const rauLaFoodPromises = rauLaFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: rauLaCategory.categoryId
@@ -1030,10 +1030,10 @@ export class SeedService {
     ];
 
     const cuFoodPromises = cuFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: traiCayCategory.categoryId
@@ -1201,10 +1201,10 @@ export class SeedService {
     ];
 
     const quaFoodPromises = quaFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: cuCategory.categoryId
@@ -1267,10 +1267,10 @@ export class SeedService {
     ];
 
     const miFoodPromises = miFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: miCategory.categoryId
@@ -1305,10 +1305,10 @@ export class SeedService {
     ];
 
     const chaoFoodPromises = chaoFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: chaoCategory.categoryId
@@ -1354,10 +1354,10 @@ export class SeedService {
     ];
 
     const phoBunMienFoodPromises = phoBunMienFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: phoBunMienCategory.categoryId
@@ -1387,10 +1387,10 @@ export class SeedService {
     ];
 
     const suaTuoiFoodPromises = suaTuoiFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaTuoiCategory.categoryId
@@ -1432,10 +1432,10 @@ export class SeedService {
     ];
 
     const suaHopFoodPromises = suaHopFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaHopCategory.categoryId
@@ -1448,10 +1448,10 @@ export class SeedService {
     const suaBotFoodArr = ['Sữa đậu nành canxi Fami', 'Sữa bột NutiFood'];
 
     const suaBotFoodPromises = suaBotFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaBotCategory.categoryId
@@ -1481,10 +1481,10 @@ export class SeedService {
     ];
 
     const suaDacFoodPromises = suaDacFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaDacCategory.categoryId
@@ -1518,10 +1518,10 @@ export class SeedService {
     ];
 
     const suaChuaFoodPromises = suaChuaFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: suaChuaCategory.categoryId
@@ -1571,10 +1571,10 @@ export class SeedService {
     ];
 
     const boSuaPhoMaiFoodPromises = boSuaPhoMaiFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: boSuaPhoMaiCategory.categoryId
@@ -1587,10 +1587,10 @@ export class SeedService {
     const gaoFoodArr = ['Gạo nếp', 'Gạo tẻ', 'Gạo lứt', 'Gạo'];
 
     const gaoFoodPromises = gaoFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: gaoCategory.categoryId
@@ -1629,10 +1629,10 @@ export class SeedService {
     ];
 
     const nguCoFoodPromises = nguCocFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: nguCocCategory.categoryId
@@ -1759,10 +1759,10 @@ export class SeedService {
     ];
 
     const doHopFoodPromises = doHopFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: doHopCategory.categoryId
@@ -1833,10 +1833,10 @@ export class SeedService {
     ];
 
     const botFoodPromises = botFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: botCategory.categoryId
@@ -1975,10 +1975,10 @@ export class SeedService {
     ];
 
     const giaViFoodPromises = giaViFoodArr.map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: giaViCategory.categoryId
@@ -2060,10 +2060,10 @@ export class SeedService {
         'https://ongbi.vn/wp-content/uploads/2020/11/ca-phe-rang-xay.jpg'
       ]
     ].map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: doUongCategory.categoryId
@@ -2095,10 +2095,10 @@ export class SeedService {
         'https://hoangdongfood.com/wp-content/uploads/2020/04/trung-cut-ba-huan-16450227033_1000_750_1c970e53-b724-405c-8723-10e622b9eae3.jpg'
       ]
     ].map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: trungCategory.categoryId
@@ -2140,10 +2140,10 @@ export class SeedService {
         'https://product.hstatic.net/200000667673/product/cha-hue-cuu-long-2_d08e62d304eb4c6fadfe9957f702d44f.jpg'
       ]
     ].map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: chaGioCategory.categoryId
@@ -2191,10 +2191,10 @@ export class SeedService {
         'https://cdn.tgdd.vn/Products/Images/7461/206302/bhx/dau-hu-non-vi-nguyen-hop-280g-202303141129377101.jpg'
       ]
     ].map(async (food) => {
-      const dataFood = await this.prisma.food.create({
+      const dataFood = await prisma.food.create({
         data: { name: food[0], description: food[0], imageUrl: food[1] }
       });
-      return await this.prisma.foodCategory.create({
+      return await prisma.foodCategory.create({
         data: {
           foodId: dataFood.foodId,
           categoryId: khacCategory.categoryId
@@ -2212,7 +2212,7 @@ export class SeedService {
       '2023-07-12',
       '2023-07-13'
     ];
-    await this.prisma.toBuyList.createMany({
+    await prisma.toBuyList.createMany({
       data: regularUsers.flatMap((user) => {
         return dateArray.map((date) => {
           return {
@@ -2222,7 +2222,7 @@ export class SeedService {
         });
       })
     });
-    await this.prisma.toBuyList.createMany({
+    await prisma.toBuyList.createMany({
       data: groupArr.flatMap((group) => {
         return dateArray.map((date) => {
           return {
@@ -2258,11 +2258,11 @@ export class SeedService {
       khacFood
     ].flat();
 
-    const allToBuyList = [await this.prisma.toBuyList.findMany({})][0].map(
+    const allToBuyList = [await prisma.toBuyList.findMany({})][0].map(
       (e) => e.toBuyListId
     );
 
-    await this.prisma.toBuyListDetail.createMany({
+    await prisma.toBuyListDetail.createMany({
       data: allToBuyList.flatMap((listId) => {
         return getMultipleRandom(
           allFoods,
@@ -2297,11 +2297,11 @@ export class SeedService {
       '2024-02-30'
     ];
 
-    const allStorageId = [await this.prisma.storage.findMany({})][0].map(
+    const allStorageId = [await prisma.storage.findMany({})][0].map(
       (e) => e.storageId
     );
 
-    await this.prisma.storageFood.createMany({
+    await prisma.storageFood.createMany({
       data: allStorageId.flatMap((storageId) => {
         return dateArray.flatMap((storageDate) => {
           return outDateArr.map((outdate) => {
@@ -2318,7 +2318,7 @@ export class SeedService {
       })
     });
 
-    const thitBoXaoHanhTayRecipe = await this.prisma.recipe.create({
+    const thitBoXaoHanhTayRecipe = await prisma.recipe.create({
       data: {
         name: 'Thịt bò xào hành tây',
         imgUrl:
@@ -2337,7 +2337,7 @@ export class SeedService {
           `
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[12] // Thịt bò
         /*
@@ -2359,7 +2359,7 @@ export class SeedService {
       })
     });
 
-    const khoaiTayXaoCaChua = await this.prisma.recipe.create({
+    const khoaiTayXaoCaChua = await prisma.recipe.create({
       data: {
         name: 'Khoai tây xào cà chua',
         imgUrl:
@@ -2374,7 +2374,7 @@ export class SeedService {
           `
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         cuFood[18], //Khoai tây
         quaFood[7], // cà chua
@@ -2391,7 +2391,7 @@ export class SeedService {
       })
     });
 
-    const lauCaChep = await this.prisma.recipe.create({
+    const lauCaChep = await prisma.recipe.create({
       data: {
         name: 'Lẩu cá chép giòn',
         imgUrl:
@@ -2408,7 +2408,7 @@ export class SeedService {
           `
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[8], //Cá chép
         thitFood[22], // Xương ống heo
@@ -2429,7 +2429,7 @@ export class SeedService {
         };
       })
     });
-    const lauRieuCuaBapBoSuonSun = await this.prisma.recipe.create({
+    const lauRieuCuaBapBoSuonSun = await prisma.recipe.create({
       data: {
         name: 'Lẩu riêu cua bắp bò sườn sụn',
         imgUrl:
@@ -2452,7 +2452,7 @@ export class SeedService {
           `
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[2], // Cua đồng: 1 kg
         thitFood[23], // Sườn sụn: 600 gr
@@ -2487,7 +2487,7 @@ export class SeedService {
       })
     });
 
-    const thitKhoChayCanh = await this.prisma.recipe.create({
+    const thitKhoChayCanh = await prisma.recipe.create({
       data: {
         name: 'Thịt kho cháy cạnh',
         imgUrl:
@@ -2507,7 +2507,7 @@ export class SeedService {
           Vậy là với 3 bước đơn giản, bạn đã vừa hoàn thành món thịt kho cháy cạnh cực thơm ngon và đậm đà rồi. GIờ thì chỉ cần dọn ra để cả nhà cùng thưởng thức với cơm nóng sẽ rất ngon miệng. Chúc bạn thực hiện thành công!"`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[25], // 500g thịt ba chỉ
         cuFood[6], // 3 cây sả
@@ -2528,7 +2528,7 @@ export class SeedService {
       })
     });
 
-    const caChepKhoRiengMienBac = await this.prisma.recipe.create({
+    const caChepKhoRiengMienBac = await prisma.recipe.create({
       data: {
         name: 'Cá chép kho riềng miền Bắc',
         imgUrl:
@@ -2549,7 +2549,7 @@ export class SeedService {
           Bạn kho cá thêm khoảng 40 phút, đến khi nồi cá chỉ còn ít nước thì bạn tắt bếp. Trong quá trình kho cá, bạn không nên dùng đũa đảo cá để cá không bị vỡ. Cuối cùng, bạn cho cá ra đĩa và thưởng thức nóng cùng cơm trắng.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[8], // 1 con cá chép
         thitFood[25], // 100g thịt ba chỉ
@@ -2572,7 +2572,7 @@ export class SeedService {
       })
     });
 
-    const hauChienTrung = await this.prisma.recipe.create({
+    const hauChienTrung = await prisma.recipe.create({
       data: {
         name: 'Hàu chiên trứng',
         imgUrl:
@@ -2593,7 +2593,7 @@ export class SeedService {
           Chỉ với vài bước nhỏ thì chúng ta đã chế biến hoàn tất cách làm hàu chiên trứng rồi phải không nào? Chỉ với vài bước chế biến đơn giản là có ngay một món ăn cực bổ dưỡng với hương vị tinh túy từ loại hải sản giàu dưỡng chất nhất biển cả. Chúc bạn thành công với cách làm hàu chiên trứng này nhé.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         trungFood[2], // Trứng vịt hoặc trứng gà công nghiệp: 3 – 4 quả
         haiSanFood[10], // Hàu sữa tươi: 1kg
@@ -2616,7 +2616,7 @@ export class SeedService {
       })
     });
 
-    const gaRangMuoi = await this.prisma.recipe.create({
+    const gaRangMuoi = await prisma.recipe.create({
       data: {
         name: 'Gà Rang Muối ',
         imgUrl:
@@ -2637,7 +2637,7 @@ export class SeedService {
           Bạn lót một lớp sả chiên lên dĩa rồi đặt gà lên trên, rắc thêm muối và gừng, lá chanh là có thể thưởng thức. Da gà giòn thơm nhưng thịt vẫn giữ được vị mềm ngọt đặc trưng. Vị mặn của muối và vị béo bùi của đậu xanh và nếp cùng với lá chanh và sả chiên giòn khiến cho món ăn này hấp dẫn hơn bao giờ hết. Bạn có thể ăn kèm với 1 chén muối ớt chanh hay các loại nước chấm yêu thích khác đều rất tuyệt vời.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[26], // Thịt gà: 500g
         khacFood[5], // Bột năng: 100g
@@ -2663,7 +2663,7 @@ export class SeedService {
       })
     });
 
-    const bunBoHue = await this.prisma.recipe.create({
+    const bunBoHue = await prisma.recipe.create({
       data: {
         name: 'Bún bò Huế',
         imgUrl:
@@ -2687,7 +2687,7 @@ export class SeedService {
           Trụng bún qua nước sôi rồi cho vào bát, xếp thịt, gân, chả, giò, rắc ít rau ngò và chan nước dùng vào. Dọn kèm rau muống chẻ, bắp chuối bào, giá, rau thơm, chanh ớt, sa tế…`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[24], // Bắp bò: 600 gr
         thitFood[27], // Nạm bò: 600 gr
@@ -2725,7 +2725,7 @@ export class SeedService {
       })
     });
 
-    const bunCaNgu = await this.prisma.recipe.create({
+    const bunCaNgu = await prisma.recipe.create({
       data: {
         name: 'Bún cá ngừ',
         imgUrl:
@@ -2759,7 +2759,7 @@ export class SeedService {
           Cho bún vào tô lượng vừa đủ ăn, chan nước dùng, cá, thơm, cà chua, hành lá, ngò, rắc lên một ít tiêu xay, ăn kèm với nước mắm đã làm ở trên cùng xà lách và bắp cải.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         doHopFood[0], // 1kg cá ngừ
         quaFood[36], // ½ trái thơm
@@ -2792,7 +2792,7 @@ export class SeedService {
       })
     });
 
-    const mutVoBuoi = await this.prisma.recipe.create({
+    const mutVoBuoi = await prisma.recipe.create({
       data: {
         name: 'Mứt vỏ bưởi',
         imgUrl:
@@ -2804,7 +2804,7 @@ export class SeedService {
           Bước 5: Đợi cho mứt vỏ bưởi thì bạn có thể cho vào hũ và sử dụng dần.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         khacFood[6], // Vỏ của 2 quả bưởi
         giaViFood[28], // Đường cát trắng: 140gr
@@ -2819,7 +2819,7 @@ export class SeedService {
       })
     });
 
-    const mutChuoiSayKho = await this.prisma.recipe.create({
+    const mutChuoiSayKho = await prisma.recipe.create({
       data: {
         name: 'Mứt chuối sấy khô',
         imgUrl:
@@ -2833,7 +2833,7 @@ export class SeedService {
           Bước 4: Lăn chuối khi còn nóng qua lớp đường, để nguội rồi cho vào hũ dùng trong 1  2 tuần.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         quaFood[10], // Chuối chín: 1 kg (cách chọn chuối như trên)
         giaViFood[28], // Đường cát trắng: 500 gr
@@ -2846,7 +2846,7 @@ export class SeedService {
       })
     });
 
-    const phoCuonThitBo = await this.prisma.recipe.create({
+    const phoCuonThitBo = await prisma.recipe.create({
       data: {
         name: 'Phở cuốn thịt bò',
         imgUrl:
@@ -2858,7 +2858,7 @@ export class SeedService {
           Cắt bánh phở thành những miếng có kích thước 25x12cm. Các loại rau xà lách, rau thơm, ngò rí rửa sạch, để ráo. Đặt 1 lá xà lách, 1 chút rau thơm, 1 ít rau mùi, tiếp đó là thịt bò lên miếng bánh phở và cuốn chặt lại. Lưu ý, bạn nên sắp đều các nguyên liệu để 2 đầu cuốn không bị tóp nhỏ lại. Cứ thế làm cho hết nguyên liệu.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         phoBunMienFood[7], // 500g bánh phở (chưa cắt sợi)
         thitFood[29], // 200g thịt bò thăn
@@ -2880,7 +2880,7 @@ export class SeedService {
       })
     });
 
-    const banhDucMan = await this.prisma.recipe.create({
+    const banhDucMan = await prisma.recipe.create({
       data: {
         name: 'Bánh đúc mặn',
         imgUrl:
@@ -2906,7 +2906,7 @@ export class SeedService {
           Cắt bánh đúc ra thành miếng vừa ăn, sau đó cho một ít nhân bánh để lên trên, chan nước mắm vào và dùng ngay khi bánh còn nóng hổi.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         botFood[11], // 250g bột gạo
         botFood[10], // 40g bột năng
@@ -2932,7 +2932,7 @@ export class SeedService {
       })
     });
 
-    const xoiHoaDauBiec = await this.prisma.recipe.create({
+    const xoiHoaDauBiec = await prisma.recipe.create({
       data: {
         name: 'Xôi hoa đậu biếc',
         imgUrl:
@@ -2952,7 +2952,7 @@ export class SeedService {
           Món xôi hoa đậu biếc khi hoàn thành có màu xanh đẹp mắt, thơm lừng hương nếp và có vị beo béo của nước cốt dừa. Cách làm món xôi này cũng đơn giản đúng không nào. Vậy còn chần chừ gì mà không bắt tay vào chế biến ngay để chiêu đãi cho cả gia đình thân yêu nào! Chúc bạn thành công.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         rauLaFood[43], // 10 hoa đậu biếc khô
         gaoFood[0], // 400g gạo nếp
@@ -2969,7 +2969,7 @@ export class SeedService {
       })
     });
 
-    const xoiComDua = await this.prisma.recipe.create({
+    const xoiComDua = await prisma.recipe.create({
       data: {
         name: 'Xôi cốm dừa',
         imgUrl:
@@ -2994,7 +2994,7 @@ export class SeedService {
           Canh kim chi Hàn Quốc đã hoàn thành thì bạn cho ra tô rồi dùng kèm với cơm sẽ rất ngon. Với hương vị chua cay mới lạ giúp kích thích vị giác rất tốt. Ngoài ra, đây còn là một lựa chọn tuyệt vời để chăm sóc cả nhà, giúp gia đình có một bữa cơm thật ấm lòng và ngon miệng trong những ngày thời tiết se lạnh.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         nguCocFood[5], // 500g cốm xanh
         nguCocFood[3], // 180g đậu xanh không vỏ
@@ -3011,7 +3011,7 @@ export class SeedService {
       })
     });
 
-    const cachNauCanhKimChiHanQuoc = await this.prisma.recipe.create({
+    const cachNauCanhKimChiHanQuoc = await prisma.recipe.create({
       data: {
         name: 'Cách nấu canh kim chi Hàn Quốc',
         imgUrl:
@@ -3036,7 +3036,7 @@ export class SeedService {
           Canh kim chi Hàn Quốc đã hoàn thành thì bạn cho ra tô rồi dùng kèm với cơm sẽ rất ngon. Với hương vị chua cay mới lạ giúp kích thích vị giác rất tốt. Ngoài ra, đây còn là một lựa chọn tuyệt vời để chăm sóc cả nhà, giúp gia đình có một bữa cơm thật ấm lòng và ngon miệng trong những ngày thời tiết se lạnh."`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         doHopFood[25], // Kim chi Hàn Quốc: 200gr
         rauLaFood[25], // Nấm kim châm: 200gr
@@ -3056,7 +3056,7 @@ export class SeedService {
       })
     });
 
-    const canhGheRauMuong = await this.prisma.recipe.create({
+    const canhGheRauMuong = await prisma.recipe.create({
       data: {
         name: 'Canh ghẹ rau muống',
         imgUrl:
@@ -3071,7 +3071,7 @@ export class SeedService {
           Khi thấy ghẹ chín tới thì nhanh tay thả rau muống vào, đợi canh sôi trở lại và thấy rau chín là bạn đã hoàn thành cách nấu canh ghẹ rau muống cực kỳ thơm ngon và bổ dưỡng rồi đấy.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         /*
           rauLaFood[27], // 1 mớ rau muống
@@ -3090,7 +3090,7 @@ export class SeedService {
       })
     });
 
-    const chaoHauHatSen = await this.prisma.recipe.create({
+    const chaoHauHatSen = await prisma.recipe.create({
       data: {
         name: 'Cháo hàu hạt sen',
         imgUrl:
@@ -3106,7 +3106,7 @@ export class SeedService {
           `
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[10], // 50gr hàu sữa
         nguCocFood[6], // 20gr hạt sen
@@ -3125,7 +3125,7 @@ export class SeedService {
       })
     });
 
-    const chaoKhoaiLangThitGa = await this.prisma.recipe.create({
+    const chaoKhoaiLangThitGa = await prisma.recipe.create({
       data: {
         name: 'Cháo khoai lang thịt gà',
         imgUrl:
@@ -3140,7 +3140,7 @@ export class SeedService {
           Cho cháo ra chén hoặc tô, để bớt nóng và cho bé thưởng thức ngay.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         gaoFood[1], // 30gr gạo tẻ
         thitFood[21], // 1 miếng ức gà
@@ -3154,7 +3154,7 @@ export class SeedService {
       })
     });
 
-    const nuocChamAnVoiVitLuoc = await this.prisma.recipe.create({
+    const nuocChamAnVoiVitLuoc = await prisma.recipe.create({
       data: {
         name: 'Nước chấm ăn với vịt luộc',
         imgUrl:
@@ -3165,7 +3165,7 @@ export class SeedService {
           Thái ớt nhỏ, bỏ cuống và cho vào, khuấy đều.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         giaViFood[2], // Nước mắm (loại ngon): 2 muỗng canh
         cuFood[33],
@@ -3181,7 +3181,7 @@ export class SeedService {
       })
     });
 
-    const chimCutNuongMatOng = await this.prisma.recipe.create({
+    const chimCutNuongMatOng = await prisma.recipe.create({
       data: {
         name: 'Chim cút nướng mật ong',
         imgUrl:
@@ -3193,7 +3193,7 @@ export class SeedService {
           Vậy là hoàn thành món chim cút nướng mật ong. Bạn cho chim cút ra đĩa, xếp thêm rau xà lách, húng lủi cùng cà chua thái lát là thưởng thức được rồi đấy. Đừng quên chuẩn bị thêm chén muối tiêu chanh ăn kèm nhé!`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[30], // 4 con chim cút
         giaViFood[31], // Ngũ vị hương
@@ -3218,7 +3218,7 @@ export class SeedService {
       })
     });
 
-    const cheDuaDam = await this.prisma.recipe.create({
+    const cheDuaDam = await prisma.recipe.create({
       data: {
         name: 'Chè dừa dầm',
         imgUrl:
@@ -3249,7 +3249,7 @@ export class SeedService {
           Vậy là cách nấu chè dừa dầm đã hoàn thành. Bạn đã có được thành phẩm thanh mát, béo ngọt và thơm dịu nhẹ giúp xua tan cơn nóng bức. Cet.edu.vn hy vọng rằng với cách làm trên, bạn sẽ trổ tài chiêu đãi cả gia đình thân yêu của mình món ăn ngon vào dịp cuối tuần nhé! Chúc bạn thành công.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         doHopFood[26], // Phần thạch rau câu dừa
         quaFood[39], // 1 trái dừa non
@@ -3264,7 +3264,7 @@ export class SeedService {
       })
     });
 
-    const cheBaBa = await this.prisma.recipe.create({
+    const cheBaBa = await prisma.recipe.create({
       data: {
         name: 'Chè bà ba',
         imgUrl:
@@ -3285,7 +3285,7 @@ export class SeedService {
           Chỉ với cách nấu chè bà ba Nam Bộ đơn giản như vậy là bạn đã hoàn thành một món ăn vặt đúng điệu theo kiểu người dân Nam Bộ rồi. Vào bếp thực hiện và thưởng thức ngay, bạn nhé! Chúc các bạn thành công!`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         cuFood[15], // 350gr khoai lang ruột vàng
         cuFood[38], // 200gr khoai mì
@@ -3307,7 +3307,7 @@ export class SeedService {
       })
     });
 
-    const monCaHapXiDau = await this.prisma.recipe.create({
+    const monCaHapXiDau = await prisma.recipe.create({
       data: {
         name: 'Món cá hấp xì dầu',
         imgUrl:
@@ -3337,7 +3337,7 @@ export class SeedService {
           Để cảm nhận được trọn vẹn hương thơm và vị tươi ngon của món cá hấp xì dầu, bạn nên thưởng thức khi cá còn nóng cùng cơm, bún hoặc bánh tráng đều được.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[20], // 1 kg cá diêu hồng
         cuFood[13], // 1 củ hành tây
@@ -3361,7 +3361,7 @@ export class SeedService {
       })
     });
 
-    const tomHumHapBia = await this.prisma.recipe.create({
+    const tomHumHapBia = await prisma.recipe.create({
       data: {
         name: 'Tôm hùm hấp bia',
         imgUrl:
@@ -3373,7 +3373,7 @@ export class SeedService {
           Dùng nóng, thưởng thức cùng rượu vang trắng`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[21], // 3 – 4 con tôm hùm
         doUongFood[12], // 150ml rượu vang trắng
@@ -3394,7 +3394,7 @@ export class SeedService {
       })
     });
 
-    const goiSuaXoaiXanh = await this.prisma.recipe.create({
+    const goiSuaXoaiXanh = await prisma.recipe.create({
       data: {
         name: 'Gỏi sứa xoài xanh',
         imgUrl:
@@ -3408,7 +3408,7 @@ export class SeedService {
           Sau khi sơ chế xong các nguyên liệu, cho sứa, cà rốt, xoài xanh và rau thơm vào tô sạch, rưới nước trộn gỏi vào và trộn đều. Để khoảng 10 phút cho gia vị ngấm đều vào thịt sứa. Sau cùng cho gỏi sứa ra đĩa và trang trí món ăn với đậu phộng rang.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         haiSanFood[14], // 200g sứa
         quaFood[33], // 1 quả xoài xanh
@@ -3429,7 +3429,7 @@ export class SeedService {
         };
       })
     });
-    const goiGaBapCai = await this.prisma.recipe.create({
+    const goiGaBapCai = await prisma.recipe.create({
       data: {
         name: 'Gỏi gà bắp cải',
         imgUrl:
@@ -3452,7 +3452,7 @@ export class SeedService {
           Bạn bày gỏi gà bắp cải ra đĩa rồi trang trí thêm cho đẹp mắt trước khi thưởng thức. Khi ăn, nếu muốn đậm đà hơn bạn có thể dùng thêm muối tiêu chanh hoặc nước xốt.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[21], // Ức gà: 2 cái
         cuFood[40], // Ngô hạt: 120 gram
@@ -3471,7 +3471,7 @@ export class SeedService {
         };
       })
     });
-    const nauSupGaNgoNam = await this.prisma.recipe.create({
+    const nauSupGaNgoNam = await prisma.recipe.create({
       data: {
         name: 'Nấu súp gà ngô nấm',
         imgUrl:
@@ -3489,7 +3489,7 @@ export class SeedService {
           Súp gà ngô nấm thành phẩm có màu sắc bắt mắt, phần nước sóng sánh hấp dẫn, thịt gà mềm, không bị bở, ngô ngọt xen kẽ nấm hương ngọt thanh, đậm đà. Một yếu tố không kém phần quan trọng quyết định sự thành công của món súp chính là để lâu vẫn không bị tách nước, để làm được điều đó, bạn hãy tham khảo một số lưu ý bên dưới nhé!`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         thitFood[21], // Ức gà: 2 cái
         cuFood[40], // Ngô hạt: 120 gram
@@ -3508,7 +3508,7 @@ export class SeedService {
         };
       })
     });
-    const nauSupChay = await this.prisma.recipe.create({
+    const nauSupChay = await prisma.recipe.create({
       data: {
         name: 'Nấu súp chay',
         imgUrl:
@@ -3525,7 +3525,7 @@ export class SeedService {
           Sau khi đã hoàn thành món súp chay, bạn múc ra từng bát, cho thêm rau nêm và tiêu là có thể thưởng thức.`
       }
     });
-    await this.prisma.recipeFoodList.createMany({
+    await prisma.recipeFoodList.createMany({
       data: [
         rauLaFood[43], // Nấm rơm: 100 gram
         rauLaFood[23], // Nấm hương: 50 gram
