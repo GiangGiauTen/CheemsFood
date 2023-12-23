@@ -3023,7 +3023,7 @@ export class SeedService {
       data: [
         haiSanFood[10], // 50gr hàu sữa
         nguCocFood[6], // 20gr hạt sen
-        rauLaFood[44], // 30gr nấm rơm
+        rauLaFood[43], // 30gr nấm rơm
         gaoFood[3], // 30g gạo
         giaViFood[0], // 10gr dầu ăn
         giaViFood[2],
@@ -3108,7 +3108,7 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        thitFood[31], // 4 con chim cút
+        thitFood[30], // 4 con chim cút
         giaViFood[31], // Ngũ vị hương
         giaViFood[10], // Mật ong
         giaViFood[22],
@@ -3122,7 +3122,7 @@ export class SeedService {
         rauLaFood[34],
         quaFood[7],
         rauLaFood[41]
-        // Rau ăn kèm: Xà lách, cà chua, rau húng
+        //Rau ăn kèm: Xà lách, cà chua, rau húng
       ].map((food) => {
         return {
           recipeId: chimCutNuongMatOng.recipeId,
@@ -3440,7 +3440,7 @@ export class SeedService {
     });
     await this.prisma.recipeFoodList.createMany({
       data: [
-        rauLaFood[44], // Nấm rơm: 100 gram
+        rauLaFood[43], // Nấm rơm: 100 gram
         rauLaFood[23], // Nấm hương: 50 gram
         cuFood[4], // Cà rốt: 150 gram
         nguCocFood[6], // Hạt sen: 150 gram
