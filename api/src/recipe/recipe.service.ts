@@ -3,7 +3,7 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { AddToFavoriteDto } from './dto/add-to-favorite.dto';
 import { createWriteStream } from 'fs';
-import prisma from '../../lib/prisma';
+import prisma from '../lib/prisma';
 
 @Injectable()
 export class RecipeService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateStorageDto } from './dto/update-storage.dto';
 import { AddFoodToStorageDto } from './dto/add-food-to-storage.dto';
-import prisma from '../../lib/prisma';
+import prisma from '../lib/prisma';
 
 @Injectable()
 export class StorageService {

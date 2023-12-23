@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
-import prisma from '../../lib/prisma';
+import prisma from '../lib/prisma';
 
 function getMultipleRandom(arr, num) {
   const shuffled = [...arr].sort(() => 0.5 - Math.random());

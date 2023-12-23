@@ -6,7 +6,7 @@ import {
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { AddUserDto } from './dto/addMember.dto';
-import prisma from '../../lib/prisma';
+import prisma from '../lib/prisma';
 
 @Injectable()
 export class GroupService {

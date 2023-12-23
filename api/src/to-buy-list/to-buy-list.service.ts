@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateToBuyListDto } from './dto/create-to-buy-list.dto';
 import { UpdateToBuyListDto } from './dto/update-to-buy-list.dto';
-import prisma from '../../lib/prisma';
+import prisma from '../lib/prisma';
 
 @Injectable()
 export class ToBuyListService {
