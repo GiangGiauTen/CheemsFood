@@ -4,13 +4,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { config } from 'dotenv';
 import * as express from 'express';
 
-const cors = require('cors');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   config();
   app.useGlobalPipes(new ValidationPipe());
-  app.use(cors());
   app.use('/uploads', express.static('uploads'));
-  await app.listen(4001);
+
+  await app.init();
 }
+
 bootstrap();

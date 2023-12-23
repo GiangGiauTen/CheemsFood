@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require('fs');
 import * as argon from 'argon2';
-
-const rawUserData = fs.readFileSync('./src/seed/users_data.json', 'utf8');
 
 function getMultipleRandom(arr, num) {
   const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -33,7 +29,98 @@ export class SeedService {
 
   async seed() {
     await this.resetData();
-    const dataArr = await JSON.parse(rawUserData);
+    const dataArr = [
+      {
+        username: 'admin1',
+        name: 'Admin1',
+        password: 'admin123456',
+        role: 'admin'
+      },
+      {
+        username: 'admin2',
+        name: 'Admin2',
+        password: 'admin123456',
+        role: 'admin'
+      },
+      {
+        username: 'nimi76d',
+        name: 'Đào Nhật Minh',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'zanggiauten',
+        name: 'Lê Trường Giang',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'kiene',
+        name: 'Phùng Trung Kiên',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'punny',
+        name: 'Đỗ Minh Khôi',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'tung',
+        name: 'Lê Thanh Tùng',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'tien',
+        name: 'Nguyễn Thành Tiến',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'nimi76d11',
+        name: 'Nhật Minh',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'zanggiauten22',
+        name: 'Trường Giang',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'kien3e',
+        name: 'Phùng Trung Giang',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'punny2',
+        name: 'Đỗ Trung Giang',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'tung12',
+        name: 'Lê Minh Koi',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'tien124',
+        name: 'Nguyễn Thanh Dương',
+        password: '123456',
+        role: 'user'
+      },
+      {
+        username: 'ThanhMinh123',
+        name: 'Nguyễn Thanh Minh',
+        password: '123456',
+        role: 'user'
+      }
+    ];
     const userArr = dataArr.filter((e) => e.role == 'user');
     const adminArr = dataArr.filter((e) => e.role == 'admin');
     const admins = adminArr.map(async (admin) => {
