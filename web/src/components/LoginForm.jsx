@@ -15,6 +15,9 @@ const LoginForm = () => {
                 .post(`${API_URL}/auth/login`, {
                     username: values.username,
                     password: values.password,
+                }, {
+                    'Content-Type': 'text/plain',
+                    "Access-Control-Allow-Origin": null
                 })
                 .then((response) => {
                     if (response.status == 201) {
