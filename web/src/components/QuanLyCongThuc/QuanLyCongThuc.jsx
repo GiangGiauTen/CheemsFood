@@ -324,7 +324,7 @@ const QuanLyCongThuc = () => {
                                 cover={
                                     <img
                                         alt="Recipe"
-                                        src={recipe.imgUrl}
+                                        src={(recipe.imgUrl[0] == "." ? API_URL + "/" : "") + recipe.imgUrl}
                                         style={{
                                             height: '200px',
                                             objectFit: 'cover',
