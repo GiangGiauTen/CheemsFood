@@ -8,8 +8,9 @@ import prisma from '../lib/prisma';
 @Injectable()
 export class RecipeService {
   constructor() {}
-  async createRecipe(imgFile: any, createRecipeDto: CreateRecipeDto) {
+  async createRecipe(imgFile: any, createRecipeDto: any) {
     const { name, description, foodIdList, imgUrl } = createRecipeDto;
+    const foodIdListParse = JSON.parse(foodIdList);
     const recipe = await prisma.recipe.create({
       data: {
         name,
@@ -32,7 +33,7 @@ export class RecipeService {
     }
     const recipeId = recipe.recipeId;
     await prisma.recipeFoodList.createMany({
-      data: foodIdList.map((e) => {
+      data: foodIdListParse.map((e) => {
         return { recipeId, foodId: e };
       })
     });

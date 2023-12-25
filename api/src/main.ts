@@ -9,7 +9,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   config();
   app.useGlobalPipes(new ValidationPipe());
-  app.use(CorsMiddleware);
+  const corsMiddleware = new CorsMiddleware();
+  app.use((req, res, next) => corsMiddleware.use(req, res, next));
   app.use('/uploads', express.static('uploads'));
   await app.listen(3000);
 }
