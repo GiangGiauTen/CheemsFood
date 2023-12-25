@@ -191,6 +191,7 @@ const FoodDetail = ({ selectedRowData }) => {
                     style={{ width: 60 }}
                     type="number"
                     defaultValue={0}
+                    min={0}
                     onChange={e => handleQuantityChange(record, e.target.value)}
                   />
                 ),
