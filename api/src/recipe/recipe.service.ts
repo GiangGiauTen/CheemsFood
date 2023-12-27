@@ -18,7 +18,7 @@ export class RecipeService {
         imgUrl
       }
     });
-    if (imgUrl.trim().length === 0) {
+    if (imgUrl.trim() === 'undefined') {
       const { originalname, buffer } = imgFile;
       const filename = `${Date.now()}-${originalname}`;
       const filePath = `./uploads/${filename}`;
@@ -29,7 +29,6 @@ export class RecipeService {
         where: { recipeId: recipe.recipeId },
         data: { imgUrl: filePath }
       });
-      return filePath;
     }
     const recipeId = recipe.recipeId;
     await this.prisma.recipeFoodList.createMany({
