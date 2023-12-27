@@ -32,8 +32,10 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
       {
         food: {
           foodId: user.foodId,
+          imageUrl: user.imageUrl,
           name: user.name,
         },
+
         quantity: user.quantity,
       },
     ];
@@ -103,6 +105,14 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
       key: 'name',
     },
     {
+      title: 'Ảnh',
+      dataIndex: ['food', 'imageUrl'], // Update the dataIndex to point to the correct path
+      key: 'imageUrl',
+      render: (_, record) => (
+        <img width={150} src={record.food.imageUrl} alt={record.food.name} />
+      ),
+    },
+    {
       title: 'Số Lượng',
       dataIndex: 'quantity',
       key: 'quantity',
@@ -159,6 +169,14 @@ const AddToBuyList = ({ setIsCreateModalOpen }) => {
                   dataIndex: 'name',
                   key: 'name',
                   render: (_, record) => <p>{record.name}</p>,
+                },
+                {
+                  title: 'Ảnh',
+                  dataIndex: 'imageUrl',
+                  key: 'imageUrl',
+                  render: (_, record) => (
+                    <img width={150} src={record.imageUrl} />
+                  ),
                 },
                 {
                   title: 'Số Lượng',

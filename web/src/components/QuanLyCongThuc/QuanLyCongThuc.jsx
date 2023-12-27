@@ -13,6 +13,8 @@ import {
     Pagination,
     Row,
     Col,
+    Upload,
+    Select
 } from 'antd';
 import {
     InfoCircleTwoTone,
@@ -20,6 +22,7 @@ import {
     ShareAltOutlined,
     DownloadOutlined,
     EditOutlined,
+    UploadOutlined
 } from '@ant-design/icons'; // Add these imports
 import axios from 'axios';
 import { API_URL } from '../../utils/apiUrl';
@@ -30,9 +33,9 @@ const Meta = { Card };
 const recipesPerPage = 6;
 
 const QuanLyCongThuc = () => {
-    const [reservedFoods, setReservedFoods] = useState([]);
+    const [reservedRecipe, setReservedRecipe] = useState([]);
     const [viewModalVisible, setViewModalVisible] = useState(false);
-    const [selectedFood, setSelectedFood] = useState(null);
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [filterFavorites, setFilterFavorites] = useState(false);
@@ -44,6 +47,9 @@ const QuanLyCongThuc = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [addModalVisible, setAddModalVisible] = useState(false);
     const [newFoodForm] = Form.useForm();
+    const [foodList, setFoodList] = useState([])
+    const [fileList, setFileList] = useState([]);
+    const [addImgUrl, setAddImgUrl] = useState("");
     useEffect(() => {
         // Fetch the list of groups for the current user
         const fetchGroups = async () => {
@@ -52,12 +58,27 @@ const QuanLyCongThuc = () => {
                     `${API_URL}/group/${localStorage.getItem('userId')}`,
                 );
                 setGroups(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching groups:', error);
             }
         };
+
+        const fetchFoodList = async () => {
+            try {
+                const response = await axios.get(
+                    `${API_URL}/food`,
+                );
+                setFoodList(response.data.map(e => {
+                    e['value'] = e['foodId']
+                    e['label'] = e['name']
+                    return e
+                }));
+            } catch (error) {
+                console.error('Error fetching groups:', error);
+            }
+        }
         fetchGroups();
+        fetchFoodList();
     }, []);
 
     const handlePageChange = pageNumber => {
@@ -73,9 +94,12 @@ const QuanLyCongThuc = () => {
     };
 
     // Modal chỉnh sửa open handler
-    const handleEdit = record => {
-        setEditableRecipe(record);
-        setEditModalVisible(true);
+    const handleEdit = async (record) => {
+        await axios.get(`${API_URL}/recipe/${record.recipeId}`).then(response => {
+            setEditModalVisible(true)
+            console.log(response.data)
+            setEditableRecipe(response.data);
+        });
     };
     const handleShareClick = () => {
         // Implement the logic to share the recipe with selected groups
@@ -86,7 +110,7 @@ const QuanLyCongThuc = () => {
     };
 
     const handleShare = record => {
-        setSelectedFood(record);
+        setSelectedRecipe(record);
         setShareModalVisible(true);
     };
 
@@ -130,7 +154,7 @@ const QuanLyCongThuc = () => {
         try {
             const response = await axios.get(`${API_URL}/recipe`);
             if (response.status === 200) {
-                setReservedFoods(response.data);
+                setReservedRecipe(response.data);
             }
         } catch (error) {
             console.error(error);
@@ -164,7 +188,6 @@ const QuanLyCongThuc = () => {
     //Save
     const handleSaveEdit = async () => {
         try {
-            console.log('Editable Recipe:', editableRecipe);
             await axios.patch(`${API_URL}/recipe/${editableRecipe.recipeId}`, {
                 name: editableRecipe.name,
                 description: editableRecipe.description,
@@ -197,15 +220,14 @@ const QuanLyCongThuc = () => {
 
     // View modal close handler
     const handleViewModalClose = () => {
-        setSelectedFood(null);
+        setSelectedRecipe(null);
         setViewModalVisible(false);
     };
 
     // View modal open handler
     const handleViewModal = async record => {
         await axios.get(`${API_URL}/recipe/${record.recipeId}`).then(response => {
-            console.log(response);
-            setSelectedFood(response.data);
+            setSelectedRecipe(response.data);
             setViewModalVisible(true);
         });
     };
@@ -221,7 +243,7 @@ const QuanLyCongThuc = () => {
     };
 
     // Apply search and filter
-    const filteredFoods = reservedFoods.filter(food => {
+    const filteredFoods = reservedRecipe.filter(food => {
         const nameMatch = food.name
             .toLowerCase()
             .includes(searchValue.toLowerCase());
@@ -229,41 +251,43 @@ const QuanLyCongThuc = () => {
         return (!filterFavorites || isFavorite) && nameMatch;
     });
     const handleAdd = () => {
-        console.log('Add new food');
-        setSelectedFood(null);
+        setSelectedRecipe(null);
         setAddModalVisible(true);
     };
 
     const handleAddModalSubmit = async () => {
         newFoodForm.validateFields().then(async values => {
             console.log('Received values of form:', values);
-            const newRecipe = {
-                name: values.name,
-                description: values.description,
-            };
+
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('description', values.description);
+            formData.append('imgUrl', values.imgUrl);
+            formData.append('foodIdList', JSON.stringify(values.foodIdList)); // Assuming foodIdList is an array
+
+            fileList.forEach((file) => {
+                formData.append('img', file);
+            });
             setAddModalVisible(false);
+
             try {
-                const response = await axios.post(`${API_URL}/recipe`, {
-                    ...newRecipe,
-                });
-                console.log(response.status);
+                const response = await axios.post(`${API_URL}/recipe`, formData);
 
                 if (response.status === 201) {
-                    message.success(
-                        'Add recipe to storage successfully',
-                        [1],
-                        async () => {
-                            await fetchReservedFoods();
-                        },
-                    );
+                    const recipe = response.data;
+                    message.success('Add recipe to storage successfully', [1], async () => {
+                        await fetchReservedFoods();
+                    });
                 } else {
-                    console.error('Unexpected status code:', response.status);
+                    message.error('Fail to add recipe to storage', [1]);
                 }
             } catch (error) {
                 console.error('Error fetching reserved foods:', error);
             }
         });
     };
+
+
     return (
         <div>
             <h1>Danh sách công thức nấu ăn</h1>
@@ -300,7 +324,7 @@ const QuanLyCongThuc = () => {
                                 cover={
                                     <img
                                         alt="Recipe"
-                                        src={recipe.imgUrl}
+                                        src={(recipe.imgUrl[0] == "." ? API_URL + "/" : "") + recipe.imgUrl}
                                         style={{
                                             height: '200px',
                                             objectFit: 'cover',
@@ -353,6 +377,7 @@ const QuanLyCongThuc = () => {
                                                 display: '-webkit-box',
                                                 WebkitBoxOrient: 'vertical',
                                                 WebkitLineClamp: 3,
+                                                height: 64
                                             }}>
                                             {recipe.description}
                                         </div>
@@ -380,23 +405,23 @@ const QuanLyCongThuc = () => {
                         Đóng
                     </Button>,
                 ]}>
-                {selectedFood && (
+                {selectedRecipe && (
                     <Form layout="vertical">
                         <Form.Item label="Tên món ăn">
-                            <Input value={selectedFood.name} readOnly />
+                            <Input value={selectedRecipe.name} readOnly />
                         </Form.Item>
                         <Form.Item label="Cách làm">
                             <Input.TextArea
-                                value={selectedFood.description}
+                                value={selectedRecipe.description}
                                 rows={4}
                                 readOnly
                             />
                         </Form.Item>
                         <Form.Item label="Nguyên liệu">
                             <ul>
-                                {selectedFood.foods ? (
+                                {selectedRecipe.foods ? (
                                     <ul>
-                                        {selectedFood.foods.map(food => (
+                                        {selectedRecipe.foods.map(food => (
                                             <li key={food.foodId}>{food.foodNames}</li>
                                         ))}
                                     </ul>
@@ -416,7 +441,7 @@ const QuanLyCongThuc = () => {
                 <Form form={newFoodForm} layout="vertical">
                     <Form.Item
                         name="name"
-                        label="name"
+                        label="Tên"
                         rules={[
                             {
                                 required: true,
@@ -427,7 +452,7 @@ const QuanLyCongThuc = () => {
                     </Form.Item>
                     <Form.Item
                         name="description"
-                        label="description"
+                        label="Mô tả"
                         rules={[
                             {
                                 required: true,
@@ -435,6 +460,47 @@ const QuanLyCongThuc = () => {
                             },
                         ]}>
                         <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="imgUrl"
+                        label="Url ảnh"
+                    >
+                        <Input onChange={(e) => { setAddImgUrl(e.target.value) }} disabled={fileList.length != 0} />
+                    </Form.Item>
+                    <Form.Item
+                        name="foodIdList"
+                        label="Danh sách nguyên liệu"
+                    >
+                        <Select
+                            mode="tags"
+                            options={foodList}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="img"
+                        label="Ảnh"
+                    >
+                        <Upload
+                            disabled={addImgUrl.trim().length > 0}
+                            fileList={fileList}
+                            onRemove={(file) => {
+                                const index = fileList.indexOf(file);
+                                const newFileList = fileList.slice();
+                                newFileList.splice(index, 1);
+                                setFileList(newFileList);
+                            }}
+                            beforeUpload={(file) => {
+                                const isImg = file.type === 'image/png' || file.type === 'image/jpeg';
+                                if (!isImg) {
+                                    message.error(`${file.name} is not an image file`);
+                                }
+                                setFileList([...fileList, file]);
+                                return false;
+                            }}
+                        >
+                            <Button disabled={addImgUrl.trim().length > 0} icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -474,6 +540,18 @@ const QuanLyCongThuc = () => {
                                     })
                                 }
                             />
+
+                        </Form.Item>
+
+                        <Form.Item label="Nguyên liệu">
+                            <Select
+                                mode="tags"
+                                options={foodList}
+                                defaultValue={editableRecipe.foods.map(e => {
+                                    console.log(e.foodId)
+                                    return e.foodId
+                                })} />
+
                         </Form.Item>
                         {/* Thêm các trường khác cần chỉnh sửa */}
                     </Form>

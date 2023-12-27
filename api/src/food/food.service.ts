@@ -21,6 +21,7 @@ export class FoodService {
     const foods = await this.prisma.food.findMany({
       select: {
         foodId: true,
+        imageUrl: true,
         name: true,
         categories: {
           select: {

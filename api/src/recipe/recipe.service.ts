@@ -3,25 +3,41 @@ import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AddToFavoriteDto } from './dto/add-to-favorite.dto';
+import { createWriteStream } from 'fs';
 
 @Injectable()
 export class RecipeService {
   constructor(private prisma: PrismaService) {}
-  async create(createRecipeDto: CreateRecipeDto) {
-    const { name, description, foodIdList } = createRecipeDto;
+  async createRecipe(imgFile: any, createRecipeDto: any) {
+    const { name, description, foodIdList, imgUrl } = createRecipeDto;
+    const foodIdListParse = JSON.parse(foodIdList);
     const recipe = await this.prisma.recipe.create({
       data: {
         name,
-        description
+        description,
+        imgUrl
       }
     });
+    if (imgUrl.trim().length === 0) {
+      const { originalname, buffer } = imgFile;
+      const filename = `${Date.now()}-${originalname}`;
+      const filePath = `./uploads/${filename}`;
+      const writeStream = createWriteStream(filePath);
+      writeStream.write(buffer);
+      writeStream.end();
+      const updatedRecipe = await this.prisma.recipe.update({
+        where: { recipeId: recipe.recipeId },
+        data: { imgUrl: filePath }
+      });
+      return filePath;
+    }
     const recipeId = recipe.recipeId;
     await this.prisma.recipeFoodList.createMany({
-      data: foodIdList.map((e) => {
+      data: foodIdListParse.map((e) => {
         return { recipeId, foodId: e };
       })
     });
-    return 'Create recipe successfully';
+    return recipe;
   }
 
   async findAll() {
